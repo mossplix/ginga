@@ -1,0 +1,108 @@
+
+<div class="search">
+    <form action="pages-search-results.html">
+        <div class="form-group">
+            <input type="text" id="input-search" class="form-control" placeholder="Search People, Teams, Channels or Files">
+            <button type="submit" class="btn btn-default disabled btn-ripple"><i class="ion-search"></i></button>
+        </div>
+    </form>
+</div>
+
+<div class="panel">
+    <div class="panel-heading">
+        <div class="panel-title"><h4>People</h4></div>
+    </div><!--.panel-heading-->
+    <div class="panel-body without-padding">
+        <ul class="list-material">
+            <li class="has-action-left">
+                <a href="ui-elements-lists.html#" class="visible">
+                    <div class="list-action-left">
+                        <img src="/img/faces/1.jpg" class="face-radius" alt="">
+                    </div>
+                    <div class="list-content">
+                        <span class="title">Pari Subramanium</span>
+                    </div>
+                </a>
+            </li>
+            <li class="has-action-left">
+                <a href="ui-elements-lists.html#" class="visible">
+                    <div class="list-action-left">
+                        <img src="/img/faces/2.jpg" class="face-radius" alt="">
+                    </div>
+                    <div class="list-content">
+                        <span class="title">Robert Graham</span>
+                    </div>
+                </a>
+            </li>
+            <li class="has-action-left">
+                <a href="ui-elements-lists.html#" class="visible">
+                    <div class="list-action-left">
+                        <img src="/img/faces/3.jpg" class="face-radius" alt="">
+                    </div>
+                    <div class="list-content">
+                        <span class="title">Julia Parker</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div><!--.panel-body-->
+</div>
+<div class="row">
+    <div class="col s12">
+        <button type="button" class="btn btn-blue btn-ripple">Add Person</button>
+        <button type="button" class="btn btn-indigo btn-ripple">See All</button>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-heading">
+        <div class="panel-title"><h4>Activity</h4></div>
+    </div><!--.panel-heading-->
+    <div class="panel-body without-padding">
+        <ul class="list-material">
+            <li class="has-action-left has-action-right">
+                <a href="ui-elements-lists.html#" class="visible">
+                    <div class="list-action-left">
+                        <img src="/img/faces/1.jpg" class="face-radius" alt="">
+                    </div>
+                    <div class="list-content">
+                        <span class="title">Danielle Mitchell</span>
+                        <span class="caption">Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits.</span>
+                    </div>
+                    <div class="list-action-right">
+                        <i class="ion-android-alert center"></i>
+                    </div>
+                </a>
+            </li>
+            <li class="has-action-left has-action-right">
+                <a href="ui-elements-lists.html#" class="visible">
+                    <div class="list-action-left">
+                        <img src="/img/faces/2.jpg" class="face-radius" alt="">
+                    </div>
+                    <div class="list-content">
+                        <span class="title">Terry Carter</span>
+                        <span class="caption">Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits.</span>
+                    </div>
+                    <div class="list-action-right">
+                        <i class="ion-android-alert center"></i>
+                    </div>
+                </a>
+            </li>
+            <li class="has-action-left has-action-right">
+                <a href="ui-elements-lists.html#" class="visible">
+                    <div class="list-action-left">
+                        <img src="/img/faces/3.jpg" class="face-radius" alt="">
+                    </div>
+                    <div class="list-content">
+                        <span class="title">Jeremy Lawrence</span>
+                        <span class="caption">Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits.</span>
+                    </div>
+                    <div class="list-action-right">
+                        <i class="ion-android-alert center"></i>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div><!--.panel-body-->
+</div>
+

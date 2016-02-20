@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="description" content="Plug lets you do business better. Seamless team communication and project management.">
+    <meta name="author" content="Sparkplug">
+
+    <title>Plug: Organization Setings</title>
+
+    <!--Import materialize.css-->
+     <link type="text/css" rel="stylesheet" href="/css/dashboard.css"  media="screen,projection"/>
+     <!-- <link type="text/css" rel="stylesheet" href="/css/platformicons/platformicons.css"  media="screen,projection"/> -->
+
+
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+
+    <!--[if lt IE 9]>
+    <script src='https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js'></script>
+    <script src='https://oss.maxcdn.com/respond/1.4.2/respond.min.js'></script>
+    <![endif]-->
+    <script src="/plugins/modernizr/modernizr.min.js"></script>
+
+    <!-- Script tags for landing page -->
+    <script src="/js/plug/lib.min.js"></script>
+    <script src="/js/plug/global.min.js"></script>
+    <script src="/js/plug/waypoints.min.js"></script>
+    <script src="/js/plug/moment.min.js"></script>
+    <script src="/js/plug/home.js"></script>
+
+  </head>
+
+<body>
+
+    <div class="top-alert-bar no-print">
+        <div class="container">
+          Your trial has expired and your account is now on the limited plan. <a href="/organizations/sparkplug/subscription/">Activate a subscription</a> to increase data limits.
+        </div>
+      </div>
+
+    <header id="header">
+                <div class="navbar navbar-inverse">
+                    <div class="navbar-inner">
+                        <div class="container">
+
+                                <a id="logo" href="/sparkplug/">Plug</a>
+
+
+                                <h1></h1>
+
+                            <ul class="nav pull-right">
+
+
+
+                                        <li><a href="/docs/">Docs</a></li>
+
+
+                                            <li class="dropdown org-dropdown">
+                                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+                                                  Sparkplug
+
+                                                <span class="caret"></span>
+                                              </a>
+                                              <ul class="dropdown-menu">
+
+                                                  <li><h6><a href="/organizations/new/" class="new pull-right"><span class="icon-plus"></span></a>Organizations</h6></li>
+
+
+                                                    <li class="active">
+                                                        <a href="/sparkplug/">Sparkplug</a>
+                                                    </li>
+
+                                              </ul>
+                                            </li>
+
+
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img class="avatar" src="https://secure.gravatar.com/avatar/54ab33d21cff512a557f266494d0c7c2?s=20&d=mm"> <span class="caret"></span></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="/account/settings/">Account</a></li>
+
+                                                <li class="divider">
+                                                <li><a href="/auth/logout/">Logout</a></li>
+                                            </ul>
+                                        </li>
+
+
+  <li><a href="mailto:support@getplug.com" class="support-link">Support</a></li>
+
+                            </ul>
+                         </div>
+                    </div>
+                </div>
+            </header>
+
+<section id="page-header" class="toolbar">
+  <div class="pull-right">
+      <a href="/organizations/sparkplug/members/new/"
+         class="btn btn-primary" style="margin-top: -4px">Invite Member</a>
+  </div>
+  <h3>Sparkplug <small>Dashboard</small></h3>
+</section>
+
+<section id="content" class="with-left-sidebar">
+    <div class="container">
+        <div id="messages"></div>
+        <div class="content">
+            <div class="main">
+                <section class="body">
+                    <div class="upgrade">
+                      <a href="/organizations/sparkplug/subscription/" class="pull-right btn btn-primary btn-large">View Pricing</a>
+                      <h3>Upgrade to the Small plan today and get:</h3>
+                      <ul>
+                        <li><strong>10</strong> Team Members</li>
+                        <li><strong>20 events</strong> per minute (~15000% more daily)</li>
+                        <li><strong>Unlimited</strong> Projects</li>
+                      </ul>
+                    </div>
+
+                    <div class="pull-right">
+                        <a href="/organizations/sparkplug/teams/new/" class="btn btn-default" style="margin-top: -2px;">Create a new Team</a>
+                    </div>
+
+                    <ul class="nav nav-tabs" id="teams-tab">
+                        <li class="active"><a href="#my-teams" data-toggle="tab">My Teams</a></li>
+                        <li><a href="#all-teams" data-toggle="tab">All Teams</a></li>
+                      </ul>
+
+                      <div class="tab-content">
+                    <div class="tab-pane active" id="my-teams">
+
+                      <p>You don't have access to any teams for this organization yet.</p>
+
+                        <p>Get started by <a href="/organizations/sparkplug/teams/new/">creating your first team</a>.</p>
+
+
+                    </div>
+                    <div class="tab-pane" id="all-teams">
+                      <table class="table simple-list table-bordered">
+
+                      </table>
+                    </div>
+                  </div>
+
+                </section>
+            </div>
+
+            <div class="sidebar">
+
+  <ul class="nav nav-list">
+    <!-- <li class="nav-header"><h6>Sparkplug</h6></li> -->
+    <li class="active">
+      <a href="/sparkplug/">
+        Teams
+      </a>
+    </li>
+
+    <li class="">
+      <a href="/organizations/sparkplug/stats/">
+        Stats
+      </a>
+    </li>
+
+
+    <li class="">
+      <a href="/organizations/sparkplug/audit-log/">
+        Audit Log
+      </a>
+    </li>
+
+
+    <li class="">
+
+        <a href="/organizations/sparkplug/members/">
+          Members
+
+        </a>
+
+    </li>
+
+
+
+
+
+    <li class="">
+      <a href="/organizations/sparkplug/api-keys/">
+        API Keys
+      </a>
+    </li>
+
+
+    <li class="">
+      <a href="/organizations/sparkplug/settings/">
+        Settings
+      </a>
+    </li>
+
+  </ul>
+
+
+    <ul class="nav nav-list">
+      <li class="nav-header"><h6>Subscription</h6></li>
+      <li class="">
+        <a href="/organizations/sparkplug/subscription/">
+          Manage Plan
+        </a>
+      </li>
+      <li class="">
+        <a href="/organizations/sparkplug/subscription/modify/">
+          Billing Information
+        </a>
+      </li>
+      <li class="">
+        <a href="/organizations/sparkplug/payments/">
+          Payment History
+        </a>
+      </li>
+      <li>
+        <a href="mailto:support@getsentry.com" class="support-link">Contact Support</a>
+      </li>
+    </ul>
+
+
+
+                        </div>
+        </div>
+    </div>
+</section>
+<footer>
+            <div class="container">
+
+                    <div class="contribute">Sentry is <a href="http://en.wikipedia.org/wiki/Open-source_software">Open Source Software</a>
+                        <a href="https://github.com/getsentry/sentry" class="btn btn-default btn-small">Contribute</a> <a href="https://www.transifex.com/projects/p/sentry/" class="btn btn-default btn-small">Translate</a></div>
+                    <div class="version">Sentry 7.6.0.dev0 </div>
+                    <div class="credits">Handcrafted by the <a href="https://www.getsentry.com">Sentry team</a> and its <a href="https://github.com/getsentry/sentry/contributors">many contributors</a></div>
+
+            </div>
+        </footer>
+
+
+
+
+
+<!-- Begin page content -->
+<%= @inner %>
+
+<script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+        </html>

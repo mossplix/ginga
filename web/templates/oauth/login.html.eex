@@ -1,0 +1,39 @@
+
+<section id="content" class="content">
+    <div class="container signin border-top paddy">
+        <div class="row">
+            <div class="col-xs-5">
+                <h2>Login</h2>
+                <form action="./account/login" method="post" class="form-horizontal" data-refresh="true">
+                    <fieldset>
+
+
+
+                            <div class="form-group control-group">
+                            <label for="email">Email:</label>
+                            <div class="controls">
+                                <input id="email" maxlength="254" name="email" type="text" class="validate"/>
+
+
+                            </div>
+                        </div>
+
+                            <div class="form-group control-group">
+                            <label for="password">Password:</label>
+                            <div class="controls">
+                                <input id="password" name="password" type="password" class="validate"/>
+
+
+                            </div>
+                        </div>
+
+                    </fieldset>
+                    <fieldset class="form-actions">
+                        <div class="pull-right" style="font-size: 85%; margin-top: 10px;"><a href="/account/recover/">Forget password?</a></div>
+                        <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

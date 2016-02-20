@@ -1,0 +1,174 @@
+<section id="pricing" style="padding: 0 0 0px; margin-top: -50px;">
+    <div class="pricing" id="pricing">
+    <div class="container">
+        <h2>All accounts start with a 30-day no-obligation free trial.</h2>
+        <div class="row plans">
+            <div class="col-sm-4">
+                <div class="plan">
+                    <div class="price">$29<span class="per">/mo</span></div>
+                    <h4>Small</h4>
+                    <ul class="list-unstyled features">
+                        <li>Unlimited Contacts</li>
+                        <li>Unlimited Group Chats</li>
+                        <li>Unlimited projects</li>
+                        <li>15-person Voice calls*</li>
+                        <li>8-person Video chats* <span class="per-minute">(* No of simultaneous possible connections)</span></li>
+                        <li>10 team members</li>
+
+
+                    </ul>
+                    <p>
+                      <a href="/signup/?plan=small29" class="cta">Start free</a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="plan">
+                    <div class="price">$99<span class="per">/mo</span></div>
+                    <h4>Medium</h4>
+                    <ul class="list-unstyled features">
+                        <li>Unlimited Contacts</li>
+                        <li>Unlimited Group Chats</li>
+                        <li>Unlimited projects</li>
+                        <li>25-person Voice calls*</li>
+                        <li>10-person Video chats* <span class="per-minute">(* No of simultaneous possible connections)</span></li>
+                        <li>25 team members</li>
+                    </ul>
+                    <p>
+                      <a href="/signup/?plan=medium99" class="cta">Start free</a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="plan">
+                    <div class="price">$249<span class="per">/mo</span></div>
+                    <h4>Large</h4>
+                    <ul class="list-unstyled features">
+                        <li>Unlimited Contacts</li>
+                        <li>Unlimited Group Chats</li>
+                        <li>Unlimited projects</li>
+                        <li>50-person Voice calls*</li>
+                        <li>15-person Video chats* <span class="per-minute">(* No of simultaneous possible connections)</span></li>
+                        <li>50 team members</li>
+                    </ul>
+                    <p>
+                      <a href="/signup/?plan=large249" class="cta">Start free</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="clear"><br></div>
+        <div class="row plans">
+            <div class="col-sm-4">
+                <div class="plan">
+                    <div class="price">$0<span class="per">/mo</span></div>
+                    <h4>Free</h4>
+                    <ul class="list-unstyled features">
+                        <li>Unlimited Contacts</li>
+                        <li>10 Group Chats</li>
+                        <li>2 projects</li>
+                        <li>4-person Voice calls*</li>
+                        <li>2-person Video chats* <span class="per-minute">(* No of simultaneous possible connections)</span></li>
+                        <li>No team members</li>
+
+
+                    </ul>
+                    <p>
+                      <a href="/signup/" class="cta">Start free</a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="plan">
+                    <div class="price">$9<span class="per">/mo</span></div>
+                    <h4>Hobbyist</h4>
+                    <ul class="list-unstyled features">
+                        <li>Unlimited Contacts</li>
+                        <li>Unlimited Group Chats</li>
+                        <li>Unlimited projects</li>
+                        <li>6-person Voice calls*</li>
+                        <li>4-person Video chats* <span class="per-minute">(* No of simultaneous possible connections)</span></li>
+                        <li>3 team members</li>
+                    </ul>
+                    <p>
+                      <a href="/signup/?plan=hobbyist9" class="cta">Start free</a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="plan">
+                    <div class="price">$14<span class="per">/mo</span></div>
+                    <h4>Micro</h4>
+                    <ul class="list-unstyled features">
+                        <li>Unlimited Contacts</li>
+                        <li>Unlimited Group Chats</li>
+                        <li>Unlimited projects</li>
+                        <li>10-person Voice calls*</li>
+                        <li>6-person Video chats* <span class="per-minute">(* No of simultaneous possible connections)</span></li>
+                        <li>5 team members</li>
+                    </ul>
+                    <p>
+                      <a href="/signup/?plan=micro14" class="cta">Start free</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row hidden-sm hidden-xs ">
+            <div class="col-sm-12">
+                <div class="plan-condensed">
+                    <p><strong>Looking for more?</strong> &mdash; Tell us what you need. <a href="mailto:support@getplug.com?subject=Plug XL Plan">Contact us</a></p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="enterprise">
+    <div class="container">
+        <div class="wrap">
+            <div class="banner">New</div>
+            <h3>Plug Enterprise Edition</h3>
+            <p>Get all the power of Plug behind your firewall.</p>
+            <p><a href="mailto:support@getplug.com?subject=Plug Enterprise" class="btn btn-primary">Contact us for details</a></p>
+        </div>
+    </div>
+</div>
+<div class="container">
+        <div class="details">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>256-bit SSL Security</h4>
+                    <p>Plug uses secure 256-bit SSL encryption by default and all data is stored securely. For more on privacy, see our <a href="/privacy/">privacy policy</a>.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<section id="admin">
+   <div class="works-everywhere">
+            <div class="container">
+              <h3 class="centered"><span>Did we mention these admin features?</span></h3>
+
+              <div class="row">
+              <p>We highly recommend our business plans for those who manage teams and organizations.</p>
+                <div class="col-sm-6">
+                    <div class="circle">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    </div>
+                    <h4>User Management</h4>
+                    <p>You can add/delete multiple members, as well as change their profiles and passwords. </p>
+                </div>
+                <div class="col-sm-6">
+                    <div class="circle">
+                        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                    </div>
+                    <h4>Auto Connect</h4>
+                    <p>For new members that have joined the group, they will be added automatically to everyone’s contact list. There’s no need to add them one by one.</p>
+                </div>
+
+            </div>
+
+            </div>
+        </div>
+</section>

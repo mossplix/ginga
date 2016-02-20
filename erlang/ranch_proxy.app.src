@@ -1,0 +1,15 @@
+{application, ranch_proxy,
+  [
+    {description, "Ranch Proxy"},
+    {vsn, "1"},
+    {modules, [
+      ranch_proxy
+
+    ]},
+    {registered, []},
+    {applications, [
+      kernel,
+      stdlib
+    ]},
+    {env, []}
+  ]}.

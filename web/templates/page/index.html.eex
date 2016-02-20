@@ -1,0 +1,88 @@
+    <div class="intro">
+        <div class="container">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                  <h1>Do Business Better &mdash; Be on top of it.</h1>
+                  <p class="subtext">Simplified task management and seamless team and client communication with text, voice and video chat.</p>
+                  <p><a href="/signup/" class="cta">Start for free</a></p>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="the-old-way">
+          <div class="container text-center">
+              <h2>Stop doing business the old fashioned way.</h2>
+              <div class="row old-fashioned">
+                  <img src="/images/old-fashioned.png" alt="Do Business Better">
+              </div>
+              <div class="row">
+              <br>
+              <p><strong>Chances are that you are not aware of your convoluted business processes.</strong> Plug  reduces distraction through seamless team communication, helps you simplify your project management process, and also enables you to communicate and support your clients better.</p>
+            </div>
+          </div>
+      </div>
+
+    <div class="benefits">
+    <div class="container">
+        <h3 class="centered"><span>From now on you should be able to:</span></h3>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="circle">
+                    <span class="badge">3</span>
+                    <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
+                </div>
+                <h4>Enjoy Seamless Communication</h4>
+                <p>Have all of your team and client communication over text, voice and video chat all in one place. Always available and easily searchable.</p>
+            </div>
+            <div class="col-sm-4">
+                <div class="circle">
+                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                </div>
+                <h4>Simplify Project Collaboration</h4>
+                <p>Know who is doing what, how much work is left to do and what you need to work on now. Plug automates that and a lot more.</p>
+            </div>
+            <div class="col-sm-4">
+                <div class="circle">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </div>
+                <h4>Search and Archive Flawlessly</h4>
+                <p>Delve into project history to know what happened when. Every event in the project is logged and organized by date. No blind spots.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="works-everywhere">
+            <div class="container">
+              <h3 class="centered"><span>Did we mention these additional benefits?</span></h3>
+              <div class="row">
+                <div class="col-sm-4">
+                    <div class="circle">
+                        <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+                    </div>
+                    <h4>High Availability</h4>
+                    <p>Plug works excellently on low bandwidth networks. We aim to rid you of a miserable user experience within any enterprise network setting.</p>
+                </div>
+                <div class="col-sm-4">
+                    <div class="circle">
+                        <span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>
+                    </div>
+                    <h4>Private and Secure</h4>
+                    <p>All accounts use SSL-encrypted connections by default, the same level of security used by online banks. Your data us backed up daily and stored safely on the cloud.</p>
+                </div>
+                <div class="col-sm-4">
+                    <div class="circle">
+                        <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+                    </div>
+                    <h4>Fanatical Support</h4>
+                    <p>We take your success seriously. Real people answer to all your queries. We also offer email support, community forums, in-person training, and more.
+        <a href="https://help.pl.ug">Get support.</p>
+                </div>
+            </div>
+
+            </div>
+        </div>
+
+
+</div>

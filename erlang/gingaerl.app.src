@@ -1,0 +1,15 @@
+{application, gingaerl,
+ [
+  {description, "An Erlang gingaerl library"},
+  {vsn, "1"},
+  {modules, [
+             gingaerl
+
+            ]},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {env, []}
+ ]}.

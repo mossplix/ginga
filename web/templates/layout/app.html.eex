@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="description" content="Plug lets you do business better. Seamless team communication and project management.">
+    <meta name="author" content="Sparkplug">
+
+    <title>Plug: Do Business Better with Seamless team communication, simplified project management and efficient customer support.</title>
+
+    <!--Import materialize.css-->
+     <link type="text/css" rel="stylesheet" href="/css/plug.css"  media="screen,projection"/>
+     <link type="text/css" rel="stylesheet" href="/css/platformicons/platformicons.css"  media="screen,projection"/>
+
+
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+
+    <!--[if lt IE 9]>
+    <script src='https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js'></script>
+    <script src='https://oss.maxcdn.com/respond/1.4.2/respond.min.js'></script>
+    <![endif]-->
+    <script src="/plugins/modernizr/modernizr.min.js"></script>
+
+    <!-- Script tags for landing page -->
+    <script src="/js/plug/lib.min.js"></script>
+    <script src="/js/plug/global.min.js"></script>
+    <script src="/js/plug/waypoints.min.js"></script>
+    <script src="/js/plug/moment.min.js"></script>
+    <script src="/js/plug/home.js"></script>
+
+  </head>
+
+  <body >
+    <header class="home">
+      <div class="container">
+        <a href="/" class='logo'><img src="/images/logo.png"> <span style="margin-left:10px;margin-top:20px;">Plug</span></a>
+
+        <ul class="user-nav">
+          <li class="hidden-xs"><a href="/pricing/" class="pricing-link">Pricing</a></li>
+          <li class="hidden-xs"><a href="/guide/" class="pricing-link">Guide</a></li>
+          <li class="hidden-xs"><a href="/" class="pricing-link">Blog</a></li>
+          <%= if logged_in(@conn)   do %>
+          <li><a href="/logout/">Logout</a></li>
+
+          <% else %>
+          <li><a href="/login/">Sign in</a></li>
+          <li class="divider"></li>
+          <li><a href="/signup/" class="cta">Start for free</a></li>
+          <% end %>
+        </ul>
+      </div>
+    </header>
+
+    <%= @inner %>
+
+
+
+<footer id="footer">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-sm-3 pull-right">
+                <ul class="services list-unstyled">
+                    <li class="twitter align-right"><a href="http://twitter.com/sparkplugea">Twitter</a></li>
+                    <li class="github align-right"><a href="https://facebook.com/sparkplug">Facebook</a></li>
+
+                </ul>
+                <p class="copyright align-right"><small>&copy; 2016 sparkpl.ug</small></p>
+            </div>
+            <div class="col-sm-5">
+                <ul class="list-unstyled">
+                    <li><a href="/guide/">Terms</a></li>
+
+                </ul>
+            </div>
+            <div class="col-sm-5">
+                <ul class="list-unstyled">
+                    <li><a href="/about/">About Us</a></li>
+
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</footer>
+
+
+  </body>
+</html>
