@@ -25,7 +25,7 @@
 	      </div>
 	    </header>
 		<main class="main">
-             <%= @inner %>
+             <%= render @view_module, @view_template, assigns %>
 		</main>
 
 

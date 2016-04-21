@@ -40,25 +40,31 @@
   <body >
     <header class="home">
       <div class="container">
-        <a href="/" class='logo'><img src="/images/logo.png"> <span style="margin-left:10px;margin-top:20px;">Plug</span></a>
+        <a href="/" class='logo'><img src="/images/logo.png"> </a>
 
         <ul class="user-nav">
           <li class="hidden-xs"><a href="/pricing/" class="pricing-link">Pricing</a></li>
           <li class="hidden-xs"><a href="/guide/" class="pricing-link">Guide</a></li>
           <li class="hidden-xs"><a href="/" class="pricing-link">Blog</a></li>
-          <%= if logged_in(@conn)   do %>
-          <li><a href="/logout/">Logout</a></li>
+          <%= if @current_user do %>
+           <li><a href="/logout">Logout</a></li>
 
           <% else %>
-          <li><a href="/login/">Sign in</a></li>
+          <li><a href="/app/">Sign in</a></li>
           <li class="divider"></li>
-          <li><a href="/signup/" class="cta">Start for free</a></li>
+          <li><%= link "Start for free", to: page_path(@conn, :pricing), class: "cta" %></li>
           <% end %>
         </ul>
       </div>
     </header>
+    <%= if  get_flash(@conn, :info) do %>
+      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <% end %>
+       <%= if  get_flash(@conn, :error) do %>
+      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <% end %>
 
-    <%= @inner %>
+    <%= render @view_module, @view_template, assigns %>
 
 
 

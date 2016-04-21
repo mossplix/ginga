@@ -1,0 +1,15 @@
+{application, soko_email_utils,
+  [
+    {description, "An Erlang sokoerl library"},
+    {vsn, "1"},
+    {modules, [
+      ginga_email_utils
+
+    ]},
+    {registered, []},
+    {applications, [
+      kernel,
+      stdlib
+    ]},
+    {env, []}
+  ]}.

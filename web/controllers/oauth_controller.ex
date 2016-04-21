@@ -64,7 +64,6 @@ defmodule Ginga.OauthController do
 		                   b_img =Random.pick_element(b_images)
 					_  ->  b_img=""
 
-
 	  end
 
 

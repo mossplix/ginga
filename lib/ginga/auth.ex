@@ -196,7 +196,7 @@ defmodule Ginga.Auth do
       #issue and associate access token
       def issue_token(user,scope,typen) do
 
-      	token = :Gingaerl.generate_token()
+      	token = :gingaerl.generate_token()
       	expires_in = 36000
       	ttl = seconds_since_epoch(expires_in)
 

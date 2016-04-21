@@ -83,7 +83,7 @@
     </header>
   </div>
           <div class="col s12">
-            <%= @inner %>
+            <%= render @view_module, @view_template, assigns %>
           </div>
 
         <!-- </div> -->

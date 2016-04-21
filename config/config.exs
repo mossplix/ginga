@@ -8,6 +8,11 @@ use Mix.Config
 # Configures the endpoint
 config :ginga, Ginga.Endpoint,
   url: [host: "localhost"],
+  host: "http://127.0.0.1:4000",
+  vhost: "localhost",
+  smtp_server: "smtp.mailgun.org",
+  smtp_login: "postmaster@sandboxcdd79a9e779d43c99028fede19d62022.mailgun.org" ,
+  smtp_password: "mosespass" ,
   root: Path.dirname(__DIR__),
   secret_key_base: "l//VMa0BLEuheS53joHFuUrfgGt4UvlSFdFeoWxx1XG3rfofe9W2FMeZVvZJN2tR",
   render_errors: [accepts: ~w(html json)],
@@ -21,9 +26,9 @@ config :guardian, Guardian,
   issuer: "Sparkplug",
   ttl: {30, :days},
   verify_issuer: true,
-  serializer: PhoenixGuardian.GuardianSerializer,
+  serializer: Ginga.GuardianSerializer,
   secret_key: "UvlSFdFeoWxx1XG3rfofe9W2FMeZVvZJN2tR",
-  hooks: GuardianDb,
+  hooks: Ginga.GuardianHooks,
   permissions: %{
     default: [
       :read_profile,
@@ -40,7 +45,7 @@ config :ueberauth, Ueberauth,
 
 
 config :guardian_db, GuardianDb,
-       repo: PhoenixGuardian.Repo
+       repo: Ginga.Repo
 
 
 # Configures Elixir's Logger
@@ -64,3 +69,5 @@ config :ejabberd,
 
 config :mnesia,
   dir: 'mnesiadb/'
+
+config :hound, driver: "chrome_driver"

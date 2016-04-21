@@ -1,0 +1,24 @@
+production:
+  databases:
+    default:
+      adapter: postgresql
+      encoding: unicode
+      database: ginga_prod
+      username: postgres
+      password: mosespass
+      host: 127.0.0.1
+  options:
+    separator: ;
+
+development:
+  databases:
+    default:
+      adapter: postgres
+      encoding: unicode
+      database: ginga_dev
+      username: postgres
+      password: mosespass
+      host: 127.0.0.1
+  options:
+    separator: ;
+

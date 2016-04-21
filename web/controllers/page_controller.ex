@@ -1,25 +1,39 @@
 defmodule Ginga.PageController do
   use Ginga.Web, :controller
-    alias PhoenixGuardian.Repo
+    alias Ginga.Repo
 
 
 
+  plug Guardian.Plug.EnsureAuthenticated, [handler: Ginga.TokenController] when action in [:app]
 
   def index(conn, _params, current_user, _claims) do
     render conn, "index.html", current_user: current_user
   end
 
   def pricing(conn, _params,current_user, _claims) do
-    render conn, "pricing.html"
+    render conn, "pricing.html", current_user: current_user
   end
 
   def guide(conn, _params,current_user, _claims) do
-    render conn, "guide.html"
+    render conn, "guide.html", current_user: current_user
   end
 
 
-  def app(conn,_params) do
-  	put_layout(conn, "app.html")
+  def app(conn,_params,current_user, _claims) do
+
+    case current_user.state do
+        "email_pending" -> conn=conn
+                                |> put_flash(:error, "Please Verify Your Email Address first")
+                                |> redirect(to: "/")
+
+
+
+        _ ->  put_layout(conn, "react.html")
+  	           |> render "app.html"
+
+
+    end
+  	put_layout(conn, "react.html")
   	    |> render "app.html"
 
 	end

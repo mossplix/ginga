@@ -18,7 +18,8 @@ defmodule Ginga.Web do
 
   def model do
     quote do
-      use Ecto.Model
+      use Ecto.Schema
+      import Ecto
 
       import Ecto.Changeset
       import Ecto.Query, only: [from: 1, from: 2]
@@ -34,7 +35,8 @@ defmodule Ginga.Web do
       alias Guardian.Plug.EnsureAuthenticated
       alias Guardian.Plug.EnsurePermissions
 
-      import Ecto.Model
+      import Ecto.Schema
+      import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
 
       import Ginga.Router.Helpers
@@ -50,7 +52,8 @@ defmodule Ginga.Web do
      alias Guardian.Plug.EnsurePermissions
 
       alias Ginga.Repo
-      import Ecto.Model
+      import Ecto.Schema
+      import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
 
       import Ginga.Router.Helpers
@@ -70,6 +73,8 @@ defmodule Ginga.Web do
 
       import Ginga.Router.Helpers
       import Ginga.ViewHelpers
+      import Ginga.ErrorHelpers
+      import Ginga.Gettext
     end
   end
 
@@ -84,7 +89,8 @@ defmodule Ginga.Web do
       use Phoenix.Channel
 
       alias Ginga.Repo
-      import Ecto.Model
+      import Ecto.Schema
+      import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
     end
   end

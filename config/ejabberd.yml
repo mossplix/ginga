@@ -69,8 +69,8 @@ log_rate_limit: 100
 ## consumes a lot of memory, send live notifications to these XMPP
 ## accounts.
 ##
-## watchdog_admins:
-##   - "bob@example.com"
+watchdog_admins:
+  - "mugisha@sparkpl.ug"
 
 
 ###   ================
@@ -85,7 +85,7 @@ log_rate_limit: 100
 ##   - "example.org"
 ##
 hosts:
-  - "localhost"
+  - "sparkplug"
   #- "sparkpl.ug"
 
 ##
@@ -156,15 +156,19 @@ listen:
   ##
   ## To handle XML-RPC requests that provide admin credentials:
   ##
-  ## -
-  ##   port: 4560
-  ##   module: ejabberd_xmlrpc
+  -
+    port: 4560
+    module: ejabberd_xmlrpc
+    access_commands: {}
   -
     port: 5280
     module: ejabberd_http
     request_handlers:
       "/websocket": ejabberd_http_ws
       "/pub/archive": mod_http_fileserver
+      "/log": mod_log_http
+      "/oauth": ejabberd_oauth
+      "/api": mod_http_api
     web_admin: true
     http_poll: true
     http_bind: true
@@ -227,7 +231,7 @@ listen:
 ## If you want to use a different method,
 ## comment this line and enable the correct ones.
 ##
-auth_method: internal
+#auth_method: internal
 
 ##
 ## Store the plain passwords or hashed for SCRAM:
@@ -241,8 +245,8 @@ auth_password_format: scram
 ## Authentication using external script
 ## Make sure the script is executable by ejabberd.
 ##
-## auth_method: external
-## extauth_program: "/path/to/authentication/script"
+auth_method: external
+extauth_program: "/Users/Moses/Projects/Sparkplug/ginga/scripts/auth.py"
 
 ##
 ## Authentication using ODBC
@@ -333,11 +337,11 @@ auth_password_format: scram
 ##
 ## PostgreSQL server:
 ##
-## odbc_type: pgsql
-## odbc_server: "server"
-## odbc_database: "database"
-## odbc_username: "username"
-## odbc_password: "password"
+odbc_type: pgsql
+odbc_server: "127.0.0.1"
+odbc_database: "ginga_dev"
+odbc_username: "postgres"
+odbc_password: "mosespass"
 ##
 ## If you want to specify the port:
 ## odbc_port: 1234
@@ -345,7 +349,7 @@ auth_password_format: scram
 ## If you use PostgreSQL, have a large database, and need a
 ## faster but inexact replacement for "select count(*) from users"
 ##
-## pgsql_users_number_estimate: true
+pgsql_users_number_estimate: true
 
 ##
 ## ODBC compatible or MSSQL server:
@@ -393,7 +397,7 @@ acl:
   ##
   admin:
      user:
-        - "mossplix": "localhost"
+        - "mossplix": "sparkplug"
   ##     - "ermine": "example.org"
   ##
   ## Blocked users
@@ -557,7 +561,7 @@ language: "en"
 ##
 modules:
   mod_adhoc: {}
-  ## mod_admin_extra: {}
+  mod_admin_extra: {}
   mod_announce: # recommends mod_adhoc
     access: announce
   mod_blocking: {} # requires mod_privacy
@@ -581,18 +585,23 @@ modules:
     access_create: muc_create
     access_persistent: muc_create
     access_admin: muc_admin
+    history_size: 1000
     default_room_options:
       allow_private_messages: true
       persistent: true
       logging: true
       allow_user_invites: true
       members_by_default: true
+      mam: true
+    db_type: odbc
   mod_muc_log: {}
-  #mod_muc_admin: {}
+  mod_muc_admin: {}
   #mod_muc_room: {}
   mod_mam:
-    default_page_size: 25
-    max_page_size: 100
+    dbtype: odbc
+    default: always
+    cache_size: 1000
+    cache_life_time: 3600
 
   mod_admin_extra: {}
 
@@ -616,7 +625,7 @@ modules:
       - "flat"
       - "hometree"
       - "pep" # pep requires mod_caps
-  mod_register:
+##mod_register:
     ##
     ## Protect In-Band account registrations with CAPTCHA.
     ##
@@ -631,11 +640,11 @@ modules:
     ## After successful registration, the user receives
     ## a message with this subject and body.
     ##
-    welcome_message:
-      subject: "Welcome!"
-      body: |-
-        Hi.
-        Welcome to this XMPP server.
+    #welcome_message:
+    #  subject: "Welcome!"
+    #  body: |-
+    #    Hi.
+    #    Welcome to this XMPP server.
 
     ##
     ## When a user registers, send a notification to
@@ -647,19 +656,16 @@ modules:
     ##
     ## Only clients in the server machine can register accounts
     ##
-    ip_access: trusted_network
+    #ip_access: trusted_network
 
     ##
     ## Local c2s or remote s2s users cannot register accounts
     ##
     ## access_from: deny
 
-    access: register
+    #access: register
   mod_roster: {}
   #mod_archive: {}
-  #mod_mam:
-     #default_page_size: 25
-     #max_page_size: 100
   mod_shared_roster: {}
   mod_stats: {}
   mod_time: {}
@@ -690,3 +696,8 @@ allow_contrib_modules: true
 ### mode: yaml
 ### End:
 ### vim: set filetype=yaml tabstop=8
+commands_admin_access: configure
+commands:
+  - add_commands: user
+oauth_expire: 3600
+oauth_access: all

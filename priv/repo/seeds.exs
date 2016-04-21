@@ -1,11 +1,28 @@
-# Script for populating the database. You can run it as:
-#
-#     mix run priv/repo/seeds.exs
-#
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     Ginga.Repo.insert!(%SomeModel{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+[
+  %{
+    name: "Basic",
+    cost: "20",
+  },
+  %{
+    name: "Plus",
+    cost: "20",
+  },
+  %{
+    name: "Premium",
+    cost: "20",
+  },
+  %{
+    name: "Free",
+    cost: "20",
+  },
+   %{
+    name: "Custom",
+    cost: "20",
+  },
+   %{
+    name: "Enterprise",
+    cost: "20",
+  },
+]
+|> Enum.map(&User.changeset(%User{}, &1))
+|> Enum.each(&Repo.insert!(&1))

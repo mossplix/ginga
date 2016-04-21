@@ -1,26 +1,204 @@
-<h1>Register</h1>
-<%= form_tag auth_path(@conn, :callback, "identity"), [method: "POST"] do %>
-  <div class='control-group'>
-    <label class='control-label' for='email-input'>Email</label>
-    <input type='email' name='email' required class='form-control'/>
-  </div>
+<section id="content" class="content">
 
-  <div class='control-group'>
-    <label class='control-label' for='name-input'>Name</label>
-    <input name='name' required class='form-control'/>
-  </div>
+    <div class="container signup border-top paddy">
+      <div class="col-xs-7">
+        <div class='panel  panel-default '>
+              <div class='panel-heading'>
 
-  <div class='control-group'>
-    <label class='control-label' for='password-input'>Password</label>
-    <input type='password' name='password' required class='form-control'/>
-  </div>
 
-  <div class='control-group'>
-    <label class='control-label' for='password-confirmation-input'>Password</label>
-    <input type='password' name='password_confirmation' required class='form-control'/>
-  </div>
 
-  <div class='control-group'>
-    <button class='btn btn-primary'>Sign up</button>
-  </div>
-<% end %>
+
+
+
+
+                             <h4>You're just  a minute away from your new Plug  account.</h4>
+
+              </div>
+              <div class='panel-body'>
+                    <%= form_tag auth_path(@conn, :callback, "identity"), [method: "POST"] do %>
+
+                       <p  style="margin-top: 9px; font-size: 80%;">Already have an account?  <a href="/app">Login</a></p>
+
+                       <fieldset>
+                                <h4>Basic  Information</h4>
+
+
+
+                      <div class='control-group form-group'>
+                        <label class='control-label' for='name-input'>First Name</label>
+                          <div class="controls">
+                          <input name='first_name' required class='form-control'/>
+                        </div>
+
+                      </div>
+
+                      <div class='control-group form-group'>
+                        <label class='control-label' for='name-input'>Last Name</label>
+                          <div class="controls">
+                          <input name='last_name' required class='form-control'/>
+                        </div>
+
+                      </div>
+
+                       <div class='control-group form-group'>
+                        <label class='control-label' for='name-input'>Company</label>
+                          <div class="controls">
+                          <input name='company_name' required class='form-control'/>
+                          <small>(Or non-profit, organization, group, school, etc.)</small>
+                        </div>
+
+                         <div class='control-group form-group'>
+                        <label class='control-label' for='name-input'>Country</label>
+                          <div class="controls">
+
+
+
+                          <select name="country_id">
+
+                          <%= for c <- @countries do %>
+
+
+                          <option value="<%= c.id%>"   <%= if c.name == "Uganda"  do %> selected="selected"    <% end %>     ><%= c.name%> </option>
+
+
+
+                          <% end %>
+
+
+
+                          </select>
+                        </div>
+
+                      </div>
+
+
+
+                      </fieldset>
+
+                       <fieldset>
+                                <h4>Account Information</h4>
+                                  <div class='control-group form-group'>
+                        <label class='control-label' for='email-input'>Email</label>
+                          <div class="controls">
+                            <input type='email' name='email' required class='form-control'/>
+                          </div>
+                      </div>
+
+                      <div class='control-group form-group '>
+                        <label class='control-label' for='password-input'>Password</label>
+                          <div class="controls">
+                        <input type='password' name='password' required class='form-control'/>
+                      </div>
+                      </div>
+
+                      <div class='control-group form-group'>
+                        <label class='control-label' for='password-confirmation-input'>Confirm Password</label>
+                          <div class="controls">
+                        <input type='password' name='password_confirmation' required class='form-control'/>
+                      </div>
+                      </div>
+
+                      </fieldset>
+
+                      <fieldset>
+                                <small><a href="#" class="promo-code-trigger" style="margin-top: 4px;">I have a promotional code to apply.</a></small>
+                                <div class="promo-code form-group">
+
+                                        <div class="form-group control-group">
+            <label for="id_promo_code">Promo code:</label> <small style="opacity: .6;">(optional)</small>
+            <div class="controls">
+                <input id="id_promo_code" name="promo_code" type="text" />
+
+
+            </div>
+        </div>
+
+
+                                </div>
+                            </fieldset>
+
+                      <div class='control-group form-group'>
+                          <div class="controls">
+                        <button class='btn btn-primary'>Create My Account</button>
+                      </div>
+                      </div>
+                    <% end %>
+               </div>
+        </div>
+
+
+      </div>
+       <div class="sidebar col-xs-4 col-xs-offset-1">
+                <%= if @plan == "free"  do %>
+                <h3>Free Plan</h3>
+
+
+
+<p>You have selected the Free plan. There is no time limit on the free plan — you can use it for free as long as you'd like. You can always upgrade to a paying plan later if you need
+ more users, etc.
+
+
+                    <% end %>
+
+
+                     <%= if @plan == "premium"  do %>
+
+                  <h3>Premium Plan </h3>
+<p>Your 30-day free trial lasts until midnight on May 15, 2016. If you don't want to continue using Highrise, just cancel before the trial ends and you won't be charged (we'll email you 5 days before the trial ends to remind you). Otherwise, you'll pay just $100/month for the service as long as your account is open. You can upgrade, downgrade, or cancel any time.</P>
+
+
+
+                      <% end %>
+
+
+
+                     <%= if @plan == "basic"  do %>
+                     <h3>Basic Plan </h3>
+
+
+                      <% end %>
+
+
+                     <%= if @plan == "plus"  do %>
+                     <h3>Plus Plan </h3>
+
+                     <p>
+
+
+Your 30-day free trial lasts until midnight on May 15, 2016. If you don't want to continue using Highrise, just cancel before the trial ends and you won't be charged (we'll email you 5 days before the trial ends to remind you). Otherwise, you'll pay just $200/month for the service as long as your account is open. You can upgrade, downgrade, or cancel any time.
+
+
+                     </P>
+
+
+                      <% end %>
+
+
+
+                    <h4>Questions? Comments?</h4>
+                    <p>We'd love to hear what we can do better.<br>Say hello at <a href="mailto:hello@sparkpl.ug">hello@sparkpl.ug</a>.</p>
+
+                </div>
+        </div>
+    </div>
+
+     <script>
+            $(function(){
+                var $el = $("#id_promo_code");
+                var $trigger = $('.promo-code-trigger');
+                if ($el.val()) {
+                    $trigger.remove();
+                } else {
+                    $('.promo-code').hide();
+                    $trigger.click(function(e){
+                        e.preventDefault();
+                        $('.promo-code').show();
+                        $trigger.remove();
+                    });
+                }
+            });
+            </script>
+
+
+
+</section>

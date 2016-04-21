@@ -12,7 +12,8 @@ config :ginga, Ginga.Endpoint,
   code_reloader: true,
   cache_static_lookup: false,
   check_origin: false,
-  watchers: [node: ["gulp", "watch", "--stdin"]]
+  watchers: [{Path.expand("node_modules/webpack/bin/webpack.js"), ["--watch",
+        "--colors", "--profile"]}]
 
 # Watch static and templates for browser reloading.
 config :ginga, Ginga.Endpoint,

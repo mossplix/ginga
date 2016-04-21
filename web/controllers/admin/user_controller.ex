@@ -1,6 +1,7 @@
 defmodule Ginga.Admin.UserController do
   use Ginga.Web, :admin_controller
 
+
   alias Ginga.User
 
   # Make sure that we have a valid token in the :admin area of the session

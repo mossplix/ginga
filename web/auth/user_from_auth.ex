@@ -78,10 +78,12 @@ defmodule Ginga.UserFromAuth do
 
   defp create_user(auth, repo) do
     name = name_from_auth(auth)
-    result = User.registration_changeset(%User{}, %{email: auth.info.email, name: name})
+    result = User.registration_changeset(%User{}, %{email: auth.info.email, company_name: auth.info.company_name,country_id: auth.info.country_id,  first_name: auth.info.first_name,last_name: auth.info.last_name })
     |> repo.insert
     case result do
-      {:ok, user} -> user
+      {:ok, user} -> Ginga.EventManager.notify_user_added user
+
+                     user
       {:error, reason} -> repo.rollback(reason)
     end
   end

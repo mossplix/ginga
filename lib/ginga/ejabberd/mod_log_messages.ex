@@ -18,7 +18,7 @@ defmodule Ginga.LogMessages do
   def on_filter_packet({from, to, xml={:xmlel, "message", attributes, children}} = packet) do
 
 
-    timestamp=:Gingaerl.uuid_time()
+    timestamp=:gingaerl.uuid_time()
     connection=RethinkDB.connect
     new_children = Enum.map(children, fn(child) ->
       Logger.debug(inspect packet)

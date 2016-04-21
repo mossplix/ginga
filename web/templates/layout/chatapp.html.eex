@@ -7,7 +7,7 @@
 </head>
 <body >
 <section id="container">
-    <%= @inner %>
+    <%= render @view_module, @view_template, assigns %>
 </section>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

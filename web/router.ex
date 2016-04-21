@@ -11,6 +11,8 @@ defmodule Ginga.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug Guardian.Plug.VerifyHeader
+    plug Guardian.Plug.LoadResource
   end
 
 
@@ -41,13 +43,7 @@ defmodule Ginga.Router do
   end
 
 
-  # This pipeline if intended for API requests and looks for the JWT in the "Authorization" header
-  # In this case, it should be prefixed with "Bearer" so that it's looking for
-  # Authorization: Bearer <jwt>
-  pipeline :api_auth do
-    plug Guardian.Plug.VerifyHeader, realm: "Bearer"
-    plug Guardian.Plug.LoadResource
-  end
+
 
   scope "/", Ginga do
     # We pipe this through the browser_auth to fetch logged in people
@@ -58,7 +54,8 @@ defmodule Ginga.Router do
     get "/", PageController, :index
     delete "/logout", AuthController, :logout
 
-    resources "/users", UserController
+    get "/signup/:plan",  UserController, :new
+
     resources "/authorizations", AuthorizationController
     resources "/tokens", TokenController
 
@@ -69,11 +66,8 @@ defmodule Ginga.Router do
     get "/chat/messages",RethinkdbController, :messages
     post "/rethinkdb",PageController, :rethinkdb
     get "/ts", PageController, :react_test
-    get "/signup/", UsersController, :new
-    post "/signup/",UsersController, :signup
-	  get "/login/", UsersController, :new_auth
-	  post "/login/", UsersController, :do_login
-    get "/logout/", UsersController, :do_logout
+
+
 	  get "/app/", PageController, :app
 	  get "/ejabberd", EjabberdController, :index
 	  resources "/posts", PostController
@@ -88,6 +82,13 @@ defmodule Ginga.Router do
 
     get "/xmpp",  EjabberdWsController ,:upgrade
     post "/xmpp",  EjabberdWsController,:upgrade
+    get "/account/email/verify/:token", UserController,:verify_email
+
+
+     get "/logout", AuthController, :logout
+
+
+
   end
 
   # This scope is the main authentication area for Ueberauth
@@ -97,6 +98,7 @@ defmodule Ginga.Router do
     get "/:identity", AuthController, :login
     get "/:identity/callback", AuthController, :callback
     post "/:identity/callback", AuthController, :callback
+
   end
 
   # This scope is intended for admin users.
@@ -117,7 +119,30 @@ defmodule Ginga.Router do
 
   # Other scopes may use custom stacks.
   scope "/api", Ginga do
-    pipe_through [:api, :api_auth]
+    pipe_through [:api]
+    scope "/v1" do
+      post "/sessions", SessionController, :create
+      delete "/sessions", SessionController, :delete
+      get "/current_user", CurrentUserController, :show
+      resources "boards", BoardController, only: [:index, :create] do
+        resources "cards", CardController, only: [:show]
+      end
+
+      resources "/events", Ginga.EventsController, except: []
+  	  resources "/streams", Ginga.StreamsController, except: []
+  	  resources "/streamdefs", Ginga.StreamDefsController, except: []
+  	  post "/authorize", Ginga.OauthController, :authorize_post
+  	  get "/authorize", Ginga.OauthController, :authorize_get
+
+  	  resources "/accounts", AccountController, except: [:new, :edit]
+     resources "/tasks", TaskController, except: [:new, :edit]
+      resources "/opportunities", OpportunityController, except: [:new, :edit]
+      resources "/comments", CommentController, except: [:new, :edit]
+      resources "/campaigns", CampaignController, except: [:new, :edit]
+      resources "/contacts", ContactController, except: [:new, :edit]
+      resources "/companies", CompanyController, except: [:new, :edit]
+
+    end
   end
 
 
@@ -127,29 +152,15 @@ defmodule Ginga.Router do
 
 
 
-  scope "/auth", alias: Ginga do
+  scope "/oauth_legacy", alias: Ginga do
       pipe_through [:browser]
-	  get "/signup/", UsersController, :new
       get "/", OauthController, :index
       get "/callback", OauthController, :callback
       post "/resource", OauthController, :get_access_token
 
     end
 
-  scope "/api" do
-  		pipe_through :api
 
-  		resources "/events", Ginga.EventsController, except: []
-  		resources "/streams", Ginga.StreamsController, except: []
-  		resources "/users", Ginga.UsersController, except: []
-  		resources "/streamdefs", Ginga.StreamDefsController, except: []
-  		post "/users/get_token/", Ginga.UsersController, :get_token
-  		post "/users/authorize/", Ginga.UsersController, :create
-  		post "/authorize", Ginga.OauthController, :authorize_post
-  		get "/authorize", Ginga.OauthController, :authorize_get
-      get "/user", Ginga.UsersController,:show
-
-    end
 
 
       # `@current_user`.
