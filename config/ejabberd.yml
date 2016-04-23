@@ -86,7 +86,7 @@ watchdog_admins:
 ##
 hosts:
   - "sparkplug"
-  #- "sparkpl.ug"
+  - "localhost"
 
 ##
 ## route_subdomains: Delegate subdomains to other XMPP servers.
@@ -198,7 +198,9 @@ listen:
 ##
 ## domain_certfile: Specify a different certificate for each served hostname.
 ##
-## host_config:
+#host_config:
+# "sparkpl.ug":
+#    auth_method: [internal]
 ##   "example.org":
 ##     domain_certfile: "/path/to/example_org.pem"
 ##   "example.com":
@@ -236,7 +238,7 @@ listen:
 ##
 ## Store the plain passwords or hashed for SCRAM:
 ## auth_password_format: plain
-auth_password_format: scram
+auth_password_format: plain
 ##
 ## Define the FQDN if ejabberd doesn't detect it:
 ## fqdn: "server3.example.com"
@@ -245,6 +247,9 @@ auth_password_format: scram
 ## Authentication using external script
 ## Make sure the script is executable by ejabberd.
 ##
+
+
+default_db: odbc
 auth_method: external
 extauth_program: "/Users/Moses/Projects/Sparkplug/ginga/scripts/auth.py"
 
@@ -397,8 +402,8 @@ acl:
   ##
   admin:
      user:
-        - "mossplix": "sparkplug"
-  ##     - "ermine": "example.org"
+        - "mossplix": "localhost"
+        - "mugisha": "sparkpl.ug"
   ##
   ## Blocked users
   ##
@@ -410,7 +415,7 @@ acl:
   ## Local users: don't modify this.
   ##
   local:
-    user_regexp: ""
+    user_regexp: "*"
 
   ##
   ## More examples of ACLs
@@ -443,12 +448,6 @@ acl:
 ##
 ## Define specific ACLs in a virtual host.
 ##
-## host_config:
-##   "localhost":
-##     acl:
-##       admin:
-##         user:
-##           - "bob-local": "localhost"
 
 ###   ============
 ###   ACCESS RULES
@@ -485,7 +484,7 @@ access:
     admin: allow
   ## Only accounts of the local ejabberd server can create rooms:
   muc_create:
-    local: allow
+    all: allow
   ## All users are allowed to use the MUC service:
   muc:
     all: allow
@@ -497,8 +496,8 @@ access:
   register:
     all: allow
   ## Only allow to register from localhost
-  trusted_network:
-    loopback: allow
+  #trusted_network:
+  #  loopback: allow
   ## Do not establish S2S connections with bad servers
   ## s2s:
   ##   bad_servers: deny
@@ -572,13 +571,15 @@ modules:
     queue_presence: false
   mod_configure: {} # requires mod_adhoc
   mod_disco: {}
-  ## mod_echo: {}
+  mod_echo: {}
   mod_irc: {}
   mod_http_bind: {}
   ## mod_http_fileserver:
   ##   docroot: "/var/www"
   ##   accesslog: "/var/log/ejabberd/access.log"
   mod_last: {}
+  mod_metrics: {}
+
   mod_muc:
     host: "channels.@HOST@"
     access: muc
@@ -598,10 +599,8 @@ modules:
   mod_muc_admin: {}
   #mod_muc_room: {}
   mod_mam:
-    dbtype: odbc
+    db_type: odbc
     default: always
-    cache_size: 1000
-    cache_life_time: 3600
 
   mod_admin_extra: {}
 
@@ -625,7 +624,7 @@ modules:
       - "flat"
       - "hometree"
       - "pep" # pep requires mod_caps
-##mod_register:
+  mod_register:
     ##
     ## Protect In-Band account registrations with CAPTCHA.
     ##
@@ -656,15 +655,16 @@ modules:
     ##
     ## Only clients in the server machine can register accounts
     ##
-    #ip_access: trusted_network
+    ip_access: all
 
     ##
     ## Local c2s or remote s2s users cannot register accounts
     ##
     ## access_from: deny
 
-    #access: register
+    access: register
   mod_roster: {}
+  mod_mix: {}
   #mod_archive: {}
   mod_shared_roster: {}
   mod_stats: {}
@@ -673,7 +673,7 @@ modules:
   mod_version: {}
   Ginga.ModPresence: {}
   Ginga.FilterPacket: {}
-  Ginga.LogMessages: {}
+  #Ginga.LogMessages: {}
 
 ##
 ## Enable modules with custom options in a specific virtual host

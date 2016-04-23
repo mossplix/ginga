@@ -63,7 +63,7 @@ defmodule Ginga.User do
   end
 
   def gen_xmpp_values(user) do
-     :ejabberd_auth.try_register(user.username, user.vhost, user.email_token)
+     :ejabberd_auth_internal.try_register(user.username, user.vhost, user.email_token)
 	 :mod_admin_extra.set_nickname(user.name, user.host, user.username)
 	 Ginga.Utils.add_default_opts(user.vhost,user.jid)
   end
@@ -112,10 +112,10 @@ defmodule Ginga.User do
      name = user.first_name<> " "<>user.last_name
      company= String.downcase(user.company_name)|> String.replace(" ","")
      uid = :gingaerl.uuid_time() |> :erlang.trunc |> :erlang.integer_to_binary
-     vhost=company <> uid
+     vhost="sparkplug"
      jid= username <> "@" <> vhost
 
-      Ginga.Utils.add_host(vhost)
+      #Ginga.Utils.add_host(vhost)
 
 
        user
@@ -134,7 +134,7 @@ defmodule Ginga.User do
                 name = first_name<> " "<>last_name
                 company= String.downcase(company_name)|> String.replace(" ","")
                 uid = :gingaerl.uuid_time() |> :erlang.trunc |> :erlang.integer_to_binary
-                vhost=company <> uid
+                vhost="sparkplug"
                 jid= username <> "@" <> vhost
                 Ginga.Utils.add_host(vhost)
                 put_change(current_changeset, :vhost ,vhost)

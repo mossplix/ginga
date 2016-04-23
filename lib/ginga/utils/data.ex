@@ -1,7 +1,8 @@
 defmodule Ginga.Utils do
   require Logger
    require Amnesia
-  alias RethinkDB.Query, as: Q
+   alias Ginga.{Repo, Room,User}
+
 
 
     def hash_password(password) do
@@ -72,13 +73,17 @@ defmodule Ginga.Utils do
 
 
     def create_room(name,description,host,creator) do
-      connection=RethinkDB.connect
-      [_,database]=String.split(creator,"@")
-      :mod_muc_admin.create_room(name,"channels."<>host,host)
-      %Gingadb.UserRoom{room_id:  [name, "channels."<>host],jid: creator}|> UserRoom.write!
-      room=name<>"@channels."<>host
-      Q.Selection.db(database)|>Q.Selection.table("channels")|>Q.WritingData.insert(%{admin: creator,name: name,description: description,jid: room})|>RethinkDB.run connection
-      add_to_channel(name,host,creator,"owner")
+        case Repo.get_by(User, jid: creator) do
+
+            nil -> :error
+            user -> :mod_muc_admin.create_room(name,"channels."<>host,host)
+                    room=name<>"@channels."<>host
+                    add_to_channel(name,host,creator,"owner")
+                    changeset = Room.changeset(%Room{}, %{user_id: user.id,name: name,jid: room,description: description})
+                    Repo.insert(changeset)
+
+
+        end
     end
 
     def add_to_channel(channel,host,jid,role) do

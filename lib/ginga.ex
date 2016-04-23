@@ -78,7 +78,7 @@ def start(_type, _args) do
 
       defp add_all_hosts() do
           {_,[{_,_,current_hosts}]}=:mnesia.transaction(fn()->:mnesia.read(:local_config, {:hosts,:global}) end)
-           {_,companies} = :Gingaerl.get_all_rows(Gingaebs.Company)
+           {_,companies} = :gingaerl.get_all_rows(Gingaebs.Company)
            hosts=Gingadb.Company.keys!|>Enum.map fn(key) -> key|>Gingaebs.Company.read!|>Map.get :vhost end
            hosts|>Enum.map fn(host) -> start_module(host) end
          :ejabberd_config.add_global_option(:hosts,current_hosts++hosts)

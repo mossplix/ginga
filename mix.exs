@@ -6,7 +6,7 @@ defmodule Ginga.Mixfile do
      version: "0.0.1",
      elixir: "~> 1.0",
      elixirc_paths: ["lib", "web","utils"],
-     compilers: [:phoenix] ++ Mix.compilers,
+     compilers: [:phoenix,:gettext] ++ Mix.compilers,
      erlc_paths: ["erlang"],
     erlc_options: erlc_options,
      build_embedded: Mix.env == :prod,
@@ -24,9 +24,10 @@ defmodule Ginga.Mixfile do
                     :phoenix_html,
                     :cowboy,
                     :logger,
+                    :amqp,
                     :phoenix_ecto,
                     :postgrex,
-                    :mnesia,  :comeonin,:ueberauth_identity, :tzdata, :dbg,:bcrypt,:ecto,:ejabberd,:hedwig]]
+                    :mnesia, :gettext, :comeonin,:ueberauth_identity, :tzdata,  :ex_machina,:dbg,:bcrypt,:ecto,:ejabberd,:hedwig]]
   end
 
   # Specifies which paths to compile per environment.
@@ -44,21 +45,24 @@ defmodule Ginga.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.0.4"},
-     {:phoenix_ecto, "~> 1.1"},
-     {:guardian, "~> 0.9.0"},
+    [{:phoenix, "~> 1.1.4"},
+     {:phoenix_ecto, "~> 2.0"},
+     {:guardian, "~> 0.10.0",override: true},
      {:guardian_db, "0.4.0"},
+     {:gettext, "~> 0.9"},
 
-     {:ueberauth, git: "https://github.com/ueberauth/ueberauth.git", override: true},
-      {:comeonin, "~> 1.6"},
+
+     {:ueberauth,  path: "src/ueberauth", override: true},
+      {:comeonin, ">= 0.0.0"},
 
      {:ueberauth_identity, path: "src/ueberauth_identity", override: true},
 
      #{:ecto, ">= 0.0.0"},
      {:postgrex, ">= 0.0.0"},
-     {:phoenix_html, "~> 2.1"},
+     {:phoenix_html, "~> 2.3"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"},
+     {:amqp, "0.1.4"},
 
       {:timex, github: "bitwalker/timex",tag: :master},
       #{:geo, "~> 0.8.0"},
@@ -89,7 +93,7 @@ defmodule Ginga.Mixfile do
 
            #overrides
            {:cowboy, "~> 1.0", override: true},
-           {:ejabberd, ">= 15.03.0", github: "processone/ejabberd"},
+           {:ejabberd, "~> 16.3"},
            {:escalus,  github: "esl/escalus"},
            # {:cowboy_revproxy, [github: "mossplix/cowboy_revproxy",compile: "rebar compile"]},
             {:meck, [github: "eproxus/meck", branch: "master",override: true]},
@@ -107,9 +111,16 @@ defmodule Ginga.Mixfile do
              {:ibrowse,  [github: "cmullaparthi/ibrowse", tag: "v4.0.2",override: true]},
               {:jsx,  [github: "talentdeficit/jsx", tag: "v2.1.1",override: true]},
               {:p1_utils,  [github: "processone/p1_utils",compile: "rebar get-deps compile",override: true]},
+              {:joken, "~> 1.1", override: true},
+              {:libsodium, "~> 0.0.2"},
                 #{:p1_yaml,  [github: "processone/p1_yaml",compile: "./configure && make",override: true]},
               #{:p1_tls,  [github: "processone/tls",override: true]},
               #{:p1_stun,  [github: "processone/stun",override: true]},
+
+               {:credo, "~> 0.2", only: [:dev, :test]},
+                 {:ex_machina, "~> 0.6.1"},
+                  {:hound, "~> 0.8"},
+                  {:mix_test_watch, "~> 0.2", only: :dev},
 
 
 

@@ -124,6 +124,7 @@ defmodule Ginga.Router do
       post "/sessions", SessionController, :create
       delete "/sessions", SessionController, :delete
       get "/current_user", CurrentUserController, :show
+      get "/rooms", XMPPController, :rooms
       resources "boards", BoardController, only: [:index, :create] do
         resources "cards", CardController, only: [:show]
       end

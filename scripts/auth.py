@@ -30,7 +30,16 @@ def _handle_isuser(username):
     :Parameters:
        - `username`: the user name to verify exists
     """
-    _generate_response(True)
+    logging.debug('checking for  ' + username)
+    conn = psycopg2.connect("dbname=ginga_dev user=postgres host=127.0.0.1")
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM users  where username=%s",[username])
+    response=cur.fetchone()
+
+    if response:
+        _generate_response(True)
+    else:
+        _generate_response(False)
 
 
 def _handle_auth(username, password):
@@ -42,8 +51,8 @@ def _handle_auth(username, password):
        - `password`: the password to verify with the user
     """
 
+    logging.debug('authenticating  ' + username)
     conn = psycopg2.connect("dbname=ginga_dev user=postgres host=127.0.0.1")
-    print username
     cur = conn.cursor()
     cur.execute("SELECT * FROM guardian_tokens where jwt=%s",[password])
     response=cur.fetchone()
@@ -81,7 +90,7 @@ def main():
             if operation == 'auth':
                 _handle_auth(input[0], input[2])
             elif operation == 'isuser':
-                _handle_isuser()
+                _handle_isuser(input[0])
             elif operation == 'setpass':
                 _generate_response(False)
     except KeyboardInterrupt:

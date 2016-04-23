@@ -17,3 +17,14 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
   * Docs: http://hexdocs.pm/phoenix
   * Mailing list: http://groups.google.com/group/phoenix-talk
   * Source: https://github.com/phoenixframework/phoenix
+
+
+
+https://github.com/grzesiek/sql_migrations
+
+rake sqlmigrations:db:migrate    # Run migrations
+rake sqlmigrations:db:seed       # Seed database
+rake sqlmigrations:db:scripts    # List all scripts found
+
+
+
