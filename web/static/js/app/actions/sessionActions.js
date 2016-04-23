@@ -33,7 +33,7 @@ export function setupClient(dispatch,user){
                         type: Constants.APP_CONNECTED,
                          });
                 });
-        client.connect()
+        client.connect();
 
 
 

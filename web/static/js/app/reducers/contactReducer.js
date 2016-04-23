@@ -132,28 +132,7 @@ function chatState() {
     }
 
 
-function fetchHistory() {
-        return ;
-        var self = this;
-        var url="http://localhost:4000/chat/messages/?from="+self.jid+"&to="+app.me;
 
-
-        request.get(url).then(function(res){
-
-          var results = JSON.parse(res.text);
-          _.each(results,function (message) {
-            message.archivedId=message.id;
-            message.owner = message.from;
-
-
-            message.acked = true;
-            MessageActionCreators.receiveRawMessage(message);
-
-          });
-
-        });
-
-    }
 
 
 
@@ -182,12 +161,24 @@ function _addContacts(rawContacts) {
 
 export default function reducer(state = {}, action = {}) {
   switch (action.type) {
-    case ActionTypes.RECEIVE_RAW_CONTACTS:
+    case ActionTypes.LOAD_CONTACTS:
             var roster= action.rawContacts;
             _addContacts(roster);
 
-          return { ...contactsById,  [action.threadID]: threadsByID[action.threadID] || null, };
 
+
+          return action.rawContacts.reduce(
+        (contactsByID, contact) => {
+          contactsByID[contact.jid] = contact
+          return contactsByID;
+        },
+        {...state}
+      );
+
+
+
+      case ActionTypes.CLIENT_ON_CONTACT:
+            return { ...state,  [action.jid]: state[action.jid] || null, };
       case ActionTypes.CLIENT_ON_JINGLE_INCOMING:
 
           return { ...state };
@@ -283,14 +274,7 @@ export default function reducer(state = {}, action = {}) {
                     var info = action.info;
 
 
-                    var contact = _contacts[info.jid.bare];
-                    if (!contact) {
-                        if (app.jid === info.jid) {
-                            contact = _contacts[app.jid];
-                        } else {
-                            return;
-                        }
-                    }
+                    var contact = state[info.jid.bare];
 
                     var id = '';
                     var type = 'image/png';
@@ -301,7 +285,7 @@ export default function reducer(state = {}, action = {}) {
 
 
 
-                 return { ...state};
+                 return { ...state,[action.jid]: state[action.jid] || null,};
                 case ActionTypes.CLIENT_ON_CHAT_STATE:
                     var info = action.info;
                      var me= new RegExp(app.jid);

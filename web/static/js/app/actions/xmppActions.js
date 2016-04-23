@@ -10,6 +10,7 @@ var XmppUtils = require("../utils/XmppUtils");
 
 
 import ActionTypes  from '../constants';
+import { httpGet, httpPost, httpDelete }  from '../utils';
 
 
 var log = bows('Otalk');
@@ -43,11 +44,15 @@ export function discoCapsQueue(pres)
 export function loadRooms(){
      return (dispatch, getState) =>
     {
-         dispatch({
-                type: ActionTypes.LOAD_ROOMS,
-                messages: messages,
+          httpGet('/api/v1/rooms')
+         .then((data) => {
+        dispatch({
+          type:ActionTypes.LOAD_ROOMS,
+          rooms: data,
+        });
 
-            });
+
+      });
 
     }
 
@@ -64,41 +69,6 @@ export function   getAllMessages() {
         const jid = xmpp.jid;
 
 
-        client.searchHistory({
-            with: jid,
-            rsm: {max: 500, before: true},
-            complete: false
-        }, function (err, res) {
-            var items = res.mamResult.items || [];
-
-            var messages = items.map(function (x) {
-                return  Object.assign({},x.forwarded.message,{id:x.id,from:x.forwarded.message.from.bare,to:x.forwarded.message.to.bare})
-            });
-
-            dispatch({
-                type: ActionTypes.LOAD_MESSAGES,
-                messages: messages,
-
-            });
-        });
-
-        client.searchHistory({
-            from: jid,
-            rsm: {max: 500, before: true},
-            complete: false
-        }, function (err, res) {
-            var items = res.mamResult.items || [];
-
-            var messages = items.map(function (x) {
-                return  Object.assign({},x.forwarded.message,{id:x.id,from:x.forwarded.message.from.bare,to:x.forwarded.message.to.bare})
-            });
-
-            dispatch({
-                type: ActionTypes.LOAD_MESSAGES,
-                messages: messages,
-
-            });
-        })
 
     }
 
@@ -110,9 +80,9 @@ export function  createMessage(msg) {
       var timestamp = Date.now();
       var data = {
           archivedId: msg.id || uuid.v4(),
-          owner: msg.owner||msg.from||app.me,
+          owner: msg.owner||msg.from,
           to: msg.to,
-          from: msg.from||app.me,
+          from: msg.from,
           body: msg.body,
           type: msg.type,
           delay: msg.delay,
@@ -145,7 +115,7 @@ export function   getRoster(){
                         resources: {},
                         offlineStatus:{}
                     };
-                    app.storage.roster.add(data);
+
                 });
 
                 var caps = client.updateCaps();
@@ -244,6 +214,106 @@ export function xmppSession(client,dispatch,jid) {
     client.on('session:started', function (jid) {
 
         client.sendPresence();
+
+
+         client.searchHistory({
+                with: jid,
+                rsm: {max: 500, before: true},
+                complete: false
+            }, function (err, res) {
+                var items = res.mamResult.items || [];
+
+                var messages = items.map(function (x) {
+                    return Object.assign({}, x.forwarded.message, {
+                        id: x.id,
+                        from: x.forwarded.message.from.bare,
+                        to: x.forwarded.message.to.bare
+                    })
+                });
+
+                dispatch({
+                    type: ActionTypes.LOAD_MESSAGES,
+                    messages: messages,
+
+                });
+            });
+
+            client.searchHistory({
+                from: jid,
+                rsm: {max: 500, before: true},
+                complete: false
+            }, function (err, res) {
+                var items = res.mamResult.items || [];
+
+                var messages = items.map(function (x) {
+                    return Object.assign({}, x.forwarded.message, {
+                        id: x.id,
+                        from: x.forwarded.message.from.bare,
+                        to: x.forwarded.message.to.bare
+                    })
+                });
+
+                dispatch({
+                    type: ActionTypes.LOAD_MESSAGES,
+                    messages: messages,
+
+                });
+            });
+
+        client.getRoster(function (err, resp) {
+            if (resp.roster && resp.roster.items && resp.roster.items.length) {
+
+                var items = resp.roster.items;
+
+                var contacts= items.map(function (item) {
+                    return {
+                        owner:resp.to.bare,
+                        jid: item.jid.jid,
+                        nickname: item.local,
+                        name: item.name,
+                        groups: item.groups,
+                        subscription: item.subscription,
+                        avatarID: "",
+                        resources: {},
+                        offlineStatus:{}
+                    };
+
+                });
+
+                dispatch({
+                    type: ActionTypes.LOAD_CONTACTS,
+                    contacts: contacts,
+
+                });
+            }
+
+            var caps = client.updateCaps();
+
+                client.sendPresence({
+                    status: '',
+                    caps: client.disco.caps
+                });
+                client.enableCarbons();
+
+
+
+        });
+
+         client.getBookmarks(function (err, res) {
+                if (err) return;
+
+                var mucs = res.privateStorage.bookmarks.conferences || [];
+
+             dispatch({
+                    type: ActionTypes.LOAD_MUCS,
+                    mucs: mucs,
+
+                });
+
+            });
+
+
+
         dispatch({
             type: ActionTypes.CLIENT_ON_SESSION_STARTED,
             jid: jid,

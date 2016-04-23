@@ -70,13 +70,11 @@ const Other =
         MESSAGES_ARCHIVE_REQUEST:null,
         REFRESH:null,
         LOAD_MESSAGES:null,
+        LOAD_ROOMS:null,
+        LOAD_CONTACTS:null,
+        LOAD_MUCS:null,
 
-
-
-
-
-
-
+        
 
   });
 

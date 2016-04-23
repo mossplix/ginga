@@ -45,7 +45,9 @@ import ReactGravatar    from 'react-gravatar';
 import PageClick        from 'react-page-click';
 
 import SessionActions   from '../actions/sessionActions';
+import {search}   from '../actions/AppActions';
 import HeaderActions    from '../actions/headerActions';
+import {getAllMessages,loadRooms}    from '../actions/xmppActions';
 import Spinner   from '../utils/Spinner'
 import {bindActionCreators} from 'redux';
 
@@ -141,6 +143,9 @@ const Master = React.createClass({
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(BoardsActions.fetchBoards());
+    dispatch(loadRooms());
+    //dispatch(getAllMessages());
+
   },
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -235,6 +240,12 @@ _renderCurrentUser() {
         <ReactGravatar className="react-gravatar" email={currentUser.email} https /> {fullName}
       </a>
     );
+  },
+  _tryLoad(props, state) {
+    this.props.loadBoards();
+    //this.props.loadMessageList();
+    //ThreadActions.refresh,
+    this.props.loadRooms();
   },
 
   _renderSignOutLink() {
@@ -366,27 +377,7 @@ _renderCurrentUser() {
 });
 
 
-const mapStateToProps = (state) => ({
-  currentUser: state.session.currentUser,
-  socket: state.session.socket,
-  channel: state.session.channel,
-  boards: state.boards,
-  currentBoard: state.currentBoard,
-    isLoading: isLoadingSelector(state),
-    labels: labelsSelector(state),
-    searchQuery: searchQuerySelector(state),
-    threads: threadsSelector(state),
-    rooms: roomsSelector(state),
-    lastMessageInEachThread: lastMessageInEachThreadSelector(state),
-    hasMoreThreads: hasMoreThreadsSelector(state),
-    hasMoreMessages: hasMoreThreadsSelector(state),
-    loadedThreadCount: loadedThreadCountSelector(state),
-    nextMessage: nextMessageSelector(state),
-    prevMessage: prevMessageSelector(state),
-});
-
-const stateToProps=connect(
-  state => ({
+const  mapStateToProps  = (state) => ({
     currentUser: state.session.currentUser,
     socket: state.session.socket,
     channel: state.session.channel,
@@ -396,23 +387,14 @@ const stateToProps=connect(
     labels: labelsSelector(state),
     searchQuery: searchQuerySelector(state),
     threads: threadsSelector(state),
-    rooms: roomsSelector(state),
+    //rooms: roomsSelector(state),
     lastMessageInEachThread: lastMessageInEachThreadSelector(state),
     hasMoreThreads: hasMoreThreadsSelector(state),
     hasMoreMessages: hasMoreThreadsSelector(state),
     loadedThreadCount: loadedThreadCountSelector(state),
     nextMessage: nextMessageSelector(state),
     prevMessage: prevMessageSelector(state),
-  }),
-  dispatch => bindActionCreators({
-    loadLabels: LabelActions.loadAll,
-    loadMessageList: XMPPActions.loadMessages,
-    //refresh: ThreadActions.refresh,
-    loadRooms: XMPPActions.loadRooms,
-    search: AppActions.search,
-    push,
-  }, dispatch)
-);
+  });
 
 
-export default stateToProps(Master);
+export default connect(mapStateToProps)(Master);

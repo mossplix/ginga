@@ -9,9 +9,9 @@ const messagesByIDSelector = state => state.messagesByID;
 export const isLoadingSelector = state => state.isLoading;
 export const labelsSelector = state => state.labels;
 export const searchQuerySelector = state => state.app.searchQuery;
-export const selectedMessageIDSelector = state => state.router.params.messageID;
-export const selectedThreadIDSelector = state => state.router.params.threadID;
-export const selectedRoomIDSelector = state => state.router.params.roomID;
+export const selectedMessageIDSelector = state => state.currentChat.messageID;
+export const selectedThreadIDSelector = state => state.currentChat.threadID;
+export const selectedRoomIDSelector = state => state.currentChat.roomID;
 
 
 export const threadsSelector = createSelector([

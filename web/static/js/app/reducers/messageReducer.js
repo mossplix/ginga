@@ -83,14 +83,14 @@ function _markAllInThreadRead(threadID) {
 
 
 
-export default function reducer(messagesById = {}, action = {}) {
+export default function reducer(messagesByID = {}, action = {}) {
   switch (action.type) {
       case ActionTypes.LOAD_MESSAGES:
       // To prevent double fetching, store a null entry when we start loading
       return action.messages.reduce(
-        (newMessagesByID, message) => {
-          newMessagesByID[message.id] = message
-          return newMessagesByID;
+        (newmessagesByID, message) => {
+          newmessagesByID[message.id] = message
+          return newmessagesByID;
         },
         {...messagesByID}
       );
@@ -99,7 +99,7 @@ export default function reducer(messagesById = {}, action = {}) {
 
      // _markAllInThreadRead(id);
 
-       return { ...messagesById};
+       return { ...messagesByID};
 
 
 
@@ -114,13 +114,13 @@ export default function reducer(messagesById = {}, action = {}) {
           );
 
 
-           return { ...messagesById};
+           return { ...messagesByID};
 
     case ActionTypes.RECEIVE_RAW_MESSAGES:
       _addMessages(action.rawMessages);
 
       _markAllInThreadRead(ThreadStore.getCurrentID());
-       return { ...messagesById};
+       return { ...messagesByID};
 
       case ActionTypes.CLIENT_ON_CHAT:
           var msg = action.msg;
@@ -139,7 +139,7 @@ export default function reducer(messagesById = {}, action = {}) {
                     ChatTypeStore.getCurrent()
                 )
               );
-              return { ...messagesById};
+              return { ...messagesByID};
 
           }
 
@@ -160,7 +160,7 @@ export default function reducer(messagesById = {}, action = {}) {
 
           }
 
-           return { ...messagesById};
+           return { ...messagesByID};
       case ActionTypes.CLIENT_ON_REPLACE:
           var msg=action.msg;
           var message = ChatWebApiUtils.createMessage(msg);
@@ -208,10 +208,10 @@ export default function reducer(messagesById = {}, action = {}) {
         }
 
 
-           return { ...messagesById};
+           return { ...messagesByID};
       case ActionTypes.CLIENT_ON_RECEIPT:
           var msg=action.msg;
-           return { ...messagesById};
+           return { ...messagesByID};
       case ActionTypes.CLIENT_ON_CARBON_RECEIVED:
           var carbon = action.carbon;
           var msg = carbon.carbonReceived.forwarded.message;
@@ -254,10 +254,10 @@ export default function reducer(messagesById = {}, action = {}) {
           );
 
 
-           return { ...messagesById};
+           return { ...messagesByID};
 
 
     default:
-      return messagesById;
+      return messagesByID;
   }
 }

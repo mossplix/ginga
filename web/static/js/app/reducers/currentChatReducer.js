@@ -3,6 +3,9 @@ import ActionTypes  from '../constants';
 const initialState = {
   fetching: true,
     header: "",
+    messageID:null,
+    threadID:null,
+    roomID:null,
     app: "",
     type:""
 };

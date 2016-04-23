@@ -9,7 +9,7 @@ import header               from './headerReducer';
 import xmpp                from './xmppReducer'
 import app                from './appReducer'
 import calls                from './callReducer'
-import chatType                from './chatTypeReducer'
+import currentChat                from './currentChatReducer'
 import contacts                from './contactReducer'
 import loading                from './loadingReducer'
 import messages                from './messageReducer'
@@ -31,6 +31,7 @@ export default combineReducers({
   boards: boards,
   currentBoard: currentBoard,
   currentCard: currentCard,
+    currentChat:currentChat,
   header: header,
     tasks:tasks,
     xmpp: xmpp,
