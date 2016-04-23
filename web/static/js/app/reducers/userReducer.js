@@ -118,7 +118,7 @@ export default function reducer(state = initialState, action = {}) {
 
             return { ...state };
         case ActionTypes.CLIENT_ON_SESSION_STARTED:
-            UserStore.load();
+            //UserStore.load();
 
             return { ...state };
 

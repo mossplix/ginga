@@ -31,8 +31,15 @@ export default function reducer(state = initialState, action = {}) {
 
             return { ...state, xmpp_connected:true  };
 
+        case ActionTypes.SEARCH:
+          return {
+            ...state,
+            searchQuery: action.searchQuery,
+          };
+
 
     default:
       return state;
   }
 }
+

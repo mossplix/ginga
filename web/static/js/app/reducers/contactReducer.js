@@ -1,5 +1,5 @@
 import ActionTypes  from '../constants';
-
+var _contacts={};
 const ContactSchema = {
     fetching: true,
     id: '',

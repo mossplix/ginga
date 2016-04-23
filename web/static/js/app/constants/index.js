@@ -9,6 +9,8 @@ const Other =
     CREATE_MESSAGE: null,
     RECEIVE_RAW_CREATED_MESSAGE: null,
     RECEIVE_RAW_MESSAGES: null,
+        APP_CONNECTED:null,
+        LOAD_LABELS:null,
       TASK_CREATE: null,
       TASK_COMPLETE: null,
       TASK_DESTROY: null,
@@ -61,7 +63,14 @@ const Other =
       SEARCH_HISTORY:null,
       RECEIVE_RAW_CONTACTS:null,
       CREATE_RESOURCE:null,
-      APP_LOADED:null
+      APP_LOADED:null,
+        SEARCH:null,
+        LOAD_MESSAGES_SUCCESS:null,
+        MESSAGES_UNSTAR_REQUEST:null,
+        MESSAGES_ARCHIVE_REQUEST:null,
+        REFRESH:null,
+        LOAD_MESSAGES:null,
+
 
 
 

@@ -16,7 +16,7 @@ var log = bows('Otalk');
 var ioLogIn = bows('<< in');
 var ioLogOut = bows('>> out');
 
-export function discoCapsQueue()
+export function discoCapsQueue(pres)
 {
     async.queue(function (pres, cb) {
     var jid = pres.from;
@@ -32,7 +32,7 @@ export function discoCapsQueue()
         }
         if (client.verifyVerString(result.discoInfo, caps.hash, caps.ver)) {
             log.info('Saving info for ' + caps.ver);
-            var data = result.discoInfo.toJSON();
+            var data = result.discoInfo;
         } else {
             log.info('Couldnt verify info for ' + caps.ver + ' from ' + jid);
             cb();
@@ -40,14 +40,71 @@ export function discoCapsQueue()
     });
 })}
 
-export function getAllChannels(){
+export function loadRooms(){
+     return (dispatch, getState) =>
+    {
+         dispatch({
+                type: ActionTypes.LOAD_ROOMS,
+                messages: messages,
+
+            });
+
+    }
 
 
 }
 
 export function   getAllMessages() {
 
+    return (dispatch, getState) =>
+    {
+
+        const {xmpp} = getState();
+        const client = xmpp.client;
+        const jid = xmpp.jid;
+
+
+        client.searchHistory({
+            with: jid,
+            rsm: {max: 500, before: true},
+            complete: false
+        }, function (err, res) {
+            var items = res.mamResult.items || [];
+
+            var messages = items.map(function (x) {
+                return  Object.assign({},x.forwarded.message,{id:x.id,from:x.forwarded.message.from.bare,to:x.forwarded.message.to.bare})
+            });
+
+            dispatch({
+                type: ActionTypes.LOAD_MESSAGES,
+                messages: messages,
+
+            });
+        });
+
+        client.searchHistory({
+            from: jid,
+            rsm: {max: 500, before: true},
+            complete: false
+        }, function (err, res) {
+            var items = res.mamResult.items || [];
+
+            var messages = items.map(function (x) {
+                return  Object.assign({},x.forwarded.message,{id:x.id,from:x.forwarded.message.from.bare,to:x.forwarded.message.to.bare})
+            });
+
+            dispatch({
+                type: ActionTypes.LOAD_MESSAGES,
+                messages: messages,
+
+            });
+        })
+
+    }
+
 }
+
+
 export function  createMessage(msg) {
     // simulate writing to a database
       var timestamp = Date.now();
@@ -71,7 +128,7 @@ export function  createMessage(msg) {
 export function   getRoster(){
 
         client.getRoster(function (err, resp) {
-            resp = resp.toJSON();
+            
 
             if (resp.roster && resp.roster.items && resp.roster.items.length) {
 
@@ -199,7 +256,7 @@ export function xmppSession(client,dispatch,jid) {
 
 
     client.on('roster:update', function (iq) {
-        iq = iq.toJSON();
+        iq = iq;
          dispatch({
             type: ActionTypes.CLIENT_ON_ROSTER_UPDATE,
             iq:iq
@@ -210,13 +267,13 @@ export function xmppSession(client,dispatch,jid) {
     client.on('subscribe', function (pres) {
         dispatch({
             type: ActionTypes.CLIENT_ON_SUBSCRIBE,
-            pres:pres.toJSON()
+            pres:pres
         });
 
     });
 
     client.on('available', function (pres) {
-        pres = pres.toJSON();
+        
         dispatch({
             type: ActionTypes.CLIENT_ON_AVAILABLE,
             pres: pres
@@ -225,7 +282,7 @@ export function xmppSession(client,dispatch,jid) {
     });
 
     client.on('unavailable', function (pres) {
-        pres = pres.toJSON();
+        
         dispatch({
             type: ActionTypes.CLIENT_ON_UNAVALILABLE,
             pres: pres
@@ -251,7 +308,7 @@ export function xmppSession(client,dispatch,jid) {
 
     client.on('chat', function (msg) {
 
-        msg = msg.toJSON();
+        
          dispatch({
             type: ActionTypes.CLIENT_ON_CHAT,
             msg: msg
@@ -260,7 +317,7 @@ export function xmppSession(client,dispatch,jid) {
     });
 
     client.on('groupchat', function (msg) {
-        msg = msg.toJSON();
+        
          dispatch({
             type: ActionTypes.CLIENT_ON_GROUPCHAT,
             msg: msg
@@ -272,14 +329,14 @@ export function xmppSession(client,dispatch,jid) {
     client.on('groupchat:subject', function (msg) {
         dispatch({
             type: ActionTypes.CLIENT_ON_GROUPCHAT_SUBJECT,
-            msg: msg.toJSON()
+            msg: msg
         });
 
 
     });
 
     client.on('replace', function (msg) {
-        msg = msg.toJSON();
+        
         dispatch({
             type: ActionTypes.CLIENT_ON_REPLACE,
             msg: msg
@@ -289,7 +346,7 @@ export function xmppSession(client,dispatch,jid) {
     });
 
     client.on('receipt', function (msg) {
-        msg = msg.toJSON();
+        
         dispatch({
             type: ActionTypes.CLIENT_ON_RECEIPT,
             msg: msg
@@ -305,7 +362,7 @@ export function xmppSession(client,dispatch,jid) {
 
         dispatch({
             type: ActionTypes.CLIENT_ON_CARBON_RECEIVED,
-            carbon: carbon.toJSON()
+            carbon: carbon
         });
 
 
@@ -317,7 +374,7 @@ export function xmppSession(client,dispatch,jid) {
         if (!mereg.test(jid)) return ;
          dispatch({
             type: ActionTypes.CLIENT_ON_CARBON_SENT,
-            carbon: carbon.toJSON()
+            carbon: carbon
         });
 
 
@@ -326,18 +383,18 @@ export function xmppSession(client,dispatch,jid) {
     client.on('disco:caps', function (pres) {
          dispatch({
             type: ActionTypes.CLIENT_ON_DISCO_CAPS,
-            pres: pres.toJSON()
+            pres: pres
         });
         if (pres.caps.hash) {
             log.info('Caps from ' + pres.from + ' ver: ' + pres.caps.ver);
-            discoCapsQueue.push(pres);
+            discoCapsQueue(pres);
         }
     });
 
     client.on('stanza:acked', function (stanza) {
         dispatch({
             type: ActionTypes.CLIENT_ON_STANZA_ACKED,
-            stanza: stanza.toJSON()
+            stanza: stanza
         });
 
     });
@@ -345,7 +402,7 @@ export function xmppSession(client,dispatch,jid) {
     client.on('jingle:incoming', function (session) {
          dispatch({
             type: ActionTypes.CLIENT_ON_JINGLE_INCOMING,
-            session: session.toJSON()
+            session: session
         });
 
     });
@@ -354,7 +411,7 @@ export function xmppSession(client,dispatch,jid) {
 
          dispatch({
             type: ActionTypes.CLIENT_ON_JINGLE_OUTGOING,
-            session: session.toJSON()
+            session: session
         });
 
     });
@@ -362,7 +419,7 @@ export function xmppSession(client,dispatch,jid) {
     client.on('jingle:terminated', function (session) {
         dispatch({
             type: ActionTypes.CLIENT_ON_JINGLE_TERMINATED,
-            session: session.toJSON()
+            session: session
         });
 
     });
@@ -370,7 +427,7 @@ export function xmppSession(client,dispatch,jid) {
     client.on('jingle:accepted', function (session) {
          dispatch({
             type: ActionTypes.CLIENT_ON_JINGLE_ACCEPTED,
-            session: session.toJSON()
+            session: session
         });
 
     });
@@ -394,7 +451,7 @@ export function xmppSession(client,dispatch,jid) {
     client.on('jingle:remotestream:added', function (session) {
        dispatch({
             type: ActionTypes.CLIENT_ON_JINGLE_REMOTESTREAM_ADDED,
-            session: session.toJSON()
+            session: session
         });
 
     });
@@ -409,7 +466,7 @@ export function xmppSession(client,dispatch,jid) {
     client.on('jingle:ringing', function (session) {
        dispatch({
             type: ActionTypes.CLIENT_ON_JINGLE_RINGING,
-            session: session.toJSON()
+            session: session
         });
 
     });

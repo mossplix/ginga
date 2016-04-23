@@ -22,6 +22,8 @@ import unreadRoom                from './unreadRoomReducer'
 import user                from './userReducer'
 import tasks from './taskreducer'
 
+import MessageListReducer from './MessageListReducer';
+
 export default combineReducers({
   routing: routerReducer,
   session: session,
@@ -42,7 +44,8 @@ export default combineReducers({
     contacts: contacts,
     calls:calls,
     resources: resources,
-    app:app
+    app:app,
+     messageListByQuery: MessageListReducer,
 
 
 

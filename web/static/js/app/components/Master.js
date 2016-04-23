@@ -1,4 +1,5 @@
 import React from 'react';
+import Radium from 'radium';
 import Title from 'react-title-component';
 import ClearFix from 'material-ui/internal/ClearFix';
 import AppBar from 'material-ui/AppBar';
@@ -12,8 +13,10 @@ import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import IconMenu from 'material-ui/IconMenu';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import MenuItem from 'material-ui/MenuItem';
+import PureRender from '../utils/PureRender';
 
-
+import {StyleRoot} from 'radium';
+import {  push } from 'react-router-redux'
 
 import {darkWhite,
     lightWhite,
@@ -40,11 +43,25 @@ import { connect }      from 'react-redux';
 import { Link }         from 'react-router';
 import ReactGravatar    from 'react-gravatar';
 import PageClick        from 'react-page-click';
-import { push }         from 'react-router-redux';
 
 import SessionActions   from '../actions/sessionActions';
 import HeaderActions    from '../actions/headerActions';
 import Spinner   from '../utils/Spinner'
+import {bindActionCreators} from 'redux';
+
+import {
+  hasMoreThreadsSelector,
+  isAuthorizedSelector,
+  isAuthorizingSelector,
+  isLoadingSelector,
+  labelsSelector,
+  lastMessageInEachThreadSelector,
+  loadedThreadCountSelector,
+  nextMessageSelector,
+  prevMessageSelector,
+  searchQuerySelector,
+  threadsSelector,
+} from '../selectors';
 
 
 const sparkTheme = getMuiTheme({
@@ -314,7 +331,9 @@ _renderCurrentUser() {
 
 
       <div>
+            <StyleRoot>
             {this.props.isLoading ? <Spinner /> : null}
+            </StyleRoot>
         <Title render="Plug Apps" />
         <AppBar
           onLeftIconButtonTouchTap={this.handleTouchTapLeftIconButton}
@@ -353,7 +372,47 @@ const mapStateToProps = (state) => ({
   channel: state.session.channel,
   boards: state.boards,
   currentBoard: state.currentBoard,
+    isLoading: isLoadingSelector(state),
+    labels: labelsSelector(state),
+    searchQuery: searchQuerySelector(state),
+    threads: threadsSelector(state),
+    rooms: roomsSelector(state),
+    lastMessageInEachThread: lastMessageInEachThreadSelector(state),
+    hasMoreThreads: hasMoreThreadsSelector(state),
+    hasMoreMessages: hasMoreThreadsSelector(state),
+    loadedThreadCount: loadedThreadCountSelector(state),
+    nextMessage: nextMessageSelector(state),
+    prevMessage: prevMessageSelector(state),
 });
 
+const stateToProps=connect(
+  state => ({
+    currentUser: state.session.currentUser,
+    socket: state.session.socket,
+    channel: state.session.channel,
+    boards: state.boards,
+    currentBoard: state.currentBoard,
+    isLoading: isLoadingSelector(state),
+    labels: labelsSelector(state),
+    searchQuery: searchQuerySelector(state),
+    threads: threadsSelector(state),
+    rooms: roomsSelector(state),
+    lastMessageInEachThread: lastMessageInEachThreadSelector(state),
+    hasMoreThreads: hasMoreThreadsSelector(state),
+    hasMoreMessages: hasMoreThreadsSelector(state),
+    loadedThreadCount: loadedThreadCountSelector(state),
+    nextMessage: nextMessageSelector(state),
+    prevMessage: prevMessageSelector(state),
+  }),
+  dispatch => bindActionCreators({
+    loadLabels: LabelActions.loadAll,
+    loadMessageList: XMPPActions.loadMessages,
+    //refresh: ThreadActions.refresh,
+    loadRooms: XMPPActions.loadRooms,
+    search: AppActions.search,
+    push,
+  }, dispatch)
+);
 
-export default connect(mapStateToProps)(Master);
+
+export default stateToProps(Master);
