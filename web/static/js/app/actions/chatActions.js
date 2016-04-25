@@ -1,24 +1,32 @@
 import ActionTypes  from '../constants';
-
+import { push }           from 'react-router-redux';
 
 export function clickChannel(channelID) {
+
+    return dispatch => {
         dispatch({
             type: ActionTypes.CLICK_CHANNEL,
             channelID: channelID
         });
-    }
+
+    dispatch(push(`/chat/channels/${channelID}`));
+    }}
 
 
 export function clickThread(threadID) {
+    return dispatch => {
     dispatch({
       type: ActionTypes.CLICK_THREAD,
       threadID: threadID
     });
-  }
+
+    dispatch(push(`/chat/threads/${threadID}`));
+
+
+  }}
 
 
 export function createMessage(text, chat) {
-    var message = ChatMessageUtils.getRawMessageData(text, chat);
     dispatch({
       type: ActionTypes.CREATE_MESSAGE,
       message: message,
@@ -40,7 +48,7 @@ export function receiveAll(rawMessages) {
       type: ActionTypes.RECEIVE_RAW_MESSAGES,
       rawMessages: rawMessages
     });
-  },
+  }
 
 
 

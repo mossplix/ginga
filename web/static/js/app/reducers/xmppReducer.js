@@ -27,7 +27,7 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, user: action.currentUser,jid: action.currentUser.jid,vhost: action.currentUser.vhost  };
 
      case types.CLIENT_ON_SESSION_STARTED:
-        return { ...state, client: action.client };
+        return { ...state, client: action.client,jid: action.client.jid.bare };
 
 
     default:

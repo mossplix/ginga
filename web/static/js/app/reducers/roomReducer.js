@@ -152,11 +152,24 @@ function addMessage(id,message, notify) {
 
 
 
-export default function reducer(state = initialState, action = {}) {
+export default function reducer(state = {}, action = {}) {
   switch (action.type) {
     case ActionTypes.CLIENT_SESSION_STARTED:
 
             return { ...state };
+
+    case ActionTypes.LOAD_ROOMS:
+            var roster= action.rooms;
+
+
+          return action.rooms.reduce(
+        (roomsByID, room) => {
+          roomsByID[room.jid] = room
+          return roomsByID;
+        },
+        {...state}
+      );
+
     case ActionTypes.CLICK_CHANNEL:
        // _currentID = action.channelID;
 

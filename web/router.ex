@@ -75,7 +75,6 @@ defmodule Ginga.Router do
   	get "/app/", PageController, :app
   	get "/ejabberd", EjabberdController, :index
   	resources "/posts", PostController
-  	get "/chat", PageController,:chat
     get "/settings", PageController,:settings
     get "/ts", PageController, :react_test
     get "/messages", PageController,:messages
@@ -86,6 +85,10 @@ defmodule Ginga.Router do
 
 
      get "/logout", AuthController, :logout
+
+     get "/boards",PageController, :app
+     get "/chat",PageController, :app
+     get "/tasks",PageController, :app
 
 
 

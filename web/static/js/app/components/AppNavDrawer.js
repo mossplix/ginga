@@ -117,7 +117,7 @@ const AppNavDrawer = React.createClass({
             primaryText="Chat"
             primaryTogglesNestedList={true}
             nestedItems={[
-              <ListItem primaryText="Themes" value="/customization/themes" />,
+              <ListItem primaryText="Chat" value="/chat" />,
             ]}
           />
 
@@ -125,7 +125,7 @@ const AppNavDrawer = React.createClass({
             primaryText="Tasks"
             primaryTogglesNestedList={true}
             nestedItems={[
-              <ListItem primaryText="tasks" value="/tasks" />,
+              <ListItem primaryText="Tasks" value="/tasks" />,
             ]}
           />
 

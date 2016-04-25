@@ -1,18 +1,30 @@
 
-var MessageSection = require('./MessageSection.react');
+import  MessageSection from './MessageSection.react';
 var React = require('react');
-var ThreadSection = require('./ThreadSection.react');
-var ChannelSection = require('./channels/ChannelSection.react');
-var AppActionCreators = require('../../actions/AppActionCreators');
+import ThreadSection from './ThreadSection.react';
+import ChannelSection from './channels/ChannelSection.react';
 
+import * as  ChatActions from '../../actions/chatActions';
+
+import { bindActionCreators } from 'redux'
+
+import { connect } from 'react-redux'
 
 var ChatApp = React.createClass({
-  componentDidMount: function() {
-    AppActionCreators.appLoaded("chat","Chat App","Chat With your Team");
 
+      propTypes: {
+       messages: React.PropTypes.array.isRequired,
+       actions: React.PropTypes.object.isRequired,
+       router: React.PropTypes.object.isRequired
   },
 
+  contextTypes: {
+    router: React.PropTypes.object.isRequired,
+  },
+
+
   render: function() {
+      const {messages,actions,channels,threads,currentChat,dispatch} = this.props;
     return (
       <div className="layer-container">
           <div className=" fade in active" id="messages">
@@ -24,8 +36,8 @@ var ChatApp = React.createClass({
 
 
 
-                          <ChannelSection />
-                          <ThreadSection />
+                          <ChannelSection actions={actions} channels={channels} currentChat={currentChat} dispatch={dispatch} />
+                          <ThreadSection actions={actions} threads={threads} currentChat={currentChat} dispatch={dispatch} />
 
 
 
@@ -33,7 +45,7 @@ var ChatApp = React.createClass({
 
           <div className="">
 
-        <MessageSection />
+        <MessageSection actions={actions} messages={messages} currentChat={currentChat} />
               </div>
       </div>
           </div>
@@ -46,4 +58,27 @@ var ChatApp = React.createClass({
 
 });
 
-module.exports = ChatApp;
+
+
+
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(ChatActions, dispatch),
+      dispatch:dispatch
+  }
+}
+
+
+const mapStateToProps = (state) => ({
+    messages: state.messages,
+    channels: state.rooms,
+    contacts: state.contacts,
+    currentChat: state.currentChat,
+    threads:state.threads
+});
+
+
+
+export default connect(mapStateToProps,  mapDispatchToProps)(ChatApp);
+

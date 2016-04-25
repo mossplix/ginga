@@ -1,16 +1,11 @@
 
-
-var ChatMessageActionCreators = require('../../actions/ChatMessageActionCreators');
+import { connect } from 'react-redux'
 var React = require('react');
-var ChatTypeStore = require('../../stores/ChatTypeStore');
 
 var ENTER_KEY_CODE = 13;
 
 var MessageComposer = React.createClass({
 
-  propTypes: {
-    chat: React.PropTypes.object.isRequired
-  },
 
   getInitialState: function() {
     return {text: ''};
@@ -52,8 +47,8 @@ var MessageComposer = React.createClass({
       event.preventDefault();
       var text = this.state.text.trim();
       if (text) {
-        ChatMessageActionCreators.createMessage(text, this.props.chat,chat_type=ChatTypeStore.getCurrent());
-
+        //ChatMessageActionCreators.createMessage(text, this.props.chat,chat_type=ChatTypeStore.getCurrent());
+         this.props.actions.createMessage(text,this.props.currentChat);
 
       }
       this.setState({text: ''});
@@ -62,4 +57,4 @@ var MessageComposer = React.createClass({
 
 });
 
-module.exports = MessageComposer;
+export default  MessageComposer;

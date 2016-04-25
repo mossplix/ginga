@@ -1,12 +1,7 @@
 
 
 var React = require('react');
-var MessageStore = require('../../../stores/MessageStore');
-var UnreadMucStore= require('../../../stores/UnreadMucStore');
-var ChannelListItem = require('./ChannelListItem.react');
-var MucStore = require('../../../stores/MucStore');
-var ChatTypeStore = require('../../../stores/ChatTypeStore');
-var UnreadThreadStore = require('../../../stores/UnreadThreadStore');
+import ChannelListItem from './ChannelListItem.react';
 var Router = require('react-router');
 
 var Link = Router.Link;
@@ -14,46 +9,24 @@ var Route = Router.Route;
 var RouteHandler = Router.RouteHandler;
 var State = Router.State;
 var Redirect=Router.Redirect;
-function getSectionStateFromStores() {
+import { connect } from 'react-redux'
 
-    return {
-        channels: MucStore.getAll(),
-        currentMucID: MucStore.getCurrentChannelId(),
-        unreadCount: UnreadMucStore.getCount(),
-        chat: ChatTypeStore.getCurrent()
-    };
-}
+
 
 var ChannelSection = React.createClass({
   contextTypes: {
     router: React.PropTypes.func
   },
 
-    getInitialState: function() {
-        return getSectionStateFromStores();
-    },
-
-    componentDidMount: function() {
-        MucStore.addChangeListener(this._onChange);
-        UnreadMucStore.addChangeListener(this._onChange);
-        ChatTypeStore.addChangeListener(this._onChange);
-    },
-
-    componentWillUnmount: function() {
-        MucStore.removeChangeListener(this._onChange);
-        UnreadMucStore.removeChangeListener(this._onChange);
-        ChatTypeStore.removeChangeListener(this._onChange);
-    },
 
     render: function() {
-        var channelListItems = this.state.channels.map(function(channel) {
+        var channelListItems = _.toArray(this.props.channels).map(function(channel) {
             return (
                 <ChannelListItem
                     key={channel.jid}
                     channel={channel}
-                    currentMucID={this.state.currentMucID}
-                    chat={this.state.chat}
-                    params={channel}
+                    currentChat={this.props.currentChat}
+                    actions = {this.props.actions}
                 />
             );
         }, this);
@@ -75,15 +48,12 @@ var ChannelSection = React.createClass({
 
 
         );
-    },
-
-    /**
-     * Event handler for 'change' events coming from the stores
-     */
-    _onChange: function() {
-        this.setState(getSectionStateFromStores());
     }
+
+
 
 });
 
-module.exports = ChannelSection;
+
+
+export default ChannelSection;

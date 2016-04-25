@@ -7,7 +7,8 @@ const initialState = {
     threadID:null,
     roomID:null,
     app: "",
-    type:""
+    type:"",
+    id:""
 };
 
 export default function reducer(state = initialState, action = {}) {

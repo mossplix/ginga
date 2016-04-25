@@ -1,48 +1,29 @@
 
 var React = require('react');
-var MessageStore = require('../stores/MessageStore');
-var ChannelListItem = require('../components/channels/ChannelListItem.react');
-var ThreadStore = require('../stores/ThreadStore');
-var UnreadThreadStore = require('../stores/UnreadThreadStore');
 
-function getStateFromStores() {
-    return {
-        channels: MucStore.getAll(),
-        currentChannel: MucStore.getCurrentChannel(),
-        unreadCount: UnreadMucStore.getCount()
-    };
-}
+import ChannelListItem from '../components/channels/ChannelListItem.react';
+
+import { connect } from 'react-redux'
+
 
 var ChannelSection = React.createClass({
 
-    getInitialState: function() {
-        return getStateFromStores();
-    },
 
-    componentDidMount: function() {
-        ThreadStore.addChangeListener(this._onChange);
-        UnreadThreadStore.addChangeListener(this._onChange);
-    },
-
-    componentWillUnmount: function() {
-        ThreadStore.removeChangeListener(this._onChange);
-        UnreadThreadStore.removeChangeListener(this._onChange);
-    },
 
     render: function() {
-        var threadListItems = this.state.threads.map(function(thread) {
+        var threadListItems = this.props.threads.map(function(thread) {
             return (
                 <ChannelListItem
                     key={thread.id}
                     thread={thread}
-                    currentThreadID={this.state.currentThreadID}
+                    currentThreadID={this.props.currentThreadID}
                 />
             );
         }, this);
         var unread =
-            this.state.unreadCount === 0 ?
+            this.props.unreadCount === 0 ?
                 null :
-                <span>Unread threads: {this.state.unreadCount}</span>;
+                <span>Unread threads: {this.props.unreadCount}</span>;
         return (
             <div className="thread-section">
                 <div className="thread-count">
@@ -59,9 +40,11 @@ var ChannelSection = React.createClass({
      * Event handler for 'change' events coming from the stores
      */
     _onChange: function() {
-        this.setState(getStateFromStores());
+
     }
 
 });
 
-module.exports = ThreadSection;
+
+
+export default ThreadSection;

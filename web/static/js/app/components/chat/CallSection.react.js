@@ -1,7 +1,7 @@
 var React = require('react');
 var Router = require('react-router');
 var CallSection = React.createClass({
-
+import { connect } from 'react-redux'
 
   getInitialState: function () {
     return {
@@ -232,4 +232,4 @@ var CallSection = React.createClass({
   }
 });
 
-module.exports=CallSection;
+export default CallSection;

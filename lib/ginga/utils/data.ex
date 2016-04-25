@@ -42,6 +42,10 @@ defmodule Ginga.Utils do
       :ejabberd_admin.registered_vhosts
     end
 
+    def ass_to_roster(user,username,host,nickname) do
+
+      :mod_admin_extra.add_rosteritem(user.jid,user.vhost,username,host,nickname,"","")
+    end
     def add_default_opts(host,jid) do
 
       create_room("general","All Company Users",host,jid)

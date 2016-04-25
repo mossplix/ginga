@@ -1,58 +1,35 @@
 
 
 var React = require('react');
-var MessageStore = require('../../stores/MessageStore');
-var ThreadListItem = require('./ThreadListItem.react');
-var ThreadStore = require('../../stores/ThreadStore');
-var ChatTypeStore = require('../../stores/ChatTypeStore');
+import ThreadListItem from './ThreadListItem.react';
 var Router = require('react-router');
-var UnreadThreadStore = require('../../stores/UnreadThreadStore');
 var Link = Router.Link;
 var Route = Router.Route;
 var RouteHandler = Router.RouteHandler;
 var State = Router.State;
 var Redirect=Router.Redirect;
+import { connect } from 'react-redux'
 
-function getStateFromStores() {
-  return {
-    threads: ThreadStore.getAllChrono(),
-    currentThreadID: ThreadStore.getCurrentID(),
-    unreadCount: UnreadThreadStore.getCount(),
-      chat:ChatTypeStore.getCurrent()
-  };
-}
 
 var ThreadSection = React.createClass({
   contextTypes: {
     router: React.PropTypes.func
   },
 
-  getInitialState: function() {
-    return getStateFromStores();
-  },
 
-  componentDidMount: function() {
-    ThreadStore.addChangeListener(this._onChange);
-    UnreadThreadStore.addChangeListener(this._onChange);
-      ChatTypeStore.addChangeListener(this._onChange);
-  },
-
-  componentWillUnmount: function() {
-    ThreadStore.removeChangeListener(this._onChange);
-    UnreadThreadStore.removeChangeListener(this._onChange);
-      ChatTypeStore.removeChangeListener(this._onChange);
-  },
 
   render: function() {
-    var threadListItems = this.state.threads.map(function(thread) {
+      const {actions,threads,currentChat,dispatch} = this.props;
+    var threadListItems = _.toArray(this.props.threads).map(function(thread) {
       return (
 
         <ThreadListItem
-          key={thread.id}
+          id={thread.id}
           thread={thread}
-          currentThreadID={this.state.currentThreadID}
-            chat={this.state.chat}
+            currentChat={currentChat}
             params={thread}
+                actions={actions}
+                    dispatch={dispatch}
         />
 
       );
@@ -74,15 +51,16 @@ var ThreadSection = React.createClass({
       </div>
 
     );
-  },
-
-  /**
-   * Event handler for 'change' events coming from the stores
-   */
-  _onChange: function() {
-    this.setState(getStateFromStores());
   }
+
+
 
 });
 
-module.exports = ThreadSection;
+
+
+
+
+
+export default ThreadSection;
+

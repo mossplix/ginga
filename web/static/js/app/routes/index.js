@@ -15,7 +15,12 @@ import CardsShowView                from '../views/cards/show';
 import Actions                      from '../actions/sessionActions';
 
 import  TasksApp from '../components/tasks/TasksApp';
+import  ChatApp from '../components/chat/ChatApp.react';
 
+import  ThreadSection from '../components/chat/ThreadSection.react';
+import ChannelSection from '../components/chat/channels/ChannelSection.react';
+
+import createChannel from '../components/chat/channels/createChannel.react';
 
 
 
@@ -56,7 +61,20 @@ export default function configRoutes(store) {
                 </Route>
 
          <Route name="tasks" path="/tasks" component={TasksApp}/>
-         <Route name="/boards" path="/boards" component={Boards}/>
+         <Route name="boards" path="/boards" component={Boards}/>
+
+        <Route name="create_muc" path="/channels/create" component={createChannel} />
+
+
+
+          <Route path="/chat" name="chat"  component={ChatApp} >
+                    <Route name="thread" path="/threads/:id" component={ThreadSection}>
+                    </Route>
+
+
+                    <Route name="channel" path="/channels/:id" component={ChannelSection}>
+                    </Route>
+                  </Route>
 
 
 

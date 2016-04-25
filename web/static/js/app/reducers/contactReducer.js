@@ -1,5 +1,6 @@
 import ActionTypes  from '../constants';
 var _contacts={};
+var contactSchema = require('../models/contact');
 const ContactSchema = {
     fetching: true,
     id: '',
@@ -161,13 +162,16 @@ function _addContacts(rawContacts) {
 
 export default function reducer(state = {}, action = {}) {
   switch (action.type) {
+      case ActionTypes.CURRENT_USER:
+          var ct= new contactSchema();
+          var jid = action.currentUser.jid;
+          var me =Object.assign({},ct,action.currentUser);
+          return { ...state, [jid]:me  };
     case ActionTypes.LOAD_CONTACTS:
-            var roster= action.rawContacts;
-            _addContacts(roster);
+            var roster= action.contacts;
 
 
-
-          return action.rawContacts.reduce(
+          return action.contacts.reduce(
         (contactsByID, contact) => {
           contactsByID[contact.jid] = contact
           return contactsByID;
@@ -178,7 +182,7 @@ export default function reducer(state = {}, action = {}) {
 
 
       case ActionTypes.CLIENT_ON_CONTACT:
-            return { ...state,  [action.jid]: state[action.jid] || null, };
+            return { ...state };
       case ActionTypes.CLIENT_ON_JINGLE_INCOMING:
 
           return { ...state };

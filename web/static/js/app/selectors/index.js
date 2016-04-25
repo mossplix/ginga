@@ -2,19 +2,20 @@ import {createSelector} from 'reselect';
 import _ from 'lodash';
 
 const messageListByQuerySelector = state => state.messageListByQuery;
-const threadsByIDSelector = state => state.threadsByID;
-const roomsByIDSelector = state => state.roomsByID;
-const messagesByIDSelector = state => state.messagesByID;
+const threadsByIDSelector = state => state.threads;
+const roomsByIDSelector = state => state.rooms;
+const messagesByIDSelector = state => state.messages;
 
 export const isLoadingSelector = state => state.isLoading;
 export const labelsSelector = state => state.labels;
+export const threadsSelector = state => state.threads;
 export const searchQuerySelector = state => state.app.searchQuery;
 export const selectedMessageIDSelector = state => state.currentChat.messageID;
 export const selectedThreadIDSelector = state => state.currentChat.threadID;
 export const selectedRoomIDSelector = state => state.currentChat.roomID;
 
 
-export const threadsSelector = createSelector([
+export const allThreadsSelector = createSelector([
   searchQuerySelector,
   messageListByQuerySelector,
   threadsByIDSelector,
@@ -44,6 +45,33 @@ export const selectedThreadMessagesSelector = createSelector([
 });
 
 
+export const chronoThreadsSelector=createSelector([threadsSelector],(threads
+    ) => {
+        var orderedThreads = [];
+    for (var id in threads) {
+      var thread = threads[id];
+      orderedThreads.push(thread);
+    }
+    orderedThreads.sort(function(a, b) {
+        if (!a.lastMessage === null) {
+
+            if (a.lastMessage._created < b.lastMessage._created) {
+                return -1;
+            } else if (a.lastMessage._created > b.lastMessage._created) {
+                return 1;
+            }
+        }else{
+            return -1;
+        }
+      return 0;
+
+    });
+    return orderedThreads;
+    }
+
+);
+
+
 export const lastMessageInEachThreadSelector = createSelector([
   messagesByIDSelector,
   threadsSelector
@@ -51,7 +79,7 @@ export const lastMessageInEachThreadSelector = createSelector([
   messagesByID,
   threads
 ) => {
-  return threads && threads.map(
+  return threads && _.toArray(threads).map(
     thread => messagesByID[_.last(thread.messageIDs)]
   );
 });

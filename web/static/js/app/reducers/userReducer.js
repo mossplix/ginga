@@ -1,8 +1,11 @@
 import ActionTypes  from '../constants';
 
-const initialState = {
-  fetching: true
-};
+var contactSchema = require('../models/contact');
+
+const initialState = new contactSchema();
+
+
+
 
 function stremUrl(){
         return URL.createObjectURL(_me.stream);
@@ -48,7 +51,6 @@ function save() {
         status: _me.status,
         rosterVer: _me.rosterVer
     };
-    app.storage.profiles.set(data);
 }
 
 function load() {
@@ -97,6 +99,9 @@ function setAvatar(id, type, source) {
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
+      case ActionTypes.CURRENT_USER:
+
+      return { ...state, ...action.currentUser  };
     case ActionTypes.USER_CHANGE_JID:
             //UserStore.load();
             return { ...state };
@@ -123,21 +128,6 @@ export default function reducer(state = initialState, action = {}) {
             return { ...state };
 
         case ActionTypes.CLIENT_ON_CREDENTIALS_UPDATE:
-            creds=action.creds;
-            if (creds.clientKey && creds.serverKey) {
-                delete creds.password;
-                delete creds.saltedPassword;
-            } else if (creds.saltedPassword) {
-                delete creds.password;
-            }
-
-            localStorage.config = JSON.stringify({
-                jid: client.config.jid.bare,
-                server: client.config.server,
-                wsURL: client.config.wsURL,
-                credentials: creds
-            });
-
 
 
             return { ...state };

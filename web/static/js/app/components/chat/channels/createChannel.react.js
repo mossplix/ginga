@@ -1,10 +1,8 @@
-var ChatChannelActionCreators = require('../../../actions/ChatChannelActionCreators');
-var ChatThreadActionCreators = require('../../../actions/ChatThreadActionCreators');
+
 var React = require('react');
 var cx = require('react/lib/cx');
-var MucStore = require('../../../stores/MucStore');
 var Router = require('react-router');
-var AppActionCreators = require('../../../actions/AppActionCreators');
+import { connect } from 'react-redux'
 
 var Link = Router.Link;
 var Route = Router.Route;
@@ -20,14 +18,11 @@ var createChannel = React.createClass({
   contextTypes: {
     router: React.PropTypes.func
   },
-  componentDidMount: function() {
-    AppActionCreators.appLoaded("chat","Channels","Create Channel");
 
-  },
 
   createChannel: function (event) {
     event.preventDefault();
-    var channel=MucStore.addNewMuc({
+    var channel=this.props.addNewMuc({
       name: this.refs.name.getDOMNode().value,
       desc: this.refs.description.getDOMNode().value
     });
@@ -54,4 +49,4 @@ var createChannel = React.createClass({
 });
 
 
-module.exports = createChannel;
+export default createChannel;

@@ -8,6 +8,15 @@ var bows = require('bows');
 var uuid = require('node-uuid');
 var XmppUtils = require("../utils/XmppUtils");
 
+var contactSchema = require("../models/contact");
+var messageSchema = require("../models/message");
+var mucSchema = require("../models/muc");
+
+
+var Muc=new mucSchema();
+var Message = new messageSchema();
+var Contact = new contactSchema();
+
 
 import ActionTypes  from '../constants';
 import { httpGet, httpPost, httpDelete }  from '../utils';
@@ -224,10 +233,12 @@ export function xmppSession(client,dispatch,jid) {
                 var items = res.mamResult.items || [];
 
                 var messages = items.map(function (x) {
-                    return Object.assign({}, x.forwarded.message, {
+                    return Object.assign(Message, x.forwarded.message, {
                         id: x.id,
                         from: x.forwarded.message.from.bare,
-                        to: x.forwarded.message.to.bare
+                        to: x.forwarded.message.to.bare,
+                        created: x.forwarded.delay.stamp,
+                        text:x.forwarded.message.body
                     })
                 });
 
@@ -246,10 +257,12 @@ export function xmppSession(client,dispatch,jid) {
                 var items = res.mamResult.items || [];
 
                 var messages = items.map(function (x) {
-                    return Object.assign({}, x.forwarded.message, {
+                    return Object.assign(Message, x.forwarded.message, {
                         id: x.id,
                         from: x.forwarded.message.from.bare,
-                        to: x.forwarded.message.to.bare
+                        to: x.forwarded.message.to.bare,
+                        created: x.forwarded.delay.stamp,
+                        text:x.forwarded.message.body,
                     })
                 });
 
@@ -266,17 +279,17 @@ export function xmppSession(client,dispatch,jid) {
                 var items = resp.roster.items;
 
                 var contacts= items.map(function (item) {
-                    return {
+                    return Object.assign({},Contact, {
                         owner:resp.to.bare,
-                        jid: item.jid.jid,
-                        nickname: item.local,
+                        jid: item.jid.bare,
+                        nickname: item.jid.local,
                         name: item.name,
                         groups: item.groups,
                         subscription: item.subscription,
                         avatarID: "",
                         resources: {},
                         offlineStatus:{}
-                    };
+                    });
 
                 });
 

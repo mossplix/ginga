@@ -1,4 +1,4 @@
-
+import { connect } from 'react-redux'
 
 var React = require('react');
 
@@ -52,4 +52,4 @@ var MessageListItem = React.createClass({
 
 });
 
-module.exports = MessageListItem;
+export default MessageListItem;

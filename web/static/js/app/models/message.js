@@ -11,7 +11,7 @@ module.exports= function() {return {
     receipt:  false,
     archivedId: '',
     oobURIs: [],
-    _created: '',
+    created: '',
     _edited: '',
     _mucMine: '',
     receiptReceived:  false,
@@ -22,9 +22,10 @@ module.exports= function() {return {
     to_full:'',
 
     isMine: function(){
-      var mereg = new RegExp(app.jid);
+        var xmpp=store.getState().xmpp;
+      var mereg = new RegExp(xmpp.jid);
         if (this.type === 'groupchat'){
-            return this.from_full.resource === app.config.nickname
+            return this.from_full.resource === xmpp.nickname
 
         }else {
 
@@ -43,8 +44,10 @@ module.exports= function() {return {
         },
 
     sender:  function () {
+           var xmpp=store.getState().xmpp;
+           var _contacts = store.getState().contacts;
             if (this.mine()) {
-                return _contacts[app.jid];
+                return _contacts[xmpp.jid];
             } else {
                 if (this.type === 'groupchat'){
                     return _contacts[this.from_full.resource];
@@ -59,15 +62,15 @@ module.exports= function() {return {
             return !!this.delay;
         }
     ,
-    created: function () {
+    getCreated: function () {
             if (this.delay && this.delay.stamp) {
                 return this.delay.stamp;
             }
-            if (this._created ==='')
+            if (this.created ==='')
             {
             return new Date(this.timestamp);
           }else{
-            return new Date(this._created);
+            return new Date(this.created);
           }
 
     },
@@ -75,11 +78,11 @@ module.exports= function() {return {
             if (this._edited && !isNaN(this._edited.valueOf())) {
                 return this._edited;
             }
-            return this.created();
+            return this.getCreated();
 
     },
     formattedTime:  function () {
-            if (this.created()) {
+            if (this.getCreated()) {
               //moment().format("h:mm");
               function timeTodayDateElse(date){
                   moment.locale('en', {
@@ -96,7 +99,7 @@ module.exports= function() {return {
     return moment(date).calendar();
 }
 
-              return timeTodayDateElse(this.created());
+              return timeTodayDateElse(this.getCreated());
             }
             return undefined;
 
@@ -106,6 +109,7 @@ module.exports= function() {return {
 
     },
     nickname: function () {
+            var _contacts=store.getState().contacts;
             if (this.type === 'groupchat') {
                 return this.from_full.resource;
             }

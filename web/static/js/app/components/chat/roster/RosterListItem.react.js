@@ -1,20 +1,16 @@
 
-
-var ChatChannelActionCreators = require('../../../actions/ChatChannelActionCreators');
 var React = require('react');
 var cx = require('react/lib/cx');
+import { connect } from 'react-redux'
 
 var ReactPropTypes = React.PropTypes;
 
 var ChannelListItem = React.createClass({
 
-    propTypes: {
-        thread: ReactPropTypes.object,
-        currentChannelID: ReactPropTypes.string
-    },
+
 
     render: function() {
-        var channel = this.props.channel;
+        const {channel,actions} = this.props;
         return (
 
 
@@ -23,7 +19,7 @@ var ChannelListItem = React.createClass({
             'thread-list-item': true,
             'active': thread.id === this.props.currentThreadID
     })}
-onClick={this._onClick}>
+onClick={() => actions.clickChannel(channel.id)}>
         <Link to={channel.link}>chat window</Link>
         <span className="lcb-tab-title">{channel.name}</span>
     <span className="lcb-tab-alerts">
@@ -37,10 +33,10 @@ onClick={this._onClick}>
     },
 
     _onClick: function() {
-        ChatChannelActionCreators.clickChannel(this.props.channel.jid);
+        //ChatChannelActionCreators.clickChannel(this.props.channel.jid);
     }
 
 });
 
-module.exports = ThreadListItem;
+export default ThreadListItem;
 

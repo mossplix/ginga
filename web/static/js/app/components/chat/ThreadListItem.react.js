@@ -1,6 +1,6 @@
 
 
-var ChatThreadActionCreators = require('../../actions/ChatThreadActionCreators');
+
 var React = require('react');
 var cx = require('react/lib/cx');
 
@@ -11,50 +11,30 @@ var Route = Router.Route;
 var RouteHandler = Router.RouteHandler;
 var State = Router.State;
 var Redirect=Router.Redirect;
-var ThreadStore = require('../../stores/ThreadStore');
+
+import { connect } from 'react-redux'
 
 var ThreadListItem = React.createClass({
 
   propTypes: {
     thread: ReactPropTypes.object,
-    currentThreadID: ReactPropTypes.string,
-      chat: ReactPropTypes.object,
-      params: ReactPropTypes.object
+    currentChat: ReactPropTypes.object,
+    params: ReactPropTypes.object
 
   },
   contextTypes: {
     router: React.PropTypes.func
   },
-  getThreadStateFromStore: function () {
-    var id = this.context.router.getCurrentParams().id;
-    if (!id){
-      id=this.props.thread.id;
-    }
 
+ _handleClick() {
 
-    return {
-      thread: ThreadStore.get(id),
-    };
+    this.props.actions.clickThread(this.props.thread.id);
+
   },
 
-  getInitialState: function () {
-    return this.getThreadStateFromStore();
-  },
-
-  componentDidMount: function () {
-    ThreadStore.addChangeListener(this._onChange);
-  },
-
-  componentWillUnmount: function () {
-    ThreadStore.addChangeListener(this._onChange);
-  },
-
-  componentWillReceiveProps: function () {
-    ThreadStore.addChangeListener(this._onChange);
-  },
 
   render: function() {
-    var thread = this.props.thread;
+      const {thread,actions} = this.props;
     var lastMessage = thread.lastMessage;
 
       if (lastMessage != null)
@@ -66,10 +46,10 @@ var ThreadListItem = React.createClass({
 
       <li key={thread.id} className={cx({
         'has-action-left has-action-right': true,
-        'active ': thread.id === this.props.chat.id
+        'active ': thread.id === this.props.currentChat.id
       })}
-      onClick={this._onClick} >
-      <Link to="thread" className="visible" params={thread}>
+      onClick={::this._handleClick} >
+      <Link to={`/chat/threads/${thread.id}`}   className="visible" params={thread}>
           <div className="list-action-left">
             <img src={lastMessage.sender().avatar} className="face-radius" alt=""></img>
           </div>
@@ -96,9 +76,9 @@ var ThreadListItem = React.createClass({
               <li
                   className={cx({
                       'has-action-left has-action-right channels': true,
-                      'active': thread.id === this.props.chat.id
+                      'active': thread.id === this.props.currentChat.id
                   })}
-                  onClick={this._onClick}>
+                   onClick={::this._handleClick} >
                   <div className="list-content2">
                       <span className="title">{thread.name}</span>
 
@@ -110,15 +90,12 @@ var ThreadListItem = React.createClass({
                   </li>
           );
       }
-  },
-
-  _onClick: function() {
-    ChatThreadActionCreators.clickThread(this.props.thread.id);
-  },
-  _onChange: function() {
-    this.setState(this.getThreadStateFromStore());
   }
+
+
 
 });
 
-module.exports = ThreadListItem;
+
+
+export default ThreadListItem;

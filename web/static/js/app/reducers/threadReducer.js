@@ -1,8 +1,7 @@
 import ActionTypes  from '../constants';
 
-const initialState = {
-  fetching: true
-};
+
+
 
 function _addToThread(roster){
     if (typeof roster != 'undefined'){
@@ -26,32 +25,23 @@ function _addToThread(roster){
 }}
 
 
-function init(rawMessages) {
-      if (typeof rawMessages != 'undefined'){
-        console.log(rawMessages);
-          rawMessages.forEach(function (message) {
+function toThreads(messages) {
+      if (typeof messages != 'undefined'){
+
+          var jid=store.getState().xmpp.jid;
+          var _currentID = store.getState().currentChat.id;
+          var _threads={};
+
+          messages.forEach(function (message) {
               if (message.type === "chat") {
 
-                if (message.from.parts === undefined){
                   var threadID = message.from;
-                  if (threadID === app.me)
+                  if (threadID === jid)
                   {
-                    if ((typeof message.to) === "object")
-                    {
-                    threadID = message.to.jid
-                  }
-                  else{
+
                     threadID = message.to
+
                   }
-                  }
-                }
-                else{
-                  var threadID = message.from.parts.bare;
-                  if (threadID === app.me)
-                  {
-                    threadID = message.to.parts.bare;
-                  }
-                }
 
 
                   var thread = _threads[threadID];
@@ -61,19 +51,20 @@ function init(rawMessages) {
                   _threads[threadID] = {
                       id: threadID,
                       name: threadID ,
-                      lastMessage: ChatMessageUtils.convertDbMessage(message, _currentID)
+                      lastMessage: message
                   };
-              }}, this);
+              }});
 
 
           if  (_currentID && _threads[_currentID] && typeof _threads[_currentID].lastMessage != null ) {
               _threads[_currentID].lastMessage.isRead = true;
           }
       }
+    return _threads;
   }
 
 
-function getAllChrono() {
+function getAllChrono(_threads) {
     var orderedThreads = [];
     for (var id in _threads) {
       var thread = _threads[id];
@@ -107,19 +98,21 @@ function getAllChrono() {
   }
 
 
-export default function reducer(state = initialState, action = {}) {
+export default function reducer(state = {}, action = {}) {
   switch (action.type) {
     case ActionTypes.CLICK_THREAD:
         _currentID = action.threadID;
-        if (typeof _threads[_currentID] != 'undefined') {
-            if (_threads[_currentID].lastMessage) {
-                _threads[_currentID].lastMessage.isRead = true;
+        if (typeof state[_currentID] != 'undefined') {
+            if (state[_currentID].lastMessage) {
+                state[_currentID].lastMessage.isRead = true;
             }
         }
       return { ...state };
 
-    case ActionTypes.RECEIVE_RAW_MESSAGES:
-      return { ...state };
+    case ActionTypes.LOAD_MESSAGES:
+      var th=toThreads(action.messages);
+
+      return {...state,...th};
 
       case ActionTypes.RECEIVE_RAW_MESSAGE:
         var msg=action.msg;
@@ -130,7 +123,7 @@ export default function reducer(state = initialState, action = {}) {
 
         return { ...state };
 
-      case ActionTypes.RECEIVE_RAW_CONTACTS:
+      case ActionTypes.LOAD_CONTACTS:
           var roster= action.rawContacts;
           _addToThread(roster);
           return { ...state };
