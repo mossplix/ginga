@@ -89,6 +89,8 @@ defmodule Ginga.Router do
      get "/boards",PageController, :app
      get "/chat",PageController, :app
      get "/tasks",PageController, :app
+     get "/chat/threads/:id",PageController, :app
+     get "/chat/channels/:id",PageController, :app
 
 
 

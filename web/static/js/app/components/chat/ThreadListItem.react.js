@@ -22,9 +22,7 @@ var ThreadListItem = React.createClass({
     params: ReactPropTypes.object
 
   },
-  contextTypes: {
-    router: React.PropTypes.func
-  },
+
 
  _handleClick() {
 
@@ -48,7 +46,7 @@ var ThreadListItem = React.createClass({
         'has-action-left has-action-right': true,
         'active ': thread.id === this.props.currentChat.id
       })}
-      onClick={::this._handleClick} >
+      onClick={this._handleClick} >
       <Link to={`/chat/threads/${thread.id}`}   className="visible" params={thread}>
           <div className="list-action-left">
             <img src={lastMessage.sender().avatar} className="face-radius" alt=""></img>
@@ -78,7 +76,7 @@ var ThreadListItem = React.createClass({
                       'has-action-left has-action-right channels': true,
                       'active': thread.id === this.props.currentChat.id
                   })}
-                   onClick={::this._handleClick} >
+                   onClick={this._handleClick} >
                   <div className="list-content2">
                       <span className="title">{thread.name}</span>
 

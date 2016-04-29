@@ -14,10 +14,6 @@ import { connect } from 'react-redux'
 
 
 var ChannelSection = React.createClass({
-  contextTypes: {
-    router: React.PropTypes.func
-  },
-
 
     render: function() {
         var channelListItems = _.toArray(this.props.channels).map(function(channel) {

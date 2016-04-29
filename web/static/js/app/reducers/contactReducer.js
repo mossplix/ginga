@@ -292,9 +292,9 @@ export default function reducer(state = {}, action = {}) {
                  return { ...state,[action.jid]: state[action.jid] || null,};
                 case ActionTypes.CLIENT_ON_CHAT_STATE:
                     var info = action.info;
-                     var me= new RegExp(app.jid);
+                     var me= new RegExp(store.getState().xmpp.jid);
 
-                    var contact = _contacts[info.from.bare];
+                    var contact = state[info.from.bare];
                     if (contact) {
                         var resource = contact.resources[info.from.full];
                         if (resource) {
@@ -317,7 +317,7 @@ export default function reducer(state = {}, action = {}) {
                         }
                     }
                     _contacts[info.from.bare]=contact;
-                     return { ...state};
+                     return { ...state,[jid]:contact};
 
 
     default:

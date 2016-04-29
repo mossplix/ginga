@@ -3,6 +3,8 @@ import Constants                          from '../constants';
 import { Socket }                         from 'phoenix';
 import { httpGet, httpPost, httpDelete }  from '../utils';
 
+
+
 var uuid = require('node-uuid');
 var StanzaIO = require('stanza.io');
 
@@ -67,6 +69,7 @@ export function setCurrentUser(dispatch, user) {
         board: msg.board,
       });
   });
+
 };
 
 const Actions = {

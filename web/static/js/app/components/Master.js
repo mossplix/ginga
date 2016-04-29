@@ -143,7 +143,7 @@ const Master = React.createClass({
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(BoardsActions.fetchBoards());
-    dispatch(loadRooms());
+    //dispatch(loadRooms());
     //dispatch(getAllMessages());
 
   },
@@ -254,7 +254,7 @@ _renderCurrentUser() {
     }
 
     return (
-      <a href="#" onClick={::this._handleSignOutClick}><i className="fa fa-sign-out"/> Sign out</a>
+      <a href="#" onClick={this._handleSignOutClick}><i className="fa fa-sign-out"/> Sign out</a>
     );
   },
 
@@ -289,7 +289,7 @@ _renderCurrentUser() {
 
 
 
-    let docked = false;
+    let docked = true;
     let showMenuIconButton = true;
     let logo2="mdsmdmdm"
 
@@ -326,7 +326,7 @@ _renderCurrentUser() {
                       >
                         <MenuItem primaryText="Refresh" />
                         <MenuItem primaryText="Help" />
-                        <MenuItem primaryText="Sign out" rightIcon={<i className="fa fa-sign-out"/>}  onClick={::this._handleSignOutClick} />
+                        <MenuItem primaryText="Sign out" rightIcon={<i className="fa fa-sign-out"/>}  onClick={this._handleSignOutClick} />
                       </IconMenu>
 
 
@@ -357,12 +357,7 @@ _renderCurrentUser() {
               <ClearFix>
               <div style={prepareStyles(styles.root)}>
           <div style={prepareStyles(styles.content)}>
-          {children}
-
-          </div>
-          </div>
-             </ClearFix>
-        <AppNavDrawer
+            <AppNavDrawer
           style={styles.navDrawer}
           location={location}
           docked={docked}
@@ -370,6 +365,12 @@ _renderCurrentUser() {
           onRequestChangeList={this.handleRequestChangeList}
           open={navDrawerOpen}
         />
+          {children}
+
+          </div>
+          </div>
+             </ClearFix>
+
 
       </div>
     );

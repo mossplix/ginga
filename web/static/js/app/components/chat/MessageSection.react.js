@@ -5,12 +5,15 @@ import MessageListItem from './MessageListItem.react';
 var React = require('react');
 
 import { connect } from 'react-redux'
+import ReactDOM from 'react-dom';
 
 
-function getMessageListItem(message,actions) {
+
+
+function getMessageListItem(message,actions,index) {
   return (
     <MessageListItem
-      key={message.id}
+      key={index}
       message={message}
           actions={actions}
     />
@@ -28,9 +31,9 @@ var MessageSection = React.createClass({
 
 
   render: function() {
-    var messageListItems = _.toArray(this.props.messages).map((message,index) => getMessageListItem(message,this.props.actions) );
+    var messageListItems = _.toArray(this.props.threadMessages).map((message,index) => getMessageListItem(message,this.props.actions,index) );
     return (
-      <div className="col-md-8">
+      <div  className="col-md-8">
         <div className="message-send-container">
           <h3 className="message-thread-heading">{this.props.currentChat.type}</h3>
           <div className="messages message_list" ref="messageList">
@@ -52,13 +55,17 @@ var MessageSection = React.createClass({
   },
 
   _scrollToBottom: function() {
-    var ul = this.refs.messageList.getDOMNode();
+    var ul = ReactDOM.findDOMNode(this.refs.messageList);
+
     ul.scrollTop = ul.scrollHeight;
   }
 
 
 
 });
+
+
+
 
 
 

@@ -1,4 +1,6 @@
 import ActionTypes  from '../constants';
+import {fetchHistory}  from '../actions/xmppActions';
+
 const initialState = {
   fetching: true
 };
@@ -47,25 +49,6 @@ var defaults = {
 
 
 
-function _addChannels(rawChannels) {
-    if (typeof rawChannels != 'undefined') {
-        rawChannels.forEach(function (channel) {
-            XmppUtils.joinMUC(channel);
-            if (!_mucs[channel.jid]) {
-                channel.contacts=[];
-                _mucs[channel.jid] = channel
-
-            }
-        });
-    }
-}
-
-
-function addNewMuc(channel){
-      channel.id=channel.name+"@"+app.host;
-
-      return channel;
-    }
 
 
 function addMessage(id,message, notify) {
@@ -108,83 +91,80 @@ function addMessage(id,message, notify) {
         }
     }
 
-   function  getCurrentChannelId(){
-        return _currentID;
 
-    }
 
-   function  leave () {
-        this.resources.reset();
-        client.leaveRoom(this.jid, this.nick);
-    }
 
-    function fetchAll() {
-        var self = this;
-        client.getBookmarks(function (err, res) {
-            if (err) return;
 
-            var mucs = res.privateStorage.bookmarks.conferences;
-            mucs.forEach(function (muc) {
-                self.add(muc);
-                if (muc.autoJoin) {
-                    self.get(muc.jid).join();
+
+ function joinAndBookmark(rooms) {
+        var upRooms =[];
+        const {client,user} = store.getState().xmpp;
+
+        if(user){
+
+            var nick=user.first_name;
+        }else{
+
+            var nick=""
+
+        }
+
+     _.toArray(rooms).forEach(function (room) {
+            upRooms.push({
+                name: room.name,
+                jid: room.jid,
+                nick: room.name,
+                autoJoin: true
+            });
+             client.joinRoom(room.jid, nick, {
+                history: {
+                    maxstanzas: 200
+                    //since: this.lastInteraction
                 }
-            });
         });
-    }
-
-
- function saveAll(cb) {
-        var self = this;
-
-        var models = [];
-        self.models.forEach(function (model) {
-            models.push({
-                name: model.name,
-                jid: model.jid,
-                nick: model.nick,
-                autoJoin: model.autoJoin
-            });
+          store.dispatch(fetchHistory(room.jid));
         });
-        client.setBookmarks({conferences: models}, cb);
+        client.setBookmarks({conferences: upRooms});
+
 
     }
 
 
 
-export default function reducer(state = {}, action = {}) {
+export default function reducer(rooms = {}, action = {}) {
   switch (action.type) {
     case ActionTypes.CLIENT_SESSION_STARTED:
 
-            return { ...state };
+            return {...rooms};
 
     case ActionTypes.LOAD_ROOMS:
-            var roster= action.rooms;
 
-
-          return action.rooms.reduce(
-        (roomsByID, room) => {
-          roomsByID[room.jid] = room
-          return roomsByID;
+        var allRooms = action.rooms.reduce(
+        (newRooms, room) => {
+          newRooms[room.jid] = room
+          return newRooms;
         },
-        {...state}
+        rooms
       );
+        joinAndBookmark(allRooms);
+        return allRooms;
+
 
     case ActionTypes.CLICK_CHANNEL:
-       // _currentID = action.channelID;
+        var _currentID = action.channelID;
 
-        return { ...state };
+        return { ...rooms};
 
     case ActionTypes.CHANNEL_RECEIVE_RAW_MESSAGES:
         //MucStore.init(action.rawMessages);
 
-        break;
+        return { ...rooms};
     case ActionTypes.RECEIVE_RAW_MUCS:
         _addChannels(action.rawMucs);
 
-        return { ...state };
+        return { ...rooms};
 
     default:
-      return state;
+      return rooms;
   }
 }

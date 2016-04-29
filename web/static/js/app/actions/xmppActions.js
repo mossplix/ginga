@@ -11,6 +11,7 @@ var XmppUtils = require("../utils/XmppUtils");
 var contactSchema = require("../models/contact");
 var messageSchema = require("../models/message");
 var mucSchema = require("../models/muc");
+var uuid = require('node-uuid');
 
 
 var Muc=new mucSchema();
@@ -68,6 +69,51 @@ export function loadRooms(){
 
 }
 
+
+export function leaveRoom(){
+     return (dispatch, getState) => {
+        var {user,jid} = store.getState().xmpp;
+        var nick="";
+        if(user){
+            nick=user.first_name;
+        }
+
+            client.leaveRoom(jid, nick);
+
+    }
+
+
+}
+
+
+
+function convMessage(msg){
+      var ts = Date.now();
+      var timestamp;
+      if (msg.delay){
+          timestamp=msg.delay.stamp;
+      }
+    else{
+          timestamp=ts;
+      }
+      var data = {
+          archivedId: msg.id || uuid.v4(),
+          owner: msg.owner||msg.from.bare,
+          to: msg.to.bare,
+          text:msg.body,
+          from: msg.from.bare,
+          body: msg.body,
+          type: msg.type,
+          delay: msg.delay,
+          edited: msg.edited,
+          created: msg.timestamp||timestamp,
+          from_full: msg.from,
+          to_full:msg.to
+      };
+      return Object.assign({},Message,msg,data);
+
+}
+
 export function   getAllMessages() {
 
     return (dispatch, getState) =>
@@ -84,24 +130,7 @@ export function   getAllMessages() {
 }
 
 
-export function  createMessage(msg) {
-    // simulate writing to a database
-      var timestamp = Date.now();
-      var data = {
-          archivedId: msg.id || uuid.v4(),
-          owner: msg.owner||msg.from,
-          to: msg.to,
-          from: msg.from,
-          body: msg.body,
-          type: msg.type,
-          delay: msg.delay,
-          edited: msg.edited,
-          _created: msg.timestamp||timestamp,
-          from_full: msg.from,
-          to_full:msg.to
-      };
-      return data;
-  }
+
 
 
 export function   getRoster(){
@@ -145,6 +174,46 @@ export function   getRoster(){
             rawContacts: rawContacts
         });
     }
+
+
+   export function fetchHistory(jid){
+    const client = store.getState().xmpp.client;
+
+     return dispatch => {
+
+
+
+     client.searchHistory({
+                with: jid,
+                rsm: {max: 500, before: true},
+                complete: false
+            }, function (err, res) {
+                if (err){
+                    return;
+                }
+                if (res.mamResult) {
+                    var items = res.mamResult.items || [];
+                }else{
+                    var items=[];
+                }
+
+                var msgList = items.map(function (x) {
+                    return Object.assign(Message, x.forwarded.message, {
+                        id: x.forwarded.message.id,
+                        from: x.forwarded.message.from.bare,
+                        to: x.forwarded.message.to.bare,
+                        created: x.forwarded.delay.stamp,
+                        text:x.forwarded.message.body
+                    })
+                });
+
+                dispatch({
+                    type: ActionTypes.LOAD_MESSAGES,
+                    messages: msgList,
+
+                });
+            });
+}}
 
 
 
@@ -223,18 +292,31 @@ export function xmppSession(client,dispatch,jid) {
     client.on('session:started', function (jid) {
 
         client.sendPresence();
+         var caps = client.updateCaps();
+
+                client.sendPresence({
+                    status: '',
+                    caps: client.disco.caps
+                });
+                client.enableCarbons();
+
+
 
 
          client.searchHistory({
-                with: jid,
+                to: jid.bare,
                 rsm: {max: 500, before: true},
                 complete: false
             }, function (err, res) {
-                var items = res.mamResult.items || [];
+                if (res && res.mamResult) {
+                    var items = res.mamResult.items || [];
+                }else{
+                    var items=[];
+                }
 
                 var messages = items.map(function (x) {
-                    return Object.assign(Message, x.forwarded.message, {
-                        id: x.id,
+                    return Object.assign({},Message, x.forwarded.message, {
+                        id:  x.forwarded.message.id,
                         from: x.forwarded.message.from.bare,
                         to: x.forwarded.message.to.bare,
                         created: x.forwarded.delay.stamp,
@@ -250,15 +332,15 @@ export function xmppSession(client,dispatch,jid) {
             });
 
             client.searchHistory({
-                from: jid,
+                from: jid.bare,
                 rsm: {max: 500, before: true},
                 complete: false
             }, function (err, res) {
-                var items = res.mamResult.items || [];
+                var itemList = res.mamResult.items || [];
 
-                var messages = items.map(function (x) {
-                    return Object.assign(Message, x.forwarded.message, {
-                        id: x.id,
+                var msgList = itemList.map(function (x) {
+                    return Object.assign({},Message, x.forwarded.message, {
+                        id:  x.forwarded.message.id,
                         from: x.forwarded.message.from.bare,
                         to: x.forwarded.message.to.bare,
                         created: x.forwarded.delay.stamp,
@@ -268,7 +350,7 @@ export function xmppSession(client,dispatch,jid) {
 
                 dispatch({
                     type: ActionTypes.LOAD_MESSAGES,
-                    messages: messages,
+                    messages: msgList,
 
                 });
             });
@@ -300,13 +382,7 @@ export function xmppSession(client,dispatch,jid) {
                 });
             }
 
-            var caps = client.updateCaps();
 
-                client.sendPresence({
-                    status: '',
-                    caps: client.disco.caps
-                });
-                client.enableCarbons();
 
 
 
@@ -394,7 +470,7 @@ export function xmppSession(client,dispatch,jid) {
         
          dispatch({
             type: ActionTypes.CLIENT_ON_CHAT,
-            msg: msg
+            msg: convMessage(msg)
         });
 
     });
@@ -403,7 +479,7 @@ export function xmppSession(client,dispatch,jid) {
         
          dispatch({
             type: ActionTypes.CLIENT_ON_GROUPCHAT,
-            msg: msg
+            msg: convMessage(msg)
         });
 
 
@@ -412,7 +488,7 @@ export function xmppSession(client,dispatch,jid) {
     client.on('groupchat:subject', function (msg) {
         dispatch({
             type: ActionTypes.CLIENT_ON_GROUPCHAT_SUBJECT,
-            msg: msg
+            msg: convMessage(msg)
         });
 
 
@@ -422,7 +498,7 @@ export function xmppSession(client,dispatch,jid) {
         
         dispatch({
             type: ActionTypes.CLIENT_ON_REPLACE,
-            msg: msg
+            msg: convMessage(msg)
         });
 
 
@@ -432,7 +508,7 @@ export function xmppSession(client,dispatch,jid) {
         
         dispatch({
             type: ActionTypes.CLIENT_ON_RECEIPT,
-            msg: msg
+            msg: convMessage(msg)
         });
 
 

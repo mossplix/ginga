@@ -1,0 +1,23 @@
+@charset "UTF-8"
+
+.form-control
+  +border-radius($border-rad)
+  &:focus
+    +box-shadow(none)
+  &.no-padding
+    line-height: 32px
+    padding: 0
+  &.no-resize
+    resize: none
+  &[disabled],
+  [readonly]
+    +alpha-property(background, $white, 0.1)
+    color: inherit
+    cursor: auto
+
+fieldset
+  &[disabled]
+    .form-control
+      +alpha-property(background, $white, 0.1)
+      color: inherit
+      cursor: auto

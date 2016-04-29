@@ -1,0 +1,24 @@
+@charset "UTF-8"
+
+@media screen and (max-width: 960px)
+  .sidebar--right
+    +single-transition(all, 0.5s, ease)
+    +translateX(100%)
+    z-index: 5
+    &.move--left
+      +translateX(0)
+      .search-bar__container
+        padding-right: 8px
+  .help__format-text
+    display: none
+  .inner-wrap
+    &.move--left
+      margin-right: 0
+      .channel-header__links
+        position: relative
+        right: auto
+        top: auto
+
+@media screen and (min-width: 768px)
+  .second-bar
+    display: none

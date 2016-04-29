@@ -41,36 +41,8 @@ const initialState = {
         }
     }
 
-    function getCreatedMessageData(text) {
-        var timestamp = Date.now();
-        return {
-            id: 'm_' + timestamp,
-            threadID: ThreadStore.getCurrentID(),
-            archivedId: this.archivedId || uuid.v4(),
-            owner: this.owner,
-            to: this.to,
-            from: this.from,
-            created: this.created,
-            body: this.body,
-            type: this.type,
-            delay: this.delay,
-            edited: this.edited
-        };
-    }
 
-function _addMessages(rawMessages) {
-    if (typeof rawMessages != 'undefined') {
 
-        rawMessages.forEach(function (message) {
-            if (!_messages[message.archivedId]) {
-                _messages[message.archivedId] = ChatMessageUtils.convertDbMessage(
-                    message,
-                ChatTypeStore.getCurrent()
-                );
-            }
-        });
-    }
-}
 
 function _markAllInThreadRead(threadID) {
   for (var id in _messages) {
@@ -83,94 +55,57 @@ function _markAllInThreadRead(threadID) {
 
 
 
-export default function reducer(messagesByID = {}, action = {}) {
+export default function reducer(allMessages = [], action = {}) {
   switch (action.type) {
       case ActionTypes.LOAD_MESSAGES:
-      // To prevent double fetching, store a null entry when we start loading
-      return action.messages.reduce(
-        (newmessagesByID, message) => {
-          newmessagesByID[message.id] = message
-          return newmessagesByID;
-        },
-        {...messagesByID}
-      );
+       var messages=action.messages;
+       return  [...allMessages,...messages];
+
 
     case ActionTypes.CLICK_THREAD:
 
      // _markAllInThreadRead(id);
 
-       return { ...messagesByID};
-
-
+       return [ ...allMessages];
 
 
       case ActionTypes.RECEIVE_RAW_MESSAGE:
           var msg = action.msg;
-          var message = ChatWebApiUtils.createMessage(msg);
+          //var message = ChatWebApiUtils.createMessage(msg);
 
-          _messages[message.archivedId] = ChatMessageUtils.convertDbMessage(
-              message,
-              ChatTypeStore.getCurrent()
-          );
+          //_messages[message.archivedId] = ChatMessageUtils.convertDbMessage(
+          //    message,
+          //    ChatTypeStore.getCurrent()
+          //);
 
 
-           return { ...messagesByID};
+           return [...allMessages];
 
     case ActionTypes.RECEIVE_RAW_MESSAGES:
-      _addMessages(action.rawMessages);
+      //_addMessages(action.rawMessages);
 
-      _markAllInThreadRead(ThreadStore.getCurrentID());
-       return { ...messagesByID};
+      //_markAllInThreadRead(ThreadStore.getCurrentID());
+       return [...allMessages];
 
       case ActionTypes.CLIENT_ON_CHAT:
-          var msg = action.msg;
+            var msg = action.msg;
+            return [...allMessages,msg];
 
-          var thread = ThreadStore.get(msg.from.bare);
-          if (thread && !msg.replace) {
-              var message = ChatWebApiUtils.createMessage(msg);
 
-              _messages[message.archivedId] = ChatMessageUtils.convertDbMessage(
-                  message,null
-                  //ChatTypeStore.getCurrent()
-              );
-              console.log(
-                ChatMessageUtils.convertDbMessage(
-                    message,
-                    ChatTypeStore.getCurrent()
-                )
-              );
-              return { ...messagesByID};
-
-          }
-
-          break;
       case ActionTypes.CLIENT_ON_GROUPCHAT:
           var msg=action.msg;
 
-          var muc = MucStore.get(msg.from.bare);
-          if (muc) {
-              var message = ChatWebApiUtils.createMessage(msg);
-              //message.acked = true;
-              conv_message = ChatMessageUtils.convertDbMessage(
-                  message,
-                  ChatTypeStore.getCurrent()
-              );
-              _messages[message.archivedId] = conv_message;
-
-
-          }
-
-           return { ...messagesByID};
+           return [...allMessages,msg];
       case ActionTypes.CLIENT_ON_REPLACE:
           var msg=action.msg;
           var message = ChatWebApiUtils.createMessage(msg);
           //message.acked = true;
-          _messages[message.archivedId] = ChatMessageUtils.convertDbMessage(
-              message,null
+          //_messages[message.archivedId] = ChatMessageUtils.convertDbMessage(
+          //    message,null
               //ChatTypeStore.getCurrent()
-          );
+          //);
 
-           return { ...state};
+           return [...allMessages];
       case ActionTypes.CREATE_MESSAGE:
           var msg=action.message;
           var chat = action.chat;
@@ -191,12 +126,12 @@ export default function reducer(messagesByID = {}, action = {}) {
               edited: msg.edited,
               _created: timestamp
           };
-          var message = ChatWebApiUtils.createMessage(data);
+          //var message = ChatWebApiUtils.createMessage(data);
           //message.acked = true;
-          var conv_message = ChatMessageUtils.convertDbMessage(
-              message,
-              chat
-          );
+          //var conv_message = ChatMessageUtils.convertDbMessage(
+          //    message,
+          //    chat
+          //);
 
 
           _messages[message.archivedId] =conv_message;
@@ -208,10 +143,10 @@ export default function reducer(messagesByID = {}, action = {}) {
         }
 
 
-           return { ...messagesByID};
+           return [...allMessages];
       case ActionTypes.CLIENT_ON_RECEIPT:
           var msg=action.msg;
-           return { ...messagesByID};
+           return [...allMessages];
       case ActionTypes.CLIENT_ON_CARBON_RECEIVED:
           var carbon = action.carbon;
           var msg = carbon.carbonReceived.forwarded.message;
@@ -225,15 +160,15 @@ export default function reducer(messagesByID = {}, action = {}) {
               msg.delay = delay;
           }
 
-          var message = ChatWebApiUtils.createMessage(msg);
+          //var message = ChatWebApiUtils.createMessage(msg);
           //message.acked = true;
-          _messages[message.archivedId] = ChatMessageUtils.convertDbMessage(
-              message,
-              ChatTypeStore.getCurrent()
-          );
+         // _messages[message.archivedId] = ChatMessageUtils.convertDbMessage(
+         //     message,
+         //     ChatTypeStore.getCurrent()
+          //);
 
 
-           return { ...state};
+           return [...allMessages];
       case ActionTypes.CLIENT_ON_CARBON_SENT:
           var carbon = action.carbon;
           var msg = carbon.carbonSent.forwarded.message;
@@ -246,18 +181,28 @@ export default function reducer(messagesByID = {}, action = {}) {
               msg.delay = delay;
           }
 
-          var message = ChatWebApiUtils.createMessage(msg);
+          //var message = ChatWebApiUtils.createMessage(msg);
           //message.acked = true;
-          _messages[message.archivedId] = ChatMessageUtils.convertDbMessage(
-              message,
-              ChatTypeStore.getCurrent()
-          );
+         // _messages[message.archivedId] = ChatMessageUtils.convertDbMessage(
+         //     message,
+         //     ChatTypeStore.getCurrent()
+          //);
 
 
-           return { ...messagesByID};
+           return [...allMessages];
 
 
     default:
-      return messagesByID;
+      return allMessages;
   }
+}
+
+
+function _updateMessagesWhere(allMessages, where, updates) {
+  const newallMessages = [...allMessages];
+  const updatedMessages = _.filter(allMessages, where)
+    .map(message => ({...message, ...updates}))
+    .forEach(message => newallMessages[message.id] = message);
+
+  return newallMessages;
 }

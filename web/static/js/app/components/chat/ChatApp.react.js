@@ -10,6 +10,8 @@ import { bindActionCreators } from 'redux'
 
 import { connect } from 'react-redux'
 
+import {currentThreadMessagesSelector} from '../../selectors';
+
 var ChatApp = React.createClass({
 
       propTypes: {
@@ -24,7 +26,7 @@ var ChatApp = React.createClass({
 
 
   render: function() {
-      const {messages,actions,channels,threads,currentChat,dispatch} = this.props;
+      const {messages,actions,channels,threads,currentChat,dispatch,threadMessages} = this.props;
     return (
       <div className="layer-container">
           <div className=" fade in active" id="messages">
@@ -45,7 +47,7 @@ var ChatApp = React.createClass({
 
           <div className="">
 
-        <MessageSection actions={actions} messages={messages} currentChat={currentChat} />
+        <MessageSection actions={actions} messages={messages} currentChat={currentChat} threadMessages={threadMessages} />
               </div>
       </div>
           </div>
@@ -75,7 +77,8 @@ const mapStateToProps = (state) => ({
     channels: state.rooms,
     contacts: state.contacts,
     currentChat: state.currentChat,
-    threads:state.threads
+    threads:state.threads,
+    threadMessages: currentThreadMessagesSelector(state)
 });
 
 

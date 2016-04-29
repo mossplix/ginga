@@ -17,9 +17,11 @@ var MessageListItem = React.createClass({
 
       <div className={cx({
         'message': true,
-        'left': message.mine(),
-        'right':!message.mine()
+        'left': message.isMine(),
+        'right':!message.isMine()
       })}
+
+          key={"msg_"+this.props.message.id}
 
 
 
@@ -38,7 +40,7 @@ var MessageListItem = React.createClass({
 
               </div>
         </div>
-          <img src={message.sender().avatar} className="user-picture" alt={message.nickname()}>
+          <img src={message.getSenderAvatar()} className="user-picture" alt={message.nickname()}>
           </img>
 
 

@@ -20,13 +20,16 @@ const config = {
   resolve: {
     modulesDirectories: ["node_modules", __dirname + "/web/static/js/app" ],
     //When requiring, you don't need to add these extensions
-    extensions: ['', '.js', '.md', '.txt','.sass'],
+    extensions: ['', '.js', '.md', '.txt','.sass','.jsx'],
     alias: {
       //material-ui requires will be searched in src folder, not in node_modules
       'material-ui/lib': path.resolve(__dirname, 'web/static/js/material_ui/src'),
       'material-ui': path.resolve(__dirname, 'web/static/js/material_ui/src'),
       'phoenix_html':path.resolve(__dirname + "/deps/phoenix_html/web/static/js/phoenix_html.js"),
-      'phoenix':path.resolve(__dirname + "/deps/phoenix/web/static/js/phoenix.js")
+      'phoenix':path.resolve(__dirname + "/deps/phoenix/web/static/js/phoenix.js"),
+      'jquery':path.resolve(__dirname + "/node_modules/jquery/dist/jquery.js"),
+        'jquery-dragster': path.resolve(__dirname, 'web/static/js/non-node-modules/jquery-dragster'),
+
     },
   },
   devtool: 'source-map',
@@ -40,13 +43,22 @@ const config = {
     filename: 'js/bundle.js',  //Name of output file
   },
   plugins: [
+       new webpack.ProvidePlugin({
+            'window.jQuery': 'jquery'
+        }),
 
     new webpack.HotModuleReplacementPlugin(),//dev only
 
     //Allows error warninggs but does not stop compiling. Will remove when eslint is added
     new webpack.NoErrorsPlugin(),
       new ExtractTextPlugin("css/application.css"),
-      new CopyWebpackPlugin([{ from: "./web/static/assets" }])
+      new CopyWebpackPlugin([{ from: "./web/static/assets" }]),
+
+       new CopyWebpackPlugin([
+            {from: 'images/emoji', to: 'emoji'},
+            {from: 'images/logo-email.png', to: 'images'},
+            {from: 'images/circles.png', to: 'images'}
+        ]),
 
 
   ],
@@ -58,10 +70,18 @@ const config = {
       noParse: [/vendor\/phoenix/,/autoit.js/],
       loaders: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
       },
+          {
+                test: /(non-node-modules)\/.+\.(js|jsx)$/,
+                loader: 'imports',
+                query: {
+                    $: 'jquery',
+                    jQuery: 'jquery'
+                }
+            },
       {
         test: /\.json$/,
         loader: 'json-loader',
@@ -76,13 +96,21 @@ const config = {
         loader: 'raw-loader',
       },
       {
-      test: /\.css$/,
-      loader: ExtractTextPlugin.extract("css")
-     },
+          test: /\.css$/,
+          loaders: ['style', 'css'],
+            },
            {
         test: /\.sass$/,
         loader: ExtractTextPlugin.extract('style', 'css!sass?indentedSyntax&includePaths[]=' + __dirname +  '/node_modules'),
       },
+
+          {
+                test: /\.(png|eot|tiff|svg|woff2|woff|ttf|gif|mp3|jpg)$/,
+                loader: 'file',
+                query: {
+                    name: 'files/[hash].[ext]'
+                }
+            }
 
     ],
   },

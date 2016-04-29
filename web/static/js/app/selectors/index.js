@@ -11,8 +11,11 @@ export const labelsSelector = state => state.labels;
 export const threadsSelector = state => state.threads;
 export const searchQuerySelector = state => state.app.searchQuery;
 export const selectedMessageIDSelector = state => state.currentChat.messageID;
-export const selectedThreadIDSelector = state => state.currentChat.threadID;
+export const selectedIDSelector = state => state.currentChat.id;
 export const selectedRoomIDSelector = state => state.currentChat.roomID;
+
+const jidSelector = state => state.xmpp.jid;
+
 
 
 export const allThreadsSelector = createSelector([
@@ -30,9 +33,26 @@ export const allThreadsSelector = createSelector([
     [];
 });
 
+
+export const currentThreadMessagesSelector = createSelector([
+    messagesByIDSelector,
+  selectedIDSelector,
+        jidSelector
+], (
+  messages,
+  id,
+      jid
+) => {
+     var from_messages=_.filter(messages,{from:id,to: jid});
+      var   my_messages=_.filter(messages,{from:jid,to:id});
+    const toret= _.uniqBy(from_messages.concat(my_messages), function(elem) { return [elem.from,elem.to,elem.created,elem.text].join(); });
+    return _.orderBy(toret,["created"],['desc']);
+});
+
+
 export const selectedThreadMessagesSelector = createSelector([
   threadsByIDSelector,
-  selectedThreadIDSelector,
+  selectedIDSelector,
   messagesByIDSelector,
 ], (
   threadsByID,

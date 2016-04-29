@@ -12,10 +12,6 @@ import { connect } from 'react-redux'
 
 
 var ThreadSection = React.createClass({
-  contextTypes: {
-    router: React.PropTypes.func
-  },
-
 
 
   render: function() {

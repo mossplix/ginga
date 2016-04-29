@@ -100,14 +100,14 @@ function getAllChrono(_threads) {
 
 export default function reducer(state = {}, action = {}) {
   switch (action.type) {
-    case ActionTypes.CLICK_THREAD:
-        _currentID = action.threadID;
-        if (typeof state[_currentID] != 'undefined') {
-            if (state[_currentID].lastMessage) {
-                state[_currentID].lastMessage.isRead = true;
+      case ActionTypes.CLICK_THREAD:
+        var thread= state[action.threadID]
+        if (typeof thread  != 'undefined') {
+            if (thread.lastMessage) {
+                thread.lastMessage.isRead = true;
             }
         }
-      return { ...state };
+      return { ...state,[action.threadID]:thread };
 
     case ActionTypes.LOAD_MESSAGES:
       var th=toThreads(action.messages);

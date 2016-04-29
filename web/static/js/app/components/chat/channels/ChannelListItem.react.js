@@ -20,13 +20,6 @@ var ChannelListItem = React.createClass({
 
 
 
-    contextTypes: {
-      router: React.PropTypes.func
-    },
-
-
-
-
     render: function() {
         var channel = this.props.channel;
         var chat = this.props.currentChat;
@@ -35,7 +28,7 @@ var ChannelListItem = React.createClass({
 
 
 
-            <Link to={`/chat/channels/${channel.jid}`}   onClick={() => this.props.actions.clickChannel(channel.jid)}  key={channel.jid} params={{id: channel.jid}}>
+            <Link to={`/chat/channels/${channel.jid}`}   onClick={() => this.props.actions.clickChannel(channel.jid)}  key={"link_"+channel.jid} params={{id: channel.jid}}>
 
 
 

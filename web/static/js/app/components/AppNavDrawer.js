@@ -12,6 +12,28 @@ import {  push } from 'react-router-redux'
 
 const SelectableList = MakeSelectable(List);
 
+import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
+
+import TaskIcon from 'material-ui/svg-icons/action/assignment-turned-in';
+
+
+import ProjectIcon from 'material-ui/svg-icons/action/view-quilt';
+import IconButton from 'material-ui/IconButton';
+
+
+import ListsIcon from 'material-ui/svg-icons/action/view-list';
+
+import AccountIcon from 'material-ui/svg-icons/action/account-box';
+import PrefsIcon from 'material-ui/svg-icons/action/build';
+
+import SearchIcon from 'material-ui/svg-icons/action/search';
+import HomeIcon from 'material-ui/svg-icons/action/home';
+
+import callIcon from 'material-ui/svg-icons/communication/phone';
+
+
+
+
 const AppNavDrawer = React.createClass({
 
   propTypes: {
@@ -104,30 +126,18 @@ const AppNavDrawer = React.createClass({
         <SelectableList
           valueLink={{value: location.pathname, requestChange: onRequestChangeList}}
         >
-          <ListItem
-            primaryText="Boards"
-            primaryTogglesNestedList={true}
-            nestedItems={[
-              <ListItem primaryText="Boards" value="boards" />,
-               <ListItem primaryText="All" value="/" />,
 
-            ]}
-          />
-          <ListItem
-            primaryText="Chat"
-            primaryTogglesNestedList={true}
-            nestedItems={[
-              <ListItem primaryText="Chat" value="/chat" />,
-            ]}
-          />
 
-          <ListItem
-            primaryText="Tasks"
-            primaryTogglesNestedList={true}
-            nestedItems={[
-              <ListItem primaryText="Tasks" value="/tasks" />,
-            ]}
-          />
+<ListItem  leftIcon={<HomeIcon />} primaryText="Dashboard" value="boards" />
+<ListItem leftIcon={<ProjectIcon />} primaryText="Boards" value="boards" />
+               <ListItem primaryText="All" value="/" />
+
+              <ListItem leftIcon={<CommunicationChatBubble />} primaryText="Chat" value="/chat" />
+              <ListItem leftIcon={<TaskIcon />} primaryText="Tasks" value="/tasks" />
+    <ListItem leftIcon={<ListsIcon />} primaryText="Lists" value="/tasks" />
+    <ListItem leftIcon={<PrefsIcon />} primaryText="Prefferences" value="/tasks" />
+
+
 
         </SelectableList>
 

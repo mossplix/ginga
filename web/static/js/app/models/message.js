@@ -50,12 +50,23 @@ module.exports= function() {return {
                 return _contacts[xmpp.jid];
             } else {
                 if (this.type === 'groupchat'){
-                    return _contacts[this.from_full.resource];
+                    return this.from_full.resource;
 
                 }
 
                 return _contacts[this.from];
             }
+
+    },
+    getSenderAvatar: function(){
+        var sender=this.sender();
+        if (typeof(sender) === "string")
+        {
+            return ""
+        } else{
+            return sender.avatar
+
+        }
 
     },
     delayed: function () {
@@ -118,10 +129,10 @@ module.exports= function() {return {
             }
             if (this.from_full.bare === undefined)
             {
-            return _contacts[this.from].displayName;
+            return _contacts[this.from].displayName();
           }
           else{
-            return _contacts[this.from].displayName;
+            return _contacts[this.from].displayName();
 
           }
 

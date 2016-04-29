@@ -45,6 +45,20 @@ export default function configRoutes(store) {
     callback();
   };
 
+    const _handleRoutes = (nextState, replace, callback) => {
+    const { dispatch } = store;
+    const { session } = store.getState();
+    const { currentUser } = session;
+
+
+
+    callback();
+  };
+
+
+
+
+
   return (
     <Route component={MainLayout}>
 
@@ -68,11 +82,11 @@ export default function configRoutes(store) {
 
 
           <Route path="/chat" name="chat"  component={ChatApp} >
-                    <Route name="thread" path="/threads/:id" component={ThreadSection}>
+                    <Route name="thread" path="/chat/threads/:id" component={ThreadSection}>
                     </Route>
 
 
-                    <Route name="channel" path="/channels/:id" component={ChannelSection}>
+                    <Route name="channel" path="/chat/channels/:id" component={ChannelSection}>
                     </Route>
                   </Route>
 
