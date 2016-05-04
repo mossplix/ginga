@@ -61,17 +61,7 @@ const AppNavDrawer = React.createClass({
 
   },
 
-  firstNonPreReleaseVersion: function() {
-    let version;
-    for (let i = 0; i < this.state.muiVersions.length; i++) {
-      version = this.state.muiVersions[i];
-      // If the version doesn't contain '-' and isn't 'HEAD'
-      if (!/-/.test(version) && version !== 'HEAD') {
-        break;
-      }
-    }
-    return version;
-  },
+
 
 
 

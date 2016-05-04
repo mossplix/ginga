@@ -5,7 +5,7 @@ import $ from 'jquery';
 import ReactDOM from 'react-dom';
 
 import Constants from '../../../constants/chat_constants';
-import * as AppActions from '../../../actions/appActions';
+import * as GlobalActions from '../../../actions/chatActions';
 import * as Utils from '../../../utils/general';
 
 import TextareaAutosize from 'react-textarea-autosize';
@@ -85,7 +85,7 @@ export default class SuggestionBox extends React.Component {
         const caret = Utils.getCaretPosition(textbox);
 
         const text = this.props.value;
-        const prefix = text.substring(0, caret - SuggestionStore.getMatchedPretext(this.suggestionId).length);
+        const prefix = "";//text.substring(0, caret - SuggestionStore.getMatchedPretext(this.suggestionId).length);
         const suffix = text.substring(caret);
 
         if (this.props.onUserInput) {
@@ -99,7 +99,7 @@ export default class SuggestionBox extends React.Component {
     }
 
     handleKeyDown(e) {
-        if (SuggestionStore.hasSuggestions(this.suggestionId)) {
+       /* if (SuggestionStore.hasSuggestions(this.suggestionId)) {
             if (e.which === KeyCodes.UP) {
                 GlobalActions.emitSelectPreviousSuggestion(this.suggestionId);
                 e.preventDefault();
@@ -114,7 +114,7 @@ export default class SuggestionBox extends React.Component {
             }
         } else if (this.props.onKeyDown) {
             this.props.onKeyDown(e);
-        }
+        }*/
     }
 
     handlePretextChanged(pretext) {

@@ -6,6 +6,14 @@ var cx = require('react/lib/cx');
 import { connect } from 'react-redux'
 
 var Router = require('react-router');
+import {List, ListItem} from 'material-ui/List';
+import ActionGrade from 'material-ui/svg-icons/action/grade';
+import Divider from 'material-ui/Divider';
+import Avatar from 'material-ui/Avatar';
+import {pinkA200, transparent} from 'material-ui/styles/colors';
+import Badge from 'material-ui/Badge';
+import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
+
 
 var Link = Router.Link;
 var Route = Router.Route;
@@ -28,29 +36,20 @@ var ChannelListItem = React.createClass({
 
 
 
-            <Link to={`/chat/channels/${channel.jid}`}   onClick={() => this.props.actions.clickChannel(channel.jid)}  key={"link_"+channel.jid} params={{id: channel.jid}}>
+        <ListItem
+        primaryText={channel.name}
+
+        rightAvatar={<Badge
+      badgeContent={channel.unread}
+      secondary={true}
+          value={`/chat/channels/${channel.jid}`}
+    />}
+        onClick={() => this.props.actions.clickChannel(channel.jid)}  key={"link_"+channel.jid} params={{id: channel.jid}}
+      />
+    <Divider  />
 
 
 
-            <li className={cx({
-            'channels has-action-left has-action-right': true,
-            'active': channel.jid === this.props.currentChat.id
-
-    })}
-
-
->
-
-                        <div className="list-content">
-                            <span className="title">{channel.name}</span>
-                            <span className="caption">{channel.unread}</span>
-                        </div>
-
-
-
-
-</li>
-</Link>
 
 </div>
 

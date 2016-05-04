@@ -33,20 +33,38 @@ var MessageSection = React.createClass({
   render: function() {
     var messageListItems = _.toArray(this.props.threadMessages).map((message,index) => getMessageListItem(message,this.props.actions,index) );
     return (
-      <div  className="col-md-8">
+      <div  >
+             <h3 className="message-thread-heading">{this.props.currentChat.type}</h3>
+            <div
+                    ref='postlist'
+                    className='post-list-holder-by-time message-list'
+                >
+                    <div className='post-list__table'>
+                        <div
+                            ref='postlistcontent'
+                            className='post-list__content'
+                        >
+
+
         <div className="message-send-container">
-          <h3 className="message-thread-heading">{this.props.currentChat.type}</h3>
-          <div className="messages message_list" ref="messageList">
+
+          <div className="messages" ref="messageList">
 
             {messageListItems}
 
-            <MessageComposer currentChat={this.props.currentChat}  actions={this.props.actions}/>
+
 
           </div>
 
 
         </div>
       </div>
+
+
+    </div>
+    </div>
+    </div>
+
     );
   },
 

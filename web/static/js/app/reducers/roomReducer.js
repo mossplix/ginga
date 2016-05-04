@@ -100,6 +100,10 @@ function addMessage(id,message, notify) {
         var upRooms =[];
         const {client,user} = store.getState().xmpp;
 
+         if(!client){
+             return;
+         }
+
         if(user){
 
             var nick=user.first_name;

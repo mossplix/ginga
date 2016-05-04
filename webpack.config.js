@@ -14,7 +14,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const config = {
   //Entry point to the project
   entry: [
-    path.join(__dirname, 'web/static/js/app/app.js'), "./web/static/css/application.sass"
+    path.join(__dirname, 'web/static/js/app/app.js'), "./web/static/css/application.sass","./web/static/css/app.css"
   ],
   //Webpack config options on how to obtain modules
   resolve: {
@@ -52,6 +52,7 @@ const config = {
     //Allows error warninggs but does not stop compiling. Will remove when eslint is added
     new webpack.NoErrorsPlugin(),
       new ExtractTextPlugin("css/application.css"),
+       new ExtractTextPlugin("css/app.css"),
       new CopyWebpackPlugin([{ from: "./web/static/assets" }]),
 
        new CopyWebpackPlugin([

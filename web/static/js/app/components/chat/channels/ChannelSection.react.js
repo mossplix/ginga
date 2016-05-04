@@ -10,36 +10,48 @@ var RouteHandler = Router.RouteHandler;
 var State = Router.State;
 var Redirect=Router.Redirect;
 import { connect } from 'react-redux'
+import Divider from 'material-ui/Divider';
 
-
+import {List, ListItem} from 'material-ui/List';
+import Subheader from 'material-ui/Subheader';
+import RaisedButton from 'material-ui/RaisedButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import IconButton from 'material-ui/IconButton';
 
 var ChannelSection = React.createClass({
 
     render: function() {
         var channelListItems = _.toArray(this.props.channels).map(function(channel) {
             return (
+
                 <ChannelListItem
                     key={channel.jid}
                     channel={channel}
                     currentChat={this.props.currentChat}
                     actions = {this.props.actions}
                 />
+
             );
         }, this);
 
         return (
-      <div className="card">
-        <div className="card-footer card-head">
-						<a href="javascript:void(0)" className="pull-left">Channels</a>
-						<Link to="create_muc"> <button className="btn btn-xs btn-blue pull-right btn-ripple">Create Channel</button></Link>
-					</div>
+      <div >
 
 
-          <ul className="list-material channel-list message-list">
 
+           <List>
+
+<Subheader>
+
+<h4>Channels  <IconButton style={{ marginLeft: '60%'}} tooltip="Add Channel" touch={true} tooltipPosition="bottom-center"><ContentAdd/> </IconButton></h4>
+    </Subheader>
+
+                      <Divider />
 
           {channelListItems}
-        </ul>
+          </List>
+
       </div>
 
 

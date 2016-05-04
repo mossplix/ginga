@@ -21,8 +21,11 @@ import unreadThread                from './unreadThreadReducer'
 import unreadRoom                from './unreadRoomReducer'
 import user                from './userReducer'
 import tasks from './taskreducer'
+import suggestions from './suggestionsReducer';
 
 import MessageListReducer from './MessageListReducer';
+
+import {messageReducer}       from './messageReducer'
 
 export default combineReducers({
   routing: routerReducer,
@@ -47,6 +50,8 @@ export default combineReducers({
     resources: resources,
     app:app,
      messageListByQuery: MessageListReducer,
+      suggestions: suggestions,
+    currentMessage: messageReducer
 
 
 

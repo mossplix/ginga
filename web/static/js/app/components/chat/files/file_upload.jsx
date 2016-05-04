@@ -311,10 +311,10 @@ class FileUpload extends React.Component {
         return (
             <span
                 ref='input'
-                className='btn btn-file'
+                className='btn btn-file file-upload-span'
             >
                 <span>
-                    <i className='glyphicon glyphicon-paperclip'/>
+                    <i className='fa fa-paperclip fa-2x'/>
                 </span>
                 <input
                     ref='fileInput'
@@ -323,6 +323,7 @@ class FileUpload extends React.Component {
                     onClick={this.props.onClick}
                     multiple={multiple}
                     accept={accept}
+
                 />
             </span>
         );

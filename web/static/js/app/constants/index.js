@@ -73,6 +73,9 @@ const Other =
         LOAD_ROOMS:null,
         LOAD_CONTACTS:null,
         LOAD_MUCS:null,
+        PRETEXT_CHANGED:null,
+        SUGGESTIONS_CHANGED:null,
+        COMPLETE_WORD:null,
 
         
 

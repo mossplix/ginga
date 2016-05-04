@@ -54,6 +54,61 @@ function _markAllInThreadRead(threadID) {
 
 
 
+export  const draftStore = function  reducer(state = {message: '', uploadsInProgress: [], previews: []}, action = {}) {
+     switch (action.type) {
+
+         case ActionTypes.CLIENT_ON_DISCONNECTED:
+
+            return { ...state, xmpp_connected:true  };
+
+        case  ActionTypes.CLIENT_ON_STREAM_MANAGEMENT_RESUMED:
+
+            return { ...state, xmpp_connected:true  };
+        case ActionTypes.CLIENT_ON_SESSION_STARTED:
+
+            return { ...state, xmpp_connected:true  };
+
+        case ActionTypes.SEARCH:
+          return {
+            ...state,
+            searchQuery: action.searchQuery,
+          };
+
+
+    default:
+      return state;
+  }
+}
+
+
+export const   messageStore = function reducer(state = {lastPost:null}, action = {}) {
+     switch (action.type) {
+
+         case ActionTypes.CLIENT_ON_DISCONNECTED:
+
+            return { ...state, xmpp_connected:true  };
+
+        case  ActionTypes.CLIENT_ON_STREAM_MANAGEMENT_RESUMED:
+
+            return { ...state, xmpp_connected:true  };
+        case ActionTypes.CLIENT_ON_SESSION_STARTED:
+
+            return { ...state, xmpp_connected:true  };
+
+        case ActionTypes.SEARCH:
+          return {
+            ...state,
+            searchQuery: action.searchQuery,
+          };
+
+
+    default:
+      return state;
+  }
+}
+
+
+
 
 export default function reducer(allMessages = [], action = {}) {
   switch (action.type) {

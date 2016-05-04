@@ -58,3 +58,7 @@ export function receiveAll(rawMessages) {
       rawMessage: createdMessage
     });
   }
+
+export function emitClearSuggestions(id){
+
+}
