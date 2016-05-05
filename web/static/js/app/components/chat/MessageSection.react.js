@@ -6,7 +6,7 @@ var React = require('react');
 
 import { connect } from 'react-redux'
 import ReactDOM from 'react-dom';
-
+import * as ChatActions from '../../actions/chatActions';
 
 
 

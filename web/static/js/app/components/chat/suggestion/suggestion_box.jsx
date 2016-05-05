@@ -1,16 +1,16 @@
-// Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
-// See License.txt for license information.
+// Copyright (c) 2016 Sparkplug, Inc. All Rights Reserved.
 
 import $ from 'jquery';
 import ReactDOM from 'react-dom';
 
-import Constants from '../../../constants/chat_constants';
-import * as GlobalActions from '../../../actions/chatActions';
+import ActionTypes from '../../../constants';
+import ChatConstants from '../../../constants'
+
 import * as Utils from '../../../utils/general';
 
 import TextareaAutosize from 'react-textarea-autosize';
 
-const KeyCodes = Constants.KeyCodes;
+const KeyCodes = ChatConstants.KeyCodes;
 
 import React from 'react';
 
@@ -29,8 +29,20 @@ export default class SuggestionBox extends React.Component {
     }
 
     componentDidMount() {
-        //SuggestionStore.registerSuggestionBox(this.suggestionId);
+
+        store.dispatch({
+                        type: ActionTypes.REGISTER_SUGGESTION_BOX,
+                        id:this.suggestionId,
+
+                        });
+
+
         $(document).on('click', this.handleDocumentClick);
+
+
+        //this.handleCompleteWord();
+
+
 
        // SuggestionStore.addCompleteWordListener(this.suggestionId, this.handleCompleteWord);
         //SuggestionStore.addPretextChangedListener(this.suggestionId, this.handlePretextChanged);
@@ -40,7 +52,13 @@ export default class SuggestionBox extends React.Component {
         //SuggestionStore.removeCompleteWordListener(this.suggestionId, this.handleCompleteWord);
         //SuggestionStore.removePretextChangedListener(this.suggestionId, this.handlePretextChanged);
 
-        //SuggestionStore.unregisterSuggestionBox(this.suggestionId);
+         store.dispatch({
+                        type: ActionTypes.UNREGISTER_SUGGESTION_BOX,
+                        id:this.suggestionId,
+
+                        });
+
+
         $(document).off('click', this.handleDocumentClick);
     }
 
@@ -60,7 +78,12 @@ export default class SuggestionBox extends React.Component {
         if (!(container.is(e.target) || container.has(e.target).length > 0)) {
             // we can't just use blur for this because it fires and hides the children before
             // their click handlers can be called
-            GlobalActions.emitClearSuggestions(this.suggestionId);
+
+             store.dispatch({
+                        type: ActionTypes.SUGGESTION_CLEAR_SUGGESTIONS,
+                        id:this.suggestionId,
+
+                        });
         }
     }
 
@@ -69,7 +92,13 @@ export default class SuggestionBox extends React.Component {
         const caret = Utils.getCaretPosition(textbox);
         const pretext = textbox.value.substring(0, caret);
 
-        GlobalActions.emitSuggestionPretextChanged(this.suggestionId, pretext);
+
+        store.dispatch({
+                        type: ActionTypes.SUGGESTION_PRETEXT_CHANGED,
+                        id:this.suggestionId,
+                        pretext:pretext
+
+                        });
 
         if (this.props.onUserInput) {
             this.props.onUserInput(textbox.value);
@@ -80,7 +109,9 @@ export default class SuggestionBox extends React.Component {
         }
     }
 
-    handleCompleteWord(term) {
+    handleCompleteWord() {
+
+        const term = this.props.currentSuggestion.term;
         const textbox = ReactDOM.findDOMNode(this.refs.textbox);
         const caret = Utils.getCaretPosition(textbox);
 
@@ -99,22 +130,35 @@ export default class SuggestionBox extends React.Component {
     }
 
     handleKeyDown(e) {
-       /* if (SuggestionStore.hasSuggestions(this.suggestionId)) {
+        if (this.props.currentSuggestion.hasSuggestions) {
             if (e.which === KeyCodes.UP) {
-                GlobalActions.emitSelectPreviousSuggestion(this.suggestionId);
+                 store.dispatch({
+                        type: ActionTypes.SUGGESTION_SELECT_PREVIOUS,
+                        id:this.suggestionId,
+
+                        });
                 e.preventDefault();
             } else if (e.which === KeyCodes.DOWN) {
-                GlobalActions.emitSelectNextSuggestion(this.suggestionId);
+                store.dispatch({
+                        type: ActionTypes.SUGGESTION_SELECT_NEXT,
+                        id:this.suggestionId,
+
+                        });
                 e.preventDefault();
             } else if (e.which === KeyCodes.ENTER || e.which === KeyCodes.TAB) {
-                GlobalActions.emitCompleteWordSuggestion(this.suggestionId);
+
+                store.dispatch({
+                        type: ActionTypes.SUGGESTION_COMPLETE_WORD,
+                        id:this.suggestionId,
+
+                        });
                 e.preventDefault();
             } else if (this.props.onKeyDown) {
                 this.props.onKeyDown(e);
             }
         } else if (this.props.onKeyDown) {
             this.props.onKeyDown(e);
-        }*/
+        }
     }
 
     handlePretextChanged(pretext) {

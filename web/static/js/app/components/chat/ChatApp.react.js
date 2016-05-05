@@ -11,7 +11,7 @@ import { bindActionCreators } from 'redux'
 
 import { connect } from 'react-redux'
 
-import {currentThreadMessagesSelector} from '../../selectors';
+import {currentThreadMessagesSelector,selectedSuggestionSelector} from '../../selectors';
 
 import Paper from 'material-ui/paper';
 
@@ -34,7 +34,7 @@ var ChatApp = React.createClass({
 
 
   render: function() {
-      const {messages,actions,channels,threads,currentChat,dispatch,threadMessages,location} = this.props;
+      const {messages,actions,channels,threads,currentChat,dispatch,threadMessages,location,currentSuggestion,selectedSuggestion} = this.props;
     return (
       <div className="layer-container">
           <div className=" fade in active" id="messages">
@@ -56,7 +56,7 @@ var ChatApp = React.createClass({
           <div className="col-md-8">
 
         <MessageSection actions={actions} messages={messages} currentChat={currentChat} threadMessages={threadMessages} />
-           <MessageComposer currentChat={currentChat}  actions={actions}/>
+           <MessageComposer currentChat={currentChat}  actions={actions} currentSuggestion={currentSuggestion} selectedSuggestion={selectedSuggestion}/>
               </div>
       </div>
           </div>
@@ -89,7 +89,9 @@ const mapStateToProps = (state,ownProps) => ({
     currentChat: state.currentChat,
     threads:state.threads,
     location: ownProps.location,
-    threadMessages: currentThreadMessagesSelector(state)
+    threadMessages: currentThreadMessagesSelector(state),
+    selectedSuggestion: selectedSuggestionSelector(state),
+    currentSuggestion: state.currentSuggestion
 
 });
 

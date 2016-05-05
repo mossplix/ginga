@@ -59,6 +59,40 @@ export function receiveAll(rawMessages) {
     });
   }
 
-export function emitClearSuggestions(id){
 
+export function suggestionPretextChanged(suggestionId, pretext) {
+    dispatch({
+        type: ActionTypes.SUGGESTION_PRETEXT_CHANGED,
+        id: suggestionId,
+        pretext
+    });
+}
+
+export function selectNextSuggestion(suggestionId) {
+    dispatch({
+        type: ActionTypes.SUGGESTION_SELECT_NEXT,
+        id: suggestionId
+    });
+}
+
+export function selectPreviousSuggestion(suggestionId) {
+    dispatch({
+        type: ActionTypes.SUGGESTION_SELECT_PREVIOUS,
+        id: suggestionId
+    });
+}
+
+export function completeWordSuggestion(suggestionId, term = '') {
+    dispatch({
+        type: Constants.ActionTypes.SUGGESTION_COMPLETE_WORD,
+        id: suggestionId,
+        term
+    });
+}
+
+export function clearSuggestions(suggestionId) {
+    dispatch({
+        type: Constants.ActionTypes.SUGGESTION_CLEAR_SUGGESTIONS,
+        id: suggestionId
+    });
 }

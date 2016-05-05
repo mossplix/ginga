@@ -12,7 +12,13 @@ export const threadsSelector = state => state.threads;
 export const searchQuerySelector = state => state.app.searchQuery;
 export const selectedMessageIDSelector = state => state.currentChat.messageID;
 export const selectedIDSelector = state => state.currentChat.id;
+
 export const selectedRoomIDSelector = state => state.currentChat.roomID;
+
+export const selectedSuggestionBox  = state => state.currentSuggestion.id;
+export const suggestionsSelector = state => state.suggestions;
+
+
 
 const jidSelector = state => state.xmpp.jid;
 
@@ -62,6 +68,20 @@ export const selectedThreadMessagesSelector = createSelector([
   const selectedThread = threadsByID[selectedThreadID];
   return selectedThread &&
     selectedThread.messageIDs.map(messageID => messagesByID[messageID]);
+});
+
+
+
+export const selectedSuggestionSelector = createSelector([
+  suggestionsSelector,
+ selectedSuggestionBox
+], (
+  suggestions,
+  message_box_id
+) => {
+        var id = message_box_id||null;
+  const suggestion = suggestions[id];
+  return suggestion;
 });
 
 

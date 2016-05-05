@@ -336,7 +336,8 @@ export function xmppSession(client,dispatch,jid) {
                 rsm: {max: 500, before: true},
                 complete: false
             }, function (err, res) {
-                var itemList = res.mamResult.items || [];
+                var mamResult = res.mamResult;
+                var itemList = mamResult.items || [];
 
                 var msgList = itemList.map(function (x) {
                     return Object.assign({},Message, x.forwarded.message, {

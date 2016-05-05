@@ -33,6 +33,8 @@ import * as Utils from '../../utils/general';
 import Constants from '../../constants/chat_constants';
 
 
+var ReactDOM = require('react-dom');
+
 var  KeyCodes = require("../../utils/keyCode");
 
 const holders = defineMessages({
@@ -76,11 +78,30 @@ var MessageComposer = React.createClass({
     };
   },
 
+  handleUserInput(messageText) {
+        this.setState({messageText});
 
+        //const draft = PostStore.getCurrentDraft();
+       // draft.message = messageText;
+       // PostStore.storeCurrentDraft(draft);
+    },
 
    getFileCount(channelId) {
 
    },
+      handleHeightChange(height) {
+        const textbox = $(this.refs.message.getTextbox());
+        const wrapper = $(this.refs.wrapper);
+
+        const maxHeight = parseInt(textbox.css('max-height'), 10);
+
+        // move over attachment icon to compensate for the scrollbar
+        if (height > maxHeight) {
+            wrapper.closest('.post-body__cell').addClass('scroll');
+        } else {
+            wrapper.closest('.post-body__cell').removeClass('scroll');
+        }
+    },
     handleSubmit(e) {
         e.preventDefault();
 
@@ -127,12 +148,13 @@ var MessageComposer = React.createClass({
             this.sendMessage(post);
         }
     },
+
     sendMessage(post) {
             post.channel_id = this.state.channelId;
             post.filenames = this.state.previews;
 
             const time = Utils.getTimestamp();
-            const userId = store.getState.session.currentUser.id;
+            const userId = store.getState().session.currentUser.id;
             post.pending_post_id = `${userId}:${time}`;
             post.user_id = userId;
             post.create_at = time;
@@ -140,7 +162,7 @@ var MessageComposer = React.createClass({
 
             const channel = this.props.currentChat.channel;
 
-            GlobalActions.emitUserPostedEvent(post);
+            //ChatActions.emitUserPostedEvent(post);
 
             this.setState({messageText: '', submitting: false, postError: null, previews: [], serverError: null});
 
@@ -150,12 +172,12 @@ var MessageComposer = React.createClass({
             if (this.state.ctrlSend && e.ctrlKey || !this.state.ctrlSend) {
                 if (e.which === KeyCodes.ENTER && !e.shiftKey && !e.altKey) {
                     e.preventDefault();
-                    ReactDOM.findDOMNode(this.refs.textbox).blur();
+                    ReactDOM.findDOMNode(this.refs.message).blur();
                     this.handleSubmit(e);
                 }
             }
 
-            GlobalActions.emitLocalUserTypingEvent(this.state.channelId, '');
+            //ChatActions.emitLocalUserTypingEvent(this.state.channelId, '');
         },
     removePreview(id) {
             const previews = Object.assign([], this.state.previews);
@@ -417,6 +439,12 @@ var MessageComposer = React.createClass({
             tutorialTip = this.createTutorialTip();
         };
 
+
+      var suggestionProviders = [new AtMentionProvider(), new EmoticonProvider()];
+
+      suggestionProviders.push(new CommandProvider());
+
+
     return (
 
             <div>
@@ -425,6 +453,7 @@ var MessageComposer = React.createClass({
             <div  ref='wrapper'  className='textarea-wrapper' >
                 <SuggestionBox
                     ref='message'
+                    currentSuggestion={this.props.currentSuggestion}
                     className={`form-control custom-textarea ${this.state.connection}`}
                     type='textarea'
                     spellCheck='true'
@@ -433,19 +462,18 @@ var MessageComposer = React.createClass({
                     maxLength={Constants.MAX_POST_LEN}
                     placeholder={"compose"}
                     value={this.state.messageText}
-                    onUserInput={this.props.onUserInput}
                     onKeyPress={this.handleKeyPress}
                     onKeyDown={this.handleKeyDown}
                     onHeightChange={this.handleHeightChange}
                     style={{visibility: this.state.preview ? 'hidden' : 'visible'}}
                     listComponent={SuggestionList}
-                    providers={this.suggestionProviders}
-                    channelId={this.props.channelId}
+                    providers={suggestionProviders}
+                    channelId={this.props.currentChat.id}
                     onUserInput={this.handleUserInput}
                     onKeyPress={this.postMsgKeyPress}
                     onKeyDown={this.handleKeyDown}
                                 id='message_textbox'
-                                ref='textbox'
+
                 />
 
                                     <FileUpload
@@ -506,7 +534,7 @@ focus() {
     },
 focusTextbox() {
         if (!Utils.isMobile()) {
-            this.refs.textbox.focus();
+            this.refs.message.focus();
         }
     },
 

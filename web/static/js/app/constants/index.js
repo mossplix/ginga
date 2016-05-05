@@ -1,6 +1,8 @@
 
 var keyMirror = require('keymirror');
 
+import chatConstants from './chat_constants';
+
 const Other =
 
     keyMirror({
@@ -76,6 +78,84 @@ const Other =
         PRETEXT_CHANGED:null,
         SUGGESTIONS_CHANGED:null,
         COMPLETE_WORD:null,
+
+          RECEIVED_ERROR: null,
+
+        CLICK_CHANNEL: null,
+        CREATE_CHANNEL: null,
+        LEAVE_CHANNEL: null,
+        CREATE_POST: null,
+        POST_DELETED: null,
+        REMOVE_POST: null,
+
+        RECEIVED_CHANNELS: null,
+        RECEIVED_CHANNEL: null,
+        RECEIVED_MORE_CHANNELS: null,
+        RECEIVED_CHANNEL_EXTRA_INFO: null,
+
+        FOCUS_POST: null,
+        RECEIVED_POSTS: null,
+        RECEIVED_FOCUSED_POST: null,
+        RECEIVED_POST: null,
+        RECEIVED_EDIT_POST: null,
+        RECEIVED_SEARCH: null,
+        RECEIVED_SEARCH_TERM: null,
+        RECEIVED_POST_SELECTED: null,
+        RECEIVED_MENTION_DATA: null,
+        RECEIVED_ADD_MENTION: null,
+
+        RECEIVED_PROFILES: null,
+        RECEIVED_ME: null,
+        RECEIVED_SESSIONS: null,
+        RECEIVED_AUDITS: null,
+        RECEIVED_TEAMS: null,
+        RECEIVED_STATUSES: null,
+        RECEIVED_PREFERENCE: null,
+        RECEIVED_PREFERENCES: null,
+        RECEIVED_FILE_INFO: null,
+        RECEIVED_ANALYTICS: null,
+
+        RECEIVED_INCOMING_WEBHOOKS: null,
+        RECEIVED_INCOMING_WEBHOOK: null,
+        REMOVED_INCOMING_WEBHOOK: null,
+        RECEIVED_OUTGOING_WEBHOOKS: null,
+        RECEIVED_OUTGOING_WEBHOOK: null,
+        UPDATED_OUTGOING_WEBHOOK: null,
+        REMOVED_OUTGOING_WEBHOOK: null,
+
+        RECEIVED_MSG: null,
+
+        RECEIVED_MY_TEAM: null,
+
+        RECEIVED_CONFIG: null,
+        RECEIVED_LOGS: null,
+        RECEIVED_SERVER_AUDITS: null,
+        RECEIVED_SERVER_COMPLIANCE_REPORTS: null,
+        RECEIVED_ALL_TEAMS: null,
+
+        RECEIVED_LOCALE: null,
+
+        SHOW_SEARCH: null,
+
+        USER_TYPING: null,
+
+        TOGGLE_IMPORT_THEME_MODAL: null,
+        TOGGLE_INVITE_MEMBER_MODAL: null,
+        TOGGLE_DELETE_POST_MODAL: null,
+        TOGGLE_GET_POST_LINK_MODAL: null,
+        TOGGLE_GET_TEAM_INVITE_LINK_MODAL: null,
+        TOGGLE_REGISTER_APP_MODAL: null,
+
+        SUGGESTION_PRETEXT_CHANGED: null,
+        SUGGESTION_RECEIVED_SUGGESTIONS: null,
+        SUGGESTION_CLEAR_SUGGESTIONS: null,
+        SUGGESTION_COMPLETE_WORD: null,
+        SUGGESTION_SELECT_NEXT: null,
+        SUGGESTION_SELECT_PREVIOUS: null,
+        REGISTER_SUGGESTION_BOX: null,
+        ADD_COMPLETE_WORD: null,
+        UNREGISTER_SUGGESTION_BOX:null
+
 
         
 

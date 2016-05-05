@@ -1,16 +1,5 @@
-import ActionTypes  from '../constants/chat_constants';
+import ActionTypes  from '../constants';
 
-const initialState = {
-            pretext: '',
-            matchedPretext: '',
-            terms: [],
-            items: [],
-            components: [],
-            selection: '',
-     hasSuggestions: {
-        return this.terms.length > 0;
-    }
-};
 
   function markInactive   () {
         if (this.focused) {
@@ -22,7 +11,7 @@ const initialState = {
 
     }
 
-registerSuggestionBox(id,state) {
+function registerSuggestionBox(id,state) {
         state[id]={
             pretext: '',
             matchedPretext: '',
@@ -34,12 +23,12 @@ registerSuggestionBox(id,state) {
     return state;
     }
 
-    unregisterSuggestionBox(id,state) {
-        del state[id];
+   function  unregisterSuggestionBox(id,state) {
+        delete state[id];
        return state;
     }
 
-    clearSuggestions(id,state) {
+    function clearSuggestions(id,state) {
         const suggestion = state[id];
 
         suggestion.matchedPretext = '';
@@ -50,7 +39,7 @@ registerSuggestionBox(id,state) {
        return state;
     }
 
-    clearSelection(id,state) {
+    function clearSelection(id,state) {
         const suggestion = state[id];
 
         suggestion.selection = '';
@@ -58,11 +47,11 @@ registerSuggestionBox(id,state) {
         return state;
     }
 
-    hasSuggestions(id,state) {
+    function hasSuggestions(id,state) {
         return state[id].terms.length > 0;
     }
 
-    setPretext(id, pretext,state) {
+    function setPretext(id, pretext,state) {
         const suggestion = state[id];
 
         suggestion.pretext = pretext;
@@ -70,7 +59,7 @@ registerSuggestionBox(id,state) {
         return state;
     }
 
-    setMatchedPretext(id, matchedPretext,state) {
+    function setMatchedPretext(id, matchedPretext,state) {
         const suggestion = state[id];
 
         suggestion.matchedPretext = matchedPretext;
@@ -78,7 +67,7 @@ registerSuggestionBox(id,state) {
         return state;
     }
 
-    addSuggestion(id, term, item, component,state) {
+    function addSuggestion(id, term, item, component,state) {
         const suggestion = state[id];
 
         suggestion.terms.push(term);
@@ -88,7 +77,7 @@ registerSuggestionBox(id,state) {
         return state;
     }
 
-    addSuggestions(id, terms, items, component,state) {
+   function  addSuggestions(id, terms, items, component,state) {
         const suggestion = state[id];
 
         suggestion.terms.push(...terms);
@@ -102,7 +91,7 @@ registerSuggestionBox(id,state) {
     }
 
     // make sure that if suggestions exist, then one of them is selected. return true if the selection changes.
-    ensureSelectionExists(id,state) {
+    function ensureSelectionExists(id,state) {
         const suggestion = state[id];
 
         if (suggestion.terms.length > 0) {
@@ -122,39 +111,39 @@ registerSuggestionBox(id,state) {
        return state;
     }
 
-    getPretext(id,state) {
+    function getPretext(id,state) {
         return state[id].pretext;
     }
 
-    getMatchedPretext(id,state) {
+    function getMatchedPretext(id,state) {
         return state[id].matchedPretext;
     }
 
-    getItems(id,state) {
+   function  getItems(id,state) {
         return state[id].items;
     }
 
-    getTerms(id,state) {
+    function getTerms(id,state) {
         return state[id].terms;
     }
 
-    getComponents(id,state) {
+   function  getComponents(id,state) {
         return state[id].components;
     }
 
-    getSelection(id,state) {
+   function  getSelection(id,state) {
         return state[id].selection;
     }
 
-    selectNext(id,state) {
+    function selectNext(id,state) {
         return setSelectionByDelta(id, 1,state);
     }
 
-    selectPrevious(id,state) {
+    function selectPrevious(id,state) {
         return setSelectionByDelta(id, -1,state);
     }
 
-    setSelectionByDelta(id, delta,state) {
+    function setSelectionByDelta(id, delta,state) {
         const suggestion = state[id];
 
         let selectionIndex = suggestion.terms.indexOf(suggestion.selection);
@@ -179,8 +168,10 @@ registerSuggestionBox(id,state) {
     }
 
 export default function reducer(state = {}, action = {}) {
+     const  { id, ...other} = action;
+     console.log(action);
      switch (action.type) {
-         const { id, ...other} = action;
+
 
          case ActionTypes.SUGGESTION_PRETEXT_CHANGED:
              var toret=state;
@@ -188,7 +179,7 @@ export default function reducer(state = {}, action = {}) {
 
             toret=setPretext(id, other.pretext,toret);
              store.dispatch({
-                        type: ActionType.PRETEXT_CHANGED,
+                        type: ActionTypes.PRETEXT_CHANGED,
                         id:id,
                         pretext:other.pretext
 
@@ -197,7 +188,7 @@ export default function reducer(state = {}, action = {}) {
 
             toret=ensureSelectionExists(id,toret);
              store.dispatch({
-                        type: ActionType.SUGGESTIONS_CHANGED,
+                        type: ActionTypes.SUGGESTIONS_CHANGED,
                         id:id,
 
                         });
@@ -214,7 +205,7 @@ export default function reducer(state = {}, action = {}) {
 
                 toret=ensureSelectionExists(id,toret);
                 store.dispatch({
-                        type: ActionType.SUGGESTIONS_CHANGED,
+                        type: ActionTypes.SUGGESTIONS_CHANGED,
                         id:id,
 
                         });
@@ -228,7 +219,7 @@ export default function reducer(state = {}, action = {}) {
              toret = clearSuggestions(id,toret);
              toret = clearSelection(id,toret);
              store.dispatch({
-                        type: ActionType.SUGGESTIONS_CHANGED,
+                        type: ActionTypes.SUGGESTIONS_CHANGED,
                         id:id,
 
                         });
@@ -238,7 +229,7 @@ export default function reducer(state = {}, action = {}) {
              var toret = state;
              toret = selectNext(id,toret);
               store.dispatch({
-                        type: ActionType.SUGGESTIONS_CHANGED,
+                        type: ActionTypes.SUGGESTIONS_CHANGED,
                         id:id,
 
                         });
@@ -249,7 +240,7 @@ export default function reducer(state = {}, action = {}) {
           var toret=state;
           toret = selectPrevious(id,toret);
              store.dispatch({
-                        type: ActionType.SUGGESTIONS_CHANGED,
+                        type: ActionTypes.SUGGESTIONS_CHANGED,
                         id:id,
 
                         });
@@ -257,9 +248,9 @@ export default function reducer(state = {}, action = {}) {
         case ActionTypes.SUGGESTION_COMPLETE_WORD:
               var toret = state;
              store.dispatch({
-                        type: ActionType.COMPLETE_WORD,
+                        type: ActionTypes.COMPLETE_WORD,
                         id:id,
-                        term: other.term || getSelection(id,state), getMatchedPretext(id,state)
+                        term: other.term || getSelection(id,state)|| getMatchedPretext(id,state)
 
                         });
 
@@ -268,13 +259,20 @@ export default function reducer(state = {}, action = {}) {
             toret = clearSuggestions(id,toret);
             toret = clearSelection(id,toret);
             store.dispatch({
-                        type: ActionType.SUGGESTIONS_CHANGED,
+                        type: ActionTypes.SUGGESTIONS_CHANGED,
                         id:id,
 
                         });
           return {...toret };
 
-
+        case ActionTypes.REGISTER_SUGGESTION_BOX:
+            var toret = state;
+            toret = registerSuggestionBox(id,toret);
+            return {...toret };
+        case ActionTypes.UNREGISTER_SUGGESTION_BOX:
+            var toret = state;
+            toret = unregisterSuggestionBox(id,toret);
+            return {...toret };
 
 
     default:
@@ -283,5 +281,20 @@ export default function reducer(state = {}, action = {}) {
 }
 
 
+
+export const currentSuggestion  = function reducer(state = {}, action = {}) {
+     const  { id, ...other} = action;
+     switch (action.type) {
+
+          case ActionTypes.REGISTER_SUGGESTION_BOX:
+                 return {id: id };
+         case ActionTypes.SUGGESTION_COMPLETE_WORD:
+             const suggestion = store.getState().suggestions[id];
+             return {id:id,term: other.term || getSelection(id,state)|| getMatchedPretext(id,state),suggestion:suggestion,hasSuggestions:suggestion.terms.length > 0};
+
+    default:
+      return state;
+  }
+}
 
 

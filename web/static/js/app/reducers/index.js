@@ -25,7 +25,9 @@ import suggestions from './suggestionsReducer';
 
 import MessageListReducer from './MessageListReducer';
 
-import {messageReducer}       from './messageReducer'
+import {messageReducer}       from './messageReducer';
+
+import {currentSuggestion} from './suggestionsReducer';
 
 export default combineReducers({
   routing: routerReducer,
@@ -51,7 +53,8 @@ export default combineReducers({
     app:app,
      messageListByQuery: MessageListReducer,
       suggestions: suggestions,
-    currentMessage: messageReducer
+    currentMessage: messageReducer,
+    currentSuggestion:currentSuggestion
 
 
 
