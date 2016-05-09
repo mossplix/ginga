@@ -56,7 +56,7 @@ var ChatApp = React.createClass({
           <div className="col-md-8">
 
         <MessageSection actions={actions} messages={messages} currentChat={currentChat} threadMessages={threadMessages} />
-           <MessageComposer currentChat={currentChat}  actions={actions} currentSuggestion={currentSuggestion} selectedSuggestion={selectedSuggestion}/>
+           <MessageComposer dispatch={dispatch} currentChat={currentChat}  actions={actions} currentSuggestion={currentSuggestion} selectedSuggestion={selectedSuggestion}/>
               </div>
       </div>
           </div>

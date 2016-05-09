@@ -335,6 +335,7 @@ var MessageComposer = React.createClass({
     },
 
   render: function() {
+      const {actions,dispatch} = this.props;
         let serverError = null;
         if (this.state.serverError) {
             serverError = (
@@ -471,6 +472,8 @@ var MessageComposer = React.createClass({
                     channelId={this.props.currentChat.id}
                     onUserInput={this.handleUserInput}
                     onKeyPress={this.postMsgKeyPress}
+                    actions={actions}
+                    dispatch={dispatch}
                     onKeyDown={this.handleKeyDown}
                                 id='message_textbox'
 
@@ -485,6 +488,7 @@ var MessageComposer = React.createClass({
                                     onUploadError={this.handleUploadError}
                                     postType='post'
                                     channelId=''
+                                    actions={actions}
                             />
 
 

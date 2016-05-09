@@ -132,7 +132,13 @@ defmodule Ginga.Router do
       get "/rooms", XMPPController, :rooms
       resources "boards", BoardController, only: [:index, :create] do
         resources "cards", CardController, only: [:show]
+
       end
+       get "/commands/:term", CommandController,:suggestions
+        resources "/teams", TeamController, except: []
+        resources "/analytics", AnalyticController, except: []
+        resources "/push_notifications", PushNotificationController, except: []
+        resources "/files", FileController, except: []
 
       resources "/events", Ginga.EventsController, except: []
   	  resources "/streams", Ginga.StreamsController, except: []
@@ -147,6 +153,8 @@ defmodule Ginga.Router do
       resources "/campaigns", CampaignController, except: [:new, :edit]
       resources "/contacts", ContactController, except: [:new, :edit]
       resources "/companies", CompanyController, except: [:new, :edit]
+      resources "/webhooks", WebhookController, except: []
+
 
     end
   end

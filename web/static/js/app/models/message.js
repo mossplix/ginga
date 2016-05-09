@@ -63,7 +63,11 @@ module.exports= function() {return {
         if (typeof(sender) === "string")
         {
             return ""
-        } else{
+        }
+        else if(typeof(sender) === "undefined"){
+            return "";
+        }
+        else{
             return sender.avatar
 
         }

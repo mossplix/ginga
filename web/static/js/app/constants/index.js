@@ -154,7 +154,8 @@ const Other =
         SUGGESTION_SELECT_PREVIOUS: null,
         REGISTER_SUGGESTION_BOX: null,
         ADD_COMPLETE_WORD: null,
-        UNREGISTER_SUGGESTION_BOX:null
+        UNREGISTER_SUGGESTION_BOX:null,
+        MESSAGE_CREATED_EDITED:null
 
 
         

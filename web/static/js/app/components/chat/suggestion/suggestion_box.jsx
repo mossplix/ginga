@@ -30,11 +30,9 @@ export default class SuggestionBox extends React.Component {
 
     componentDidMount() {
 
-        store.dispatch({
-                        type: ActionTypes.REGISTER_SUGGESTION_BOX,
-                        id:this.suggestionId,
+        const {actions,dispatch} = this.props;
 
-                        });
+        dispatch(actions.registerSuggestions(this.suggestionId));
 
 
         $(document).on('click', this.handleDocumentClick);
@@ -52,11 +50,9 @@ export default class SuggestionBox extends React.Component {
         //SuggestionStore.removeCompleteWordListener(this.suggestionId, this.handleCompleteWord);
         //SuggestionStore.removePretextChangedListener(this.suggestionId, this.handlePretextChanged);
 
-         store.dispatch({
-                        type: ActionTypes.UNREGISTER_SUGGESTION_BOX,
-                        id:this.suggestionId,
+         const {actions,dispatch} = this.props;
 
-                        });
+        dispatch(actions.unregisterSuggestions(this.suggestionId));
 
 
         $(document).off('click', this.handleDocumentClick);
@@ -79,11 +75,10 @@ export default class SuggestionBox extends React.Component {
             // we can't just use blur for this because it fires and hides the children before
             // their click handlers can be called
 
-             store.dispatch({
-                        type: ActionTypes.SUGGESTION_CLEAR_SUGGESTIONS,
-                        id:this.suggestionId,
 
-                        });
+            const {actions,dispatch} = this.props;
+
+        dispatch(actions.clearSuggestions(this.suggestionId));
         }
     }
 
@@ -93,12 +88,11 @@ export default class SuggestionBox extends React.Component {
         const pretext = textbox.value.substring(0, caret);
 
 
-        store.dispatch({
-                        type: ActionTypes.SUGGESTION_PRETEXT_CHANGED,
-                        id:this.suggestionId,
-                        pretext:pretext
+         const {actions,dispatch} = this.props;
 
-                        });
+        dispatch(actions.suggestionPretextChanged(this.suggestionId,pretext));
+
+
 
         if (this.props.onUserInput) {
             this.props.onUserInput(textbox.value);
@@ -130,28 +124,20 @@ export default class SuggestionBox extends React.Component {
     }
 
     handleKeyDown(e) {
+         const {actions,dispatch} = this.props;
         if (this.props.currentSuggestion.hasSuggestions) {
             if (e.which === KeyCodes.UP) {
-                 store.dispatch({
-                        type: ActionTypes.SUGGESTION_SELECT_PREVIOUS,
-                        id:this.suggestionId,
 
-                        });
+                dispatch(actions.selectPreviousSuggestion(this.suggestionId));
                 e.preventDefault();
             } else if (e.which === KeyCodes.DOWN) {
-                store.dispatch({
-                        type: ActionTypes.SUGGESTION_SELECT_NEXT,
-                        id:this.suggestionId,
-
-                        });
+                dispatch(actions.selectNextSuggestion(this.suggestionId));
                 e.preventDefault();
             } else if (e.which === KeyCodes.ENTER || e.which === KeyCodes.TAB) {
 
-                store.dispatch({
-                        type: ActionTypes.SUGGESTION_COMPLETE_WORD,
-                        id:this.suggestionId,
 
-                        });
+                dispatch(actions.completeWordSuggestion(this.suggestionId));
+
                 e.preventDefault();
             } else if (this.props.onKeyDown) {
                 this.props.onKeyDown(e);
@@ -205,7 +191,7 @@ export default class SuggestionBox extends React.Component {
         return (
             <div>
                 {textbox}
-                <SuggestionListComponent suggestionId={this.suggestionId}/>
+                <SuggestionListComponent suggestionId={this.suggestionId} actions={this.props.actions}/>
             </div>
         );
     }

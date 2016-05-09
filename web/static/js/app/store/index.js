@@ -3,6 +3,7 @@ import { routerMiddleware }             from 'react-router-redux';
 import createLogger                     from 'redux-logger';
 import thunkMiddleware                  from 'redux-thunk';
 import reducers                         from '../reducers';
+import reduxPromise from 'redux-promise';
 
 
 
@@ -11,9 +12,19 @@ const loggerMiddleware = createLogger({
   collapsed: true,
 });
 
+const initialState = {
+    phase: 'pending',
+    error: null,
+    isLoading:true
+};
+
+
 export default function configureStore(browserHistory) {
   const reduxRouterMiddleware = routerMiddleware(browserHistory)
-  const createStoreWithMiddleware = compose(applyMiddleware(reduxRouterMiddleware, thunkMiddleware, loggerMiddleware),window.devToolsExtension ? window.devToolsExtension() : f => f)(createStore);
-
-  return createStoreWithMiddleware(reducers);
+    return createStore(
+    reducers,
+    initialState,
+    applyMiddleware(reduxRouterMiddleware, thunkMiddleware,reduxPromise, loggerMiddleware)
+);
 }
+

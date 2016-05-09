@@ -169,7 +169,7 @@ function registerSuggestionBox(id,state) {
 
 export default function reducer(state = {}, action = {}) {
      const  { id, ...other} = action;
-     console.log(action);
+
      switch (action.type) {
 
 
@@ -178,20 +178,7 @@ export default function reducer(state = {}, action = {}) {
              toret=clearSuggestions(id,toret);
 
             toret=setPretext(id, other.pretext,toret);
-             store.dispatch({
-                        type: ActionTypes.PRETEXT_CHANGED,
-                        id:id,
-                        pretext:other.pretext
-
-                         });
-
-
             toret=ensureSelectionExists(id,toret);
-             store.dispatch({
-                        type: ActionTypes.SUGGESTIONS_CHANGED,
-                        id:id,
-
-                        });
 
             return {...toret};
 
@@ -204,11 +191,7 @@ export default function reducer(state = {}, action = {}) {
                 toret=addSuggestions(id, other.terms, other.items, other.component,toret);
 
                 toret=ensureSelectionExists(id,toret);
-                store.dispatch({
-                        type: ActionTypes.SUGGESTIONS_CHANGED,
-                        id:id,
 
-                        });
             }
 
 
@@ -218,51 +201,25 @@ export default function reducer(state = {}, action = {}) {
              var toret = state;
              toret = clearSuggestions(id,toret);
              toret = clearSelection(id,toret);
-             store.dispatch({
-                        type: ActionTypes.SUGGESTIONS_CHANGED,
-                        id:id,
-
-                        });
 
             return {...toret };
          case ActionTypes.SUGGESTION_SELECT_PREVIOUS:
              var toret = state;
              toret = selectNext(id,toret);
-              store.dispatch({
-                        type: ActionTypes.SUGGESTIONS_CHANGED,
-                        id:id,
-
-                        });
 
             return { ...toret };
 
         case ActionTypes.SUGGESTION_SELECT_NEXT:
           var toret=state;
           toret = selectPrevious(id,toret);
-             store.dispatch({
-                        type: ActionTypes.SUGGESTIONS_CHANGED,
-                        id:id,
 
-                        });
             return {...toret};
         case ActionTypes.SUGGESTION_COMPLETE_WORD:
               var toret = state;
-             store.dispatch({
-                        type: ActionTypes.COMPLETE_WORD,
-                        id:id,
-                        term: other.term || getSelection(id,state)|| getMatchedPretext(id,state)
-
-                        });
-
-
             toret = setPretext(id, '',toret);
             toret = clearSuggestions(id,toret);
             toret = clearSelection(id,toret);
-            store.dispatch({
-                        type: ActionTypes.SUGGESTIONS_CHANGED,
-                        id:id,
 
-                        });
           return {...toret };
 
         case ActionTypes.REGISTER_SUGGESTION_BOX:
@@ -271,8 +228,7 @@ export default function reducer(state = {}, action = {}) {
             return {...toret };
         case ActionTypes.UNREGISTER_SUGGESTION_BOX:
             var toret = state;
-            toret = unregisterSuggestionBox(id,toret);
-            return {...toret };
+            return unregisterSuggestionBox(id,toret);
 
 
     default:
