@@ -87,6 +87,7 @@ function registerSuggestionBox(id,state) {
             suggestion.components.push(component);
         }
        state[id] = suggestion;
+       conole.log(state);
        return state;
     }
 
@@ -204,16 +205,13 @@ export default function reducer(state = {}, action = {}) {
 
             return {...toret };
          case ActionTypes.SUGGESTION_SELECT_PREVIOUS:
-             var toret = state;
-             toret = selectNext(id,toret);
 
-            return { ...toret };
+
+            return selectNext(id,state);
 
         case ActionTypes.SUGGESTION_SELECT_NEXT:
-          var toret=state;
-          toret = selectPrevious(id,toret);
 
-            return {...toret};
+            return selectPrevious(id,state);
         case ActionTypes.SUGGESTION_COMPLETE_WORD:
               var toret = state;
             toret = setPretext(id, '',toret);
@@ -223,12 +221,17 @@ export default function reducer(state = {}, action = {}) {
           return {...toret };
 
         case ActionTypes.REGISTER_SUGGESTION_BOX:
-            var toret = state;
-            toret = registerSuggestionBox(id,toret);
-            return {...toret };
+
+            return registerSuggestionBox(id,state);
         case ActionTypes.UNREGISTER_SUGGESTION_BOX:
-            var toret = state;
-            return unregisterSuggestionBox(id,toret);
+            return unregisterSuggestionBox(id,state);
+        case ActionTypes.ADD_SUGGESTIONS:
+
+            return addSuggestions(id, other.terms, other.items, other.component,state);
+
+        case ActionTypes.SET_MATCHED_PRETEXT:
+
+            return setMatchedPretext(id, other.text,state);
 
 
     default:
@@ -238,7 +241,15 @@ export default function reducer(state = {}, action = {}) {
 
 
 
-export const currentSuggestion  = function reducer(state = {}, action = {}) {
+export const currentSuggestion  = function reducer(state = {
+            pretext: '',
+            matchedPretext: '',
+            terms: [],
+            items: [],
+            components: [],
+            selection: '',
+    id:null
+        }, action = {}) {
      const  { id, ...other} = action;
      switch (action.type) {
 

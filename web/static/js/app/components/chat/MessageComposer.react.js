@@ -2,6 +2,7 @@
 import { connect } from 'react-redux'
 var React = require('react');
 var ENTER_KEY_CODE = 13;
+var debounce = require('lodash.debounce');
 
 import $ from 'jquery';
 import AtMentionProvider from './suggestion/at_mention_provider';
@@ -71,8 +72,14 @@ var MessageComposer = React.createClass({
             submitting: false,
             initialText: draft.messageText,
             ctrlSend: false,
-            showTutorialTip: false,
-            showPostDeletedModal: false
+            showTutorialTip: true,
+            showPostDeletedModal: false,
+            chatstate: '',
+            editing: false,
+        typing: false,
+        paused: false,
+        active: false,
+        placeholder: false
 
 
     };
@@ -80,6 +87,10 @@ var MessageComposer = React.createClass({
 
   handleUserInput(messageText) {
         this.setState({messageText});
+        if (!this.state.typing) {
+            this.setState({typing:true});
+            this.sendChatState('composing');
+        }
 
         //const draft = PostStore.getCurrentDraft();
        // draft.message = messageText;
@@ -163,11 +174,40 @@ var MessageComposer = React.createClass({
             const channel = this.props.currentChat.channel;
 
             //ChatActions.emitUserPostedEvent(post);
+            this.editing = false;
+        this.typing = false;
+        this.paused = false;
 
-            this.setState({messageText: '', submitting: false, postError: null, previews: [], serverError: null});
+            this.setState({messageText: '',
+                           submitting: false,
+                           postError: null,
+                           previews: [],
+                           serverError: null,
+                           editing: false,
+                            typing: false,
+                             paused:false
+                            });
 
 
         },
+    sendChatState(state){
+
+},
+handleKeyUp(e){
+    if (this.typing && this.state.messageText.length === 0) {
+            this.typing = false;
+            this.sendChatState('active');
+        } else if (this.state.typing) {
+            this.handlePausedTyping();
+        }
+
+},
+ handlePausedTyping: debounce(function () {
+        if (this.state.typing && !this.paused) {
+            this.setState({paused: true});
+            this.sendChatState('paused');
+        }
+    }, 3000),
     postMsgKeyPress(e) {
             if (this.state.ctrlSend && e.ctrlKey || !this.state.ctrlSend) {
                 if (e.which === KeyCodes.ENTER && !e.shiftKey && !e.altKey) {
@@ -285,6 +325,12 @@ var MessageComposer = React.createClass({
         return safeDraft;
     },
     handleKeyDown(e) {
+          var arrowKeys = {
+            37: true,
+            38: true,
+            39: true,
+            40: true
+        };
         if (this.state.ctrlSend && e.keyCode === KeyCodes.ENTER && e.ctrlKey === true) {
             this.postMsgKeyPress(e);
             return;
@@ -300,6 +346,13 @@ var MessageComposer = React.createClass({
             }
             const {formatMessage} = this.props.intl;
             var type = (lastPost.root_id && lastPost.root_id.length > 0) ? formatMessage(holders.comment) : formatMessage(holders.post);
+
+            if (!arrowKeys[e.which] && !e.ctrlKey && !e.metaKey && (!this.state.typing || this.state.paused)) {
+            this.setState({typing:true})
+            this.setState({paused:false})
+            this.sendChatState('composing');
+        }
+
 
             store.dispatch({
                         type: ActionType.MESSAGE_CREATED_EDITED,
@@ -455,6 +508,7 @@ var MessageComposer = React.createClass({
                 <SuggestionBox
                     ref='message'
                     currentSuggestion={this.props.currentSuggestion}
+                    selectedSuggestion={this.props.selectedSuggestion}
                     className={`form-control custom-textarea ${this.state.connection}`}
                     type='textarea'
                     spellCheck='true'
@@ -463,8 +517,8 @@ var MessageComposer = React.createClass({
                     maxLength={Constants.MAX_POST_LEN}
                     placeholder={"compose"}
                     value={this.state.messageText}
-                    onKeyPress={this.handleKeyPress}
                     onKeyDown={this.handleKeyDown}
+                    onKeyUp ={this.handleKeyUp}
                     onHeightChange={this.handleHeightChange}
                     style={{visibility: this.state.preview ? 'hidden' : 'visible'}}
                     listComponent={SuggestionList}
@@ -474,7 +528,6 @@ var MessageComposer = React.createClass({
                     onKeyPress={this.postMsgKeyPress}
                     actions={actions}
                     dispatch={dispatch}
-                    onKeyDown={this.handleKeyDown}
                                 id='message_textbox'
 
                 />
@@ -547,24 +600,9 @@ showPreview(e) {
         e.preventDefault();
         e.target.blur();
         this.setState({preview: !this.state.preview});
-    },
-
-  _onChange: function(event, value) {
-    this.setState({text: event.target.value});
-  },
-
-  _onKeyDown: function(event) {
-    if (event.keyCode === ENTER_KEY_CODE) {
-      event.preventDefault();
-      var text = this.state.text.trim();
-      if (text) {
-        //ChatMessageActionCreators.createMessage(text, this.props.chat,chat_type=ChatTypeStore.getCurrent());
-         this.props.actions.createMessage(text,this.props.currentChat);
-
-      }
-      this.setState({text: ''});
     }
-  }
+
+
 
 });
 

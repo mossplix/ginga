@@ -21,11 +21,12 @@ export default class SuggestionBox extends React.Component {
         this.handleDocumentClick = this.handleDocumentClick.bind(this);
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleCompleteWord = this.handleCompleteWord.bind(this);
+        //this.handleCompleteWord = this.handleCompleteWord.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
-        this.handlePretextChanged = this.handlePretextChanged.bind(this);
+       // this.handlePretextChanged = this.handlePretextChanged.bind(this);
 
         this.suggestionId = Utils.generateId();
+        this.state={term:'',pretext:''};
     }
 
     componentDidMount() {
@@ -38,7 +39,7 @@ export default class SuggestionBox extends React.Component {
         $(document).on('click', this.handleDocumentClick);
 
 
-        //this.handleCompleteWord();
+       // this.handleCompleteWord(this.props);
 
 
 
@@ -103,14 +104,39 @@ export default class SuggestionBox extends React.Component {
         }
     }
 
-    handleCompleteWord() {
+    componentWillReceiveProps(nextProps) {
 
-        const term = this.props.currentSuggestion.term;
+        if (this.state.term !==  nextProps.selectedSuggestion.term){
+             this.handleCompleteWord(nextProps);
+            this.setState({
+                term:nextProps.selectedSuggestion.term
+            });
+
+        }
+
+         if (this.state.pretext !==  nextProps.selectedSuggestion.pretext){
+             this.handlePretextChanged(nextProps.selectedSuggestion.pretext);
+            this.setState({
+                pretext:nextProps.selectedSuggestion.pretext
+            });
+
+        }
+
+
+
+
+
+ }
+
+    handleCompleteWord(props) {
+
+        const term = props.selectedSuggestion.term||"";
         const textbox = ReactDOM.findDOMNode(this.refs.textbox);
         const caret = Utils.getCaretPosition(textbox);
+        const pretext = props.selectedSuggestion.matchedPretext||[];
 
         const text = this.props.value;
-        const prefix = "";//text.substring(0, caret - SuggestionStore.getMatchedPretext(this.suggestionId).length);
+        const prefix = text.substring(0, caret - pretext.length);
         const suffix = text.substring(caret);
 
         if (this.props.onUserInput) {
@@ -125,7 +151,7 @@ export default class SuggestionBox extends React.Component {
 
     handleKeyDown(e) {
          const {actions,dispatch} = this.props;
-        if (this.props.currentSuggestion.hasSuggestions) {
+        if (this.props.selectedSuggestion.hasSuggestions) {
             if (e.which === KeyCodes.UP) {
 
                 dispatch(actions.selectPreviousSuggestion(this.suggestionId));
@@ -152,6 +178,8 @@ export default class SuggestionBox extends React.Component {
             provider.handlePretextChanged(this.suggestionId, pretext);
         }
     }
+
+
 
     render() {
         const newProps = Object.assign({}, this.props, {
@@ -191,7 +219,7 @@ export default class SuggestionBox extends React.Component {
         return (
             <div>
                 {textbox}
-                <SuggestionListComponent suggestionId={this.suggestionId} actions={this.props.actions}/>
+                <SuggestionListComponent suggestionId={this.suggestionId} actions={this.props.actions} selectedSuggestion={this.props.selectedSuggestion} dispatch={this.props.dispatch} currentSuggestion={this.props.currentSuggestion}/>
             </div>
         );
     }

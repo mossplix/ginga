@@ -4,17 +4,18 @@
 import $ from 'jquery';
 import ReactDOM from 'react-dom';
 import * as GlobalActions from '../../../actions/chatActions';
+import { connect } from 'react-redux'
+import {selectedSuggestionSelector} from '../../../selectors';
 
 import React from 'react';
 
-export default class SuggestionList extends React.Component {
+class SuggestionList extends React.Component {
     constructor(props) {
         super(props);
 
         this.getContent = this.getContent.bind(this);
 
         this.handleItemClick = this.handleItemClick.bind(this);
-        this.handleSuggestionsChanged = this.handleSuggestionsChanged.bind(this);
 
         this.scrollToItem = this.scrollToItem.bind(this);
 
@@ -25,14 +26,8 @@ export default class SuggestionList extends React.Component {
             selection: ''
         };
     }
+      
 
-    componentDidMount() {
-        //SuggestionStore.addSuggestionsChangedListener(this.props.suggestionId, this.handleSuggestionsChanged);
-    }
-
-    componentWillUnmount() {
-        //SuggestionStore.removeSuggestionsChangedListener(this.props.suggestionId, this.handleSuggestionsChanged);
-    }
 
     getContent() {
         return $(ReactDOM.findDOMNode(this.refs.content));
@@ -44,18 +39,21 @@ export default class SuggestionList extends React.Component {
         e.preventDefault();
     }
 
-    handleSuggestionsChanged() {
-        const selection =null;// SuggestionStore.getSelection(this.props.suggestionId);
+    handleSuggestionsChanged(props) {
+        const selection =props.selectedSuggestion.selection||"";// SuggestionStore.getSelection(this.props.suggestionId);
+        const items = props.items||[];
+        const terms = props.terms||[];
+        const components = props.components||[];
 
         this.setState({
-            items: null,//SuggestionStore.getItems(this.props.suggestionId),
-            terms: null,//SuggestionStore.getTerms(this.props.suggestionId),
-            components: null,// SuggestionStore.getComponents(this.props.suggestionId),
+            items: items,//SuggestionStore.getItems(this.props.suggestionId),
+            terms: terms,//SuggestionStore.getTerms(this.props.suggestionId),
+            components: components,// SuggestionStore.getComponents(this.props.suggestionId),
             selection
         });
 
         if (selection) {
-            window.requestAnimationFrame(() => this.scrollToItem(this.state.selection));
+            window.requestAnimationFrame(() => this.scrollToItem(this.props.selectedSuggestion.selection));
         }
     }
 
@@ -85,18 +83,18 @@ export default class SuggestionList extends React.Component {
     }
 
     render() {
-        if (this.state.items.length === 0) {
+        if (this.props.selectedSuggestion.items.length === 0) {
             return null;
         }
 
         const items = [];
-        for (let i = 0; i < this.state.items.length; i++) {
-            const item = this.state.items[i];
-            const term = this.state.terms[i];
-            const isSelection = term === this.state.selection;
+        for (let i = 0; i < this.props.selectedSuggestion.items.length; i++) {
+            const item = this.props.selectedSuggestion.items[i];
+            const term = this.props.selectedSuggestion.terms[i];
+            const isSelection = term === this.props.selectedSuggestion.selection;
 
             // ReactComponent names need to be upper case when used in JSX
-            const Component = this.state.components[i];
+            const Component = this.props.selectedSuggestion.components[i];
 
             items.push(
                 <Component
@@ -126,3 +124,7 @@ export default class SuggestionList extends React.Component {
 SuggestionList.propTypes = {
     suggestionId: React.PropTypes.string.isRequired
 };
+
+
+
+export default SuggestionList;

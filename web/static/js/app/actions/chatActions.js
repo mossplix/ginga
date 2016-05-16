@@ -308,5 +308,29 @@ export function handlePretextChanged(suggestionId,pretext)
 
 }
 
+export function setMatchedPretext(suggestionId, text){
+
+    return (dispatch, getState) =>
+    {
+        dispatch({type: ActionTypes.SET_MATCHED_PRETEXT,id: suggestionId,text: text});
+
+
+
+    }
+
+}
+
+export function addSuggestions(suggestionId,  terms, items, component){
+
+    return (dispatch, getState) =>
+    {
+        dispatch({type: ActionTypes.ADD_SUGGESTIONS,id: suggestionId,terms:terms, items: items, component:component});
+
+
+
+    }
+
+}
+
 
 

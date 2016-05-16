@@ -81,7 +81,19 @@ export const selectedSuggestionSelector = createSelector([
 ) => {
         var id = message_box_id||null;
   const suggestion = suggestions[id];
-  return suggestion;
+  if (suggestion === null || suggestion === undefined) {
+      return {
+            pretext: '',
+            matchedPretext: '',
+            terms: [],
+            items: [],
+            components: [],
+            selection: '',
+        }
+  }
+else{
+      return suggestion;
+  }
 });
 
 

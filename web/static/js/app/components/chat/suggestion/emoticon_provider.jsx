@@ -3,6 +3,8 @@
 
 
 import * as Emoticons from '../../../utils/emoticons';
+import ActionTypes from '../../../constants';
+import * as ChatActions from '../../../actions/chatActions';
 
 const MAX_EMOTICON_SUGGESTIONS = 40;
 
@@ -83,9 +85,10 @@ export default class EmoticonProvider {
 
             if (terms.length > 0) {
                 //SuggestionStore.setMatchedPretext(suggestionId, text);
-                //SuggestionStore.addSuggestions(suggestionId, terms, matched, EmoticonSuggestion);
+                store.dispatch(ChatActions.setMatchedPretext(suggestionId, text));
+                store.dispatch(ChatActions.addSuggestions(suggestionId, terms, matched, EmoticonSuggestion));
+                store.dispatch(ChatActions.clearSuggestions(suggestionId));
 
-                // force the selection to be cleared since the order of elements may have changed
                // SuggestionStore.clearSelection(suggestionId);
             }
         }

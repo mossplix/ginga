@@ -15,16 +15,26 @@ const loggerMiddleware = createLogger({
 const initialState = {
     phase: 'pending',
     error: null,
-    isLoading:true
+    loading:true
 };
 
 
 export default function configureStore(browserHistory) {
-  const reduxRouterMiddleware = routerMiddleware(browserHistory)
-    return createStore(
-    reducers,
-    initialState,
-    applyMiddleware(reduxRouterMiddleware, thunkMiddleware,reduxPromise, loggerMiddleware)
-);
+
+     const reduxRouterMiddleware = routerMiddleware(browserHistory);
+  const createStoreWithMiddleware = compose(applyMiddleware(reduxRouterMiddleware, thunkMiddleware, reduxPromise,loggerMiddleware),window.devToolsExtension ? window.devToolsExtension() : f => f)(createStore);
+  const store=createStoreWithMiddleware(reducers);
+/*    store.subscribe(() => {
+    switch (action.type) {
+        case UPDATE_TITLE:
+
+        break;
+        default:
+            // do nothing
+    }
+});*/
+
+return store;
+
 }
 

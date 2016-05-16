@@ -155,7 +155,9 @@ const Other =
         REGISTER_SUGGESTION_BOX: null,
         ADD_COMPLETE_WORD: null,
         UNREGISTER_SUGGESTION_BOX:null,
-        MESSAGE_CREATED_EDITED:null
+        MESSAGE_CREATED_EDITED:null,
+       SET_MATCHED_PRETEXT:null,
+        ADD_SUGGESTIONS:null,
 
 
         
