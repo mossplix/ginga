@@ -142,7 +142,7 @@ function emitCompleteWordSuggestion(suggestionId, term = ''){
         var suggestions =getState().suggestions;
         var suggestion =suggestions[suggestionId];
         return dispatch({
-            type: Constants.ActionTypes.SUGGESTION_COMPLETE_WORD,
+            type: ActionTypes.SUGGESTION_COMPLETE_WORD,
             id: suggestionId,
             term: term
         });
@@ -154,8 +154,8 @@ function completeWord(suggestionId, term = ''){
     {
     return dispatch({
                         type: ActionTypes.COMPLETE_WORD,
-                        id:id,
-                        term: term || getSelection(id,suggestions)|| getMatchedPretext(id,suggestions)
+                        id:suggestionId,
+                        term: term
 
                         });
 }}
@@ -165,14 +165,14 @@ export function completeWordSuggestion(suggestionId, term = '') {
     {
         var suggestions =getState().suggestions;
         var suggestion =suggestions[suggestionId];
-        var term_t=term || getSelection(id,suggestions)|| getMatchedPretext(id,suggestions);
+        var term_t=term
         return  new Promise((resolve) => { dispatch({
-            type: Constants.ActionTypes.SUGGESTION_COMPLETE_WORD,
+            type: ActionTypes.SUGGESTION_COMPLETE_WORD,
             id: suggestionId,
             term: term
         });resolve(false); }).then(() =>  dispatch({
                         type: ActionTypes.COMPLETE_WORD,
-                        id:id,
+                        id:suggestionId,
                         term: term_t
 
                         })).then(() => dispatch({
@@ -331,6 +331,19 @@ export function addSuggestions(suggestionId,  terms, items, component){
     }
 
 }
+
+export function clearSelection(suggestionId){
+
+    return (dispatch, getState) =>
+    {
+        dispatch({type: ActionTypes.CLEAR_SELECTION,id: suggestionId});
+
+
+
+    }
+
+}
+
 
 
 

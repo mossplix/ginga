@@ -158,6 +158,7 @@ const Other =
         MESSAGE_CREATED_EDITED:null,
        SET_MATCHED_PRETEXT:null,
         ADD_SUGGESTIONS:null,
+        CLEAR_SELECTION:null,
 
 
         

@@ -29,7 +29,7 @@ function registerSuggestionBox(id,state) {
     }
 
     function clearSuggestions(id,state) {
-        const suggestion = state[id];
+        var  suggestion = state[id];
 
         suggestion.matchedPretext = '';
         suggestion.terms = [];
@@ -40,7 +40,7 @@ function registerSuggestionBox(id,state) {
     }
 
     function clearSelection(id,state) {
-        const suggestion = state[id];
+        var  suggestion = state[id];
 
         suggestion.selection = '';
         state[id]=suggestion;
@@ -52,7 +52,7 @@ function registerSuggestionBox(id,state) {
     }
 
     function setPretext(id, pretext,state) {
-        const suggestion = state[id];
+        var suggestion = state[id];
 
         suggestion.pretext = pretext;
         state[id] = suggestion;
@@ -60,7 +60,7 @@ function registerSuggestionBox(id,state) {
     }
 
     function setMatchedPretext(id, matchedPretext,state) {
-        const suggestion = state[id];
+        var suggestion = state[id];
 
         suggestion.matchedPretext = matchedPretext;
         state[id] = suggestion;
@@ -68,7 +68,7 @@ function registerSuggestionBox(id,state) {
     }
 
     function addSuggestion(id, term, item, component,state) {
-        const suggestion = state[id];
+        var  suggestion = state[id];
 
         suggestion.terms.push(term);
         suggestion.items.push(item);
@@ -78,7 +78,8 @@ function registerSuggestionBox(id,state) {
     }
 
    function  addSuggestions(id, terms, items, component,state) {
-        const suggestion = state[id];
+        var suggestion = state[id];
+        var newState=state;
 
         suggestion.terms.push(...terms);
         suggestion.items.push(...items);
@@ -86,14 +87,13 @@ function registerSuggestionBox(id,state) {
         for (let i = 0; i < terms.length; i++) {
             suggestion.components.push(component);
         }
-       state[id] = suggestion;
-       conole.log(state);
-       return state;
+       newState[id] = suggestion;
+       return newState;
     }
 
     // make sure that if suggestions exist, then one of them is selected. return true if the selection changes.
     function ensureSelectionExists(id,state) {
-        const suggestion = state[id];
+        var suggestion = state[id];
 
         if (suggestion.terms.length > 0) {
             // if the current selection is no longer in the map, select the first term in the list
@@ -145,7 +145,7 @@ function registerSuggestionBox(id,state) {
     }
 
     function setSelectionByDelta(id, delta,state) {
-        const suggestion = state[id];
+        var suggestion = state[id];
 
         let selectionIndex = suggestion.terms.indexOf(suggestion.selection);
 
@@ -199,8 +199,7 @@ export default function reducer(state = {}, action = {}) {
 
             return { ...toret };
         case ActionTypes.SUGGESTION_CLEAR_SUGGESTIONS:
-             var toret = state;
-             toret = clearSuggestions(id,toret);
+             var toret = clearSuggestions(id,state);
              toret = clearSelection(id,toret);
 
             return {...toret };
@@ -213,8 +212,9 @@ export default function reducer(state = {}, action = {}) {
 
             return selectPrevious(id,state);
         case ActionTypes.SUGGESTION_COMPLETE_WORD:
-              var toret = state;
-            toret = setPretext(id, '',toret);
+            var t_term= other.term||getSelection(id,suggestions)|| getMatchedPretext(id,suggestions);
+
+            var toret = setPretext(id, '',state);
             toret = clearSuggestions(id,toret);
             toret = clearSelection(id,toret);
 
@@ -227,11 +227,16 @@ export default function reducer(state = {}, action = {}) {
             return unregisterSuggestionBox(id,state);
         case ActionTypes.ADD_SUGGESTIONS:
 
-            return addSuggestions(id, other.terms, other.items, other.component,state);
+            var tr = addSuggestions(id, other.terms, other.items, other.component,state);
+            console.log(tr);
+            return {...tr};
 
         case ActionTypes.SET_MATCHED_PRETEXT:
 
             return setMatchedPretext(id, other.text,state);
+        case ActionTypes.CLEAR_SELECTION:
+
+            return clearSelection(id,state);
 
 
     default:

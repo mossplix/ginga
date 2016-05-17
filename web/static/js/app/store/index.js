@@ -22,7 +22,7 @@ const initialState = {
 export default function configureStore(browserHistory) {
 
      const reduxRouterMiddleware = routerMiddleware(browserHistory);
-  const createStoreWithMiddleware = compose(applyMiddleware(reduxRouterMiddleware, thunkMiddleware, reduxPromise,loggerMiddleware),window.devToolsExtension ? window.devToolsExtension() : f => f)(createStore);
+  const createStoreWithMiddleware = compose(applyMiddleware(thunkMiddleware,reduxPromise,reduxRouterMiddleware,loggerMiddleware),window.devToolsExtension ? window.devToolsExtension() : f => f)(createStore);
   const store=createStoreWithMiddleware(reducers);
 /*    store.subscribe(() => {
     switch (action.type) {

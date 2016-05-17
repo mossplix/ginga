@@ -7040,7 +7040,8 @@ code {
 	z-index:100
 }
 .suggestion-list--top {
-	position:absolute
+	position:absolute;
+        bottom: 100%;
 }
 .suggestion-content {
 	width:100%;

@@ -3,7 +3,7 @@
 
 import $ from 'jquery';
 import ReactDOM from 'react-dom';
-import * as GlobalActions from '../../../actions/chatActions';
+import * as ChatActions from '../../../actions/chatActions';
 import { connect } from 'react-redux'
 import {selectedSuggestionSelector} from '../../../selectors';
 
@@ -34,7 +34,11 @@ class SuggestionList extends React.Component {
     }
 
     handleItemClick(term, e) {
-        GlobalActions.emitCompleteWordSuggestion(this.props.suggestionId, term);
+        this.props.dispatch(ChatActions.completeWordSuggestion(this.props.suggestionId, term));
+
+         if (this.props.selectedSuggestion.selection) {
+            window.requestAnimationFrame(() => this.scrollToItem(this.props.selectedSuggestion.selection));
+        }
 
         e.preventDefault();
     }
@@ -112,7 +116,7 @@ class SuggestionList extends React.Component {
             <div className='suggestion-list suggestion-list--top'>
                 <div
                     ref='content'
-                    className='suggestion-list__content suggestion-list__content--top'
+                    className='suggestion-list__content suggestion-content suggestion-list__content--top'
                 >
                     {items}
                 </div>

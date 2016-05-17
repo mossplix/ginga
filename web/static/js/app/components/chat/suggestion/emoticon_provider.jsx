@@ -87,9 +87,13 @@ export default class EmoticonProvider {
                 //SuggestionStore.setMatchedPretext(suggestionId, text);
                 store.dispatch(ChatActions.setMatchedPretext(suggestionId, text));
                 store.dispatch(ChatActions.addSuggestions(suggestionId, terms, matched, EmoticonSuggestion));
-                store.dispatch(ChatActions.clearSuggestions(suggestionId));
+               ;
+
+                 store.dispatch(ChatActions.clearSelection(suggestionId));
 
                // SuggestionStore.clearSelection(suggestionId);
+
+
             }
         }
     }
