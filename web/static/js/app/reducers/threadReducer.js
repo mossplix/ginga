@@ -24,6 +24,17 @@ function _addToThread(roster){
 
 }}
 
+function getThread(message){
+     var jid=store.getState().xmpp.jid;
+      var threadID = message.from;
+      if (threadID === jid)
+      {
+        threadID = message.to
+      }
+    return threadID;
+
+}
+
 
 function toThreads(messages) {
       if (typeof messages != 'undefined'){
@@ -127,6 +138,24 @@ export default function reducer(state = {}, action = {}) {
           var roster= action.rawContacts;
           _addToThread(roster);
           return { ...state };
+       case ActionTypes.CLIENT_ON_CHAT:
+            var msg = action.msg;
+            var id = getThread(msg);
+
+            return {...state,[id]:{id:id,name:id,lastMessage:action.msg}};
+
+
+      case ActionTypes.CLIENT_ON_GROUPCHAT:
+          var msg=action.msg;
+           var id = getThread(msg);
+
+           return {...state,[id]:{id:id,name:id,lastMessage:action.msg}};
+
+      case ActionTypes.MESSAGE_SENT:
+          var msg=action.message;
+          var id = getThread(msg);
+
+          return {...state,[id]:{id:id,name:id,lastMessage:action.message}};
 
     default:
       return state;

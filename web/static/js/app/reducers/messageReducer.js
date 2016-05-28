@@ -1,8 +1,39 @@
 import ActionTypes  from '../constants';
+var messageSchema = require("../models/message");
+
+var Message = new messageSchema();
 
 const initialState = {
   fetching: true
 };
+
+function convMessage(msg){
+      var ts = Date.now();
+      var timestamp;
+      if (msg.delay){
+          timestamp=msg.delay.stamp;
+      }
+    else{
+          timestamp=ts;
+      }
+      var data = {
+          archivedId: msg.id || uuid.v4(),
+          owner: msg.owner||msg.from.bare,
+          to: msg.to.bare,
+          text:msg.body,
+          from: msg.from.bare,
+          body: msg.body,
+          type: msg.type,
+          delay: msg.delay,
+          edited: msg.edited,
+          created: msg.timestamp||timestamp,
+          from_full: msg.from,
+          to_full:msg.to
+      };
+      return Object.assign({},Message,msg,data);
+
+}
+
    function correct(msg) {
         if (this.from.full !== msg.from.full) return false;
 
@@ -161,42 +192,11 @@ export default function reducer(allMessages = [], action = {}) {
           //);
 
            return [...allMessages];
+      case ActionTypes.MESSAGE_SENT:
+
+          return [...allMessages,action.message];
+
       case ActionTypes.CREATE_MESSAGE:
-          var msg=action.message;
-          var chat = action.chat;
-          res=client.sendMessage(msg);
-
-          if (msg.type === "chat")
-          {
-
-          var timestamp = Date.now();
-          var data = {
-              archivedId: msg.id,
-              owner: app.me,
-              to: msg.to.jid,
-              from: app.me,
-              body: msg.body,
-              type: msg.type,
-              delay: {},
-              edited: msg.edited,
-              _created: timestamp
-          };
-          //var message = ChatWebApiUtils.createMessage(data);
-          //message.acked = true;
-          //var conv_message = ChatMessageUtils.convertDbMessage(
-          //    message,
-          //    chat
-          //);
-
-
-          _messages[message.archivedId] =conv_message;
-
-
-
-
-
-        }
-
 
            return [...allMessages];
       case ActionTypes.CLIENT_ON_RECEIPT:
@@ -226,25 +226,9 @@ export default function reducer(allMessages = [], action = {}) {
            return [...allMessages];
       case ActionTypes.CLIENT_ON_CARBON_SENT:
           var carbon = action.carbon;
-          var msg = carbon.carbonSent.forwarded.message;
-          var delay = carbon.carbonSent.forwarded.delay || {};
-          if (!delay.stamp) {
-              delay.stamp = new Date(Date.now());
-          }
+          var msg = convMessage(carbon.carbonSent.forwarded.message);
 
-          if (!msg._extensions || !msg._extensions.delay) {
-              msg.delay = delay;
-          }
-
-          //var message = ChatWebApiUtils.createMessage(msg);
-          //message.acked = true;
-         // _messages[message.archivedId] = ChatMessageUtils.convertDbMessage(
-         //     message,
-         //     ChatTypeStore.getCurrent()
-          //);
-
-
-           return [...allMessages];
+          return [...allMessages,msg];
 
 
     default:

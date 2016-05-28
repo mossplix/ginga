@@ -3,6 +3,7 @@
   "dependencies": {
     "@salesforce-ux/design-system": "^1.0.2",
     "async": "^1.5.2",
+    "attachmediastream": "^1.3.5",
     "autolinker": "^0.26.0",
     "babel-loader": "^6.2.4",
     "babel-plugin-react-intl": "^2.1.2",
@@ -28,6 +29,7 @@
     "flux": "^2.1.1",
     "font-awesome": "^4.6.1",
     "history": "^2.0.1",
+    "htmlify": "^0.1.0",
     "i18next": "^2.5.1",
     "immutable": "^3.7.6",
     "imports-loader": "^0.6.5",

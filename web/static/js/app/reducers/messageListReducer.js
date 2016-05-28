@@ -39,6 +39,11 @@ module.exports = (messageListByQuery = {}, action) => {
     case ActionTypes.REFRESH:
       console.log('clearing the store')
       return {};
+    case ActionTypes.MESSAGE_SENT:
+
+
+        return {...messageListByQuery,[action.message.id]:action.message};
+
 
     case ActionTypes.MESSAGES_ARCHIVE_REQUEST:
       return removemessage(messageListByQuery, action.messageID, /in\:\s*inbox/);

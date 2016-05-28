@@ -17,6 +17,7 @@ const PreReleaseFeatures = Constants.PRE_RELEASE_FEATURES;
 
 import {intlShape, injectIntl, defineMessages, FormattedHTMLMessage,FormattedMessage} from 'react-intl';
 
+var attachMediaStream = require('attachmediastream');
 
 const Preferences = Constants.Preferences;
 const TutorialSteps = Constants.TutorialSteps;
@@ -89,7 +90,7 @@ var MessageComposer = React.createClass({
         this.setState({messageText});
         if (!this.state.typing) {
             this.setState({typing:true});
-            this.sendChatState('composing');
+             store.dispatch(ChatActions.sendPresence('composing'));
         }
 
         //const draft = PostStore.getCurrentDraft();
@@ -115,23 +116,15 @@ var MessageComposer = React.createClass({
     },
     handleSubmit(e) {
         e.preventDefault();
+        var text = this.state.messageText;
 
-        if (this.state.uploadsInProgress.length > 0 || this.state.submitting) {
+        if (text.trim().length === 0 ) {
             return;
         }
-
-        const post = {};
-        post.filenames = [];
-        post.message = this.state.messageText;
-
-        if (post.message.trim().length === 0 && this.state.previews.length === 0) {
-            return;
-        }
-
 
         this.setState({submitting: true, serverError: null});
 
-        if (post.message.indexOf('/') === 0) {
+        if (text.indexOf('/') === 0) {
             /*Client.executeCommand(
                 this.state.channelId,
                 post.message,
@@ -156,27 +149,20 @@ var MessageComposer = React.createClass({
                 }
             );*/
         } else {
-            this.sendMessage(post);
+            this.sendMessage(text);
         }
     },
 
-    sendMessage(post) {
-            post.channel_id = this.state.channelId;
-            post.filenames = this.state.previews;
-
-            const time = Utils.getTimestamp();
-            const userId = store.getState().session.currentUser.id;
-            post.pending_post_id = `${userId}:${time}`;
-            post.user_id = userId;
-            post.create_at = time;
-            post.parent_id = this.state.parentId;
-
-            const channel = this.props.currentChat.channel;
-
+    sendMessage(text) {
+            if (!this.props.currentChat.id){
+                return ;
+            }
             //ChatActions.emitUserPostedEvent(post);
-            this.editing = false;
-        this.typing = false;
-        this.paused = false;
+            this.setState({editing:false});
+            this.setState({typing:false});
+            this.setState({paused:false});
+            //this.sendChatState('active');
+
 
             this.setState({messageText: '',
                            submitting: false,
@@ -187,25 +173,26 @@ var MessageComposer = React.createClass({
                             typing: false,
                              paused:false
                             });
+           var currentChat = this.props.currentChat;
+
+           store.dispatch(ChatActions.sendMessage(text, currentChat.chat,currentChat.id));
 
 
         },
-    sendChatState(state){
 
-},
 handleKeyUp(e){
-    if (this.typing && this.state.messageText.length === 0) {
-            this.typing = false;
-            this.sendChatState('active');
+    if (this.state.typing && this.state.messageText.length === 0) {
+            this.setState({typing:false});
+            store.dispatch(ChatActions.sendPresence('active'));
         } else if (this.state.typing) {
             this.handlePausedTyping();
         }
 
 },
  handlePausedTyping: debounce(function () {
-        if (this.state.typing && !this.paused) {
+        if (this.state.typing && !this.state.paused) {
             this.setState({paused: true});
-            this.sendChatState('paused');
+            store.dispatch(ChatActions.sendPresence('paused'));
         }
     }, 3000),
     postMsgKeyPress(e) {
@@ -350,7 +337,7 @@ handleKeyUp(e){
             if (!arrowKeys[e.which] && !e.ctrlKey && !e.metaKey && (!this.state.typing || this.state.paused)) {
             this.setState({typing:true})
             this.setState({paused:false})
-            this.sendChatState('composing');
+                store.dispatch(ChatActions.sendPresence('composing'));
         }
 
 

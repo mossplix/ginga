@@ -213,10 +213,14 @@ export default function reducer(state = {}, action = {}) {
             return selectPrevious(id,state);
         case ActionTypes.SUGGESTION_COMPLETE_WORD:
             var t_term= other.term||getSelection(id,suggestions)|| getMatchedPretext(id,suggestions);
+            var toret=state;
+            var suggestion = toret[id];
+            suggestion.matched_term=t_term;
+            toret[id]=suggestion;
 
-            var toret = setPretext(id, '',state);
-            toret = clearSuggestions(id,toret);
-            toret = clearSelection(id,toret);
+            //var toret = setPretext(id, '',state);
+            //toret = clearSuggestions(id,toret);
+            //toret = clearSelection(id,toret);
 
           return {...toret };
 

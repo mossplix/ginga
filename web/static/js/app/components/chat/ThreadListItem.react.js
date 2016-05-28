@@ -11,6 +11,7 @@ var Route = Router.Route;
 var RouteHandler = Router.RouteHandler;
 var State = Router.State;
 var Redirect=Router.Redirect;
+import ReactDOM from 'react-dom';
 
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
@@ -23,6 +24,10 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 
 import { connect } from 'react-redux'
+import * as TextFormatting from '../../utils/text_formatting';
+import ChatConstants from '../../constants/chat_constants'
+import twemoji from 'twemoji';
+import {intlShape, injectIntl, defineMessages, FormattedMessage} from 'react-intl';
 
 const iconButtonElement = (
   <IconButton
@@ -57,11 +62,27 @@ var ThreadListItem = React.createClass({
     this.props.actions.clickThread(this.props.thread.id);
 
   },
+  parseEmojis:function() {
+        twemoji.parse(ReactDOM.findDOMNode(this), {
+            className: 'emoticon',
+            base: '',
+            folder: ChatConstants.EMOJI_PATH
+        });
+    },
+  componentDidMount: function(){
+        this.parseEmojis();
+    },
 
 
   render: function() {
       const {thread,actions} = this.props;
     var lastMessage = thread.lastMessage;
+
+        var p_message = (
+                <span
+                    dangerouslySetInnerHTML={{__html: TextFormatting.formatText(thread.lastMessage.text)}}
+                />
+            );
 
       if (lastMessage != null)
       {
@@ -72,14 +93,14 @@ var ThreadListItem = React.createClass({
 
 
             <ListItem
-              key={thread.id}
+              key={"thread_"+thread.id}
           leftAvatar={<Avatar src={lastMessage.getSenderAvatar()} />}
           primaryText={
             <p>{thread.name} <span style={{color: lightBlack}}>{lastMessage.formattedTime()}</span></p>
           }
           secondaryText={
             <p>
-             {lastMessage.text}
+             {p_message}
             </p>
           }
           secondaryTextLines={2}

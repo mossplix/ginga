@@ -7,15 +7,16 @@ var React = require('react');
 import { connect } from 'react-redux'
 import ReactDOM from 'react-dom';
 import * as ChatActions from '../../actions/chatActions';
+import {List, ListItem} from 'material-ui/List';
 
 
 
 function getMessageListItem(message,actions,index) {
   return (
     <MessageListItem
-      key={index}
       message={message}
           actions={actions}
+              ident={index}
     />
   );
 }
@@ -31,9 +32,11 @@ var MessageSection = React.createClass({
 
 
   render: function() {
+
     var messageListItems = _.toArray(this.props.threadMessages).map((message,index) => getMessageListItem(message,this.props.actions,index) );
     return (
       <div  >
+
              <h3 className="message-thread-heading">{this.props.currentChat.type}</h3>
             <div
                     ref='postlist'
@@ -49,8 +52,10 @@ var MessageSection = React.createClass({
         <div className="message-send-container">
 
           <div className="messages" ref="messageList">
+           <List>
 
             {messageListItems}
+          </List>
 
 
 
@@ -63,6 +68,10 @@ var MessageSection = React.createClass({
 
     </div>
     </div>
+
+     <List>
+     </List>
+
     </div>
 
     );
@@ -74,6 +83,7 @@ var MessageSection = React.createClass({
 
   _scrollToBottom: function() {
     var ul = ReactDOM.findDOMNode(this.refs.messageList);
+      console.log("s");
 
     ul.scrollTop = ul.scrollHeight;
   }

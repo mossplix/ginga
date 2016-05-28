@@ -9,6 +9,7 @@ import ChatConstants from '../../../constants'
 import * as Utils from '../../../utils/general';
 
 import TextareaAutosize from 'react-textarea-autosize';
+import * as ChatActions from '../../../actions/chatActions';
 
 const KeyCodes = ChatConstants.KeyCodes;
 
@@ -106,10 +107,10 @@ export default class SuggestionBox extends React.Component {
 
     componentWillReceiveProps(nextProps) {
 
-        if (this.state.term !==  nextProps.selectedSuggestion.term){
+        if (this.state.term !==  nextProps.selectedSuggestion.matched_term){
              this.handleCompleteWord(nextProps);
             this.setState({
-                term:nextProps.selectedSuggestion.term
+                term:nextProps.selectedSuggestion.matched_term
             });
 
         }
@@ -130,7 +131,7 @@ export default class SuggestionBox extends React.Component {
 
     handleCompleteWord(props) {
 
-        const term = props.selectedSuggestion.term||"";
+        const term = props.selectedSuggestion.matched_term||"";
         const textbox = ReactDOM.findDOMNode(this.refs.textbox);
         const caret = Utils.getCaretPosition(textbox);
         const pretext = props.selectedSuggestion.matchedPretext||[];
@@ -147,6 +148,9 @@ export default class SuggestionBox extends React.Component {
         window.requestAnimationFrame(() => {
             Utils.setCaretPosition(textbox, prefix.length + term.length + 1);
         });
+
+     store.dispatch(ChatActions.clearSelection(this.suggestionId));
+       store.dispatch(ChatActions.clearSuggestions(this.suggestionId));
     }
 
     handleKeyDown(e) {

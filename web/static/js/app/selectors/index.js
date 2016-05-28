@@ -52,7 +52,7 @@ export const currentThreadMessagesSelector = createSelector([
      var from_messages=_.filter(messages,{from:id,to: jid});
       var   my_messages=_.filter(messages,{from:jid,to:id});
     const toret= _.uniqBy(from_messages.concat(my_messages), function(elem) { return [elem.from,elem.to,elem.created,elem.text].join(); });
-    return _.orderBy(toret,["created"],['desc']);
+    return _.orderBy(toret,["created"],['asc']);
 });
 
 

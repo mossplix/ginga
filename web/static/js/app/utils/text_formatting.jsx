@@ -7,6 +7,7 @@ import * as Emoticons from './emoticons';
 import * as Markdown from './markdown';
 import * as Utils from './general';
 
+
 // Performs formatting of user posts including highlighting mentions and search terms and converting urls, hashtags, and
 // @mentions to links by taking a user's message and returning a string of formatted html. Also takes a number of options
 // as part of the second parameter:
@@ -119,7 +120,7 @@ function autolinkAtMentions(text, tokens) {
 
     // Test if provided text needs to be highlighted, special mention or current user
     function mentionExists(u) {
-        return (Constants.SPECIAL_MENTIONS.indexOf(u) !== -1 || UserStore.getProfileByUsername(u));
+        return (Constants.SPECIAL_MENTIONS.indexOf(u) !== -1); //|| UserStore.getProfileByUsername(u));
     }
 
     function addToken(username, mention) {
@@ -176,7 +177,7 @@ function escapeRegex(text) {
 function highlightCurrentMentions(text, tokens) {
     let output = text;
 
-    const mentionKeys = UserStore.getCurrentMentionKeys();
+    const mentionKeys =[];// UserStore.getCurrentMentionKeys();
 
     // look for any existing tokens which are self mentions and should be highlighted
     var newTokens = new Map();
@@ -211,7 +212,7 @@ function highlightCurrentMentions(text, tokens) {
         return prefix + alias;
     }
 
-    for (const mention of UserStore.getCurrentMentionKeys()) {
+    for (const mention of  []){// UserStore.getCurrentMentionKeys()) {
         // occasionally we get an empty mention which matches a bunch of empty strings
         if (!mention) {
             continue;
