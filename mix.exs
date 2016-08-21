@@ -29,7 +29,6 @@ defmodule Ginga.Mixfile do
                     :httpotion,
                     :amqp,
                     :postgrex,
-                    :edeliver,
                     :mnesia,
                     :gettext, 
                     :comeonin,
