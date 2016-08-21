@@ -86,7 +86,7 @@ defmodule Ginga.Mixfile do
      {:phoenix_html, "~> 2.3"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"},
-     {:amqp, "0.1.4"},
+     {:amqp, github: "pma/amqp"},
 
       {:timex, github: "bitwalker/timex",tag: :master},
       #{:geo, "~> 0.8.0"},
