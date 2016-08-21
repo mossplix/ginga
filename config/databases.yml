@@ -3,9 +3,9 @@ production:
     default:
       adapter: postgresql
       encoding: unicode
-      database: ginga_prod
+      database: ginga
       username: postgres
-      password: mosespass
+      password: afro112358
       host: 127.0.0.1
   options:
     separator: ;
