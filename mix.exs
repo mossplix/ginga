@@ -49,6 +49,11 @@ defmodule Ginga.Mixfile do
                     :exactor,
                     :libsodium,
                     :linguist,
+                    :guardian_db,
+                    :exredis,
+                    :rethinkdb,
+                    :hamcrest,
+
                     :ejabberd]]
   end
 
