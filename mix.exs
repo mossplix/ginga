@@ -130,7 +130,7 @@ defmodule Ginga.Mixfile do
             #{:meshup, [github: "klarna/meshup", branch: "master",compile: "rebar get-deps && rebar compile"]},
 
             {:rethinkdb,  [github: "hamiltop/rethinkdb-elixir"]},
-             {:hamcrest,  [github: " hyperthunk/hamcrest-erlang",compile: "rebar clean && rebar compile,override: true]},
+             {:hamcrest,  [github: " hyperthunk/hamcrest-erlang",compile: "rebar clean && rebar compile",override: true]},
 
            
             {:exactor,  [github: "sasa1977/exactor"]},
