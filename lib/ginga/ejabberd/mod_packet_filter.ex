@@ -1,8 +1,9 @@
 defmodule Ginga.FilterPacket do
-  require Logger # this allow using Logger.info, error, etc for logging
+  import Ejabberd.Logger # this allow using Logger.info, error, etc for logging
   @behaviour :gen_mod
 
   def start(host, _opts) do
+    #:application.start(:logger)
     Logger.info('Starting ejabberd module Filter Packet Demo')
     Ejabberd.Hooks.add(:filter_packet, :global, __ENV__.module, :on_filter_packet, 50)
     :ok

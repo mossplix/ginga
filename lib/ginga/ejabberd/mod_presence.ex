@@ -1,7 +1,7 @@
 defmodule Ginga.ModPresence do
-  #import Ejabberd.Logger # this allow using info, error, etc for logging
+  import Ejabberd.Logger # this allow using info, error, etc for logging
   Code.ensure_loaded(Ejabberd)
-  #require Logger
+  require Logger
   #require Ejabberd
   @behaviour :gen_mod
 
@@ -9,7 +9,8 @@ defmodule Ginga.ModPresence do
 
 
   def start(host, _opts) do
-    #Logger.info('Starting ejabberd module Presence Demo')
+    #:application.start(:logger)
+    Logger.info('Starting ejabberd module Presence Demo')
     Ejabberd.Hooks.add(:set_presence_hook, host, __ENV__.module, :on_presence, 50)
     :ok
   end
@@ -18,15 +19,15 @@ defmodule Ginga.ModPresence do
 
 
   def stop(host) do
-    #Logger.info('Stopping ejabberd module Presence Demo')
+    Logger.info('Stopping ejabberd module Presence Demo')
     Ejabberd.Hooks.delete(:set_presence_hook, host, __ENV__.module, :on_presence, 50)
     :ok
   end
 
   def on_presence(user, _server, _resource, packet) do
-    #Logger.info('Receive presence for #{user}')
-    #Logger.info(inspect(:xml.get_subtag(packet, "show")))
-    #Logger.info(inspect(:xml.get_subtag(packet, "status")))
+    Logger.info('Receive presence for #{user}')
+    Logger.info(inspect(:xml.get_subtag(packet, "show")))
+    Logger.info(inspect(:xml.get_subtag(packet, "status")))
 
     :none
   end

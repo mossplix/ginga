@@ -1,8 +1,10 @@
 defmodule Ginga.LogMessages do
-  require Logger # this allow using Logger.info, error, etc for logging
+  #require Logger # this allow using Logger.info, error, etc for logging
+  import Ejabberd.Logger
   @behaviour :gen_mod
 
   def start(host, _opts) do
+    #:application.start(:logger)
     Logger.info('Starting ejabberd module log Messages')
     Ejabberd.Hooks.add(:filter_packet, :global, __ENV__.module, :on_filter_packet, 50)
     :ok
