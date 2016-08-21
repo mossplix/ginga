@@ -251,7 +251,7 @@ auth_password_format: plain
 
 default_db: odbc
 auth_method: external
-extauth_program: "/Users/Moses/Projects/Sparkplug/ginga/scripts/auth.py"
+extauth_program: "/var/www/prod/ginga/scripts/auth.py"
 
 ##
 ## Authentication using ODBC
