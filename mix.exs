@@ -130,6 +130,9 @@ defmodule Ginga.Mixfile do
             #{:meshup, [github: "klarna/meshup", branch: "master",compile: "rebar get-deps && rebar compile"]},
 
             {:rethinkdb,  [github: "hamiltop/rethinkdb-elixir"]},
+             {:rethinkdb,  [github: " hyperthunk/hamcrest-erlang",compile: "rebar clean && rebar compile",override: true]},
+
+           
             {:exactor,  [github: "sasa1977/exactor"]},
             #{:mandrill,  [github: "slogsdon/mandrill-elixir"]},
              {:ibrowse,  [github: "cmullaparthi/ibrowse", tag: "v4.0.2",override: true]},
