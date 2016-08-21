@@ -344,9 +344,9 @@ extauth_program: "/var/www/prod/ginga/scripts/auth.py"
 ##
 odbc_type: pgsql
 odbc_server: "127.0.0.1"
-odbc_database: "ginga_dev"
+odbc_database: "ginga"
 odbc_username: "postgres"
-odbc_password: "mosespass"
+odbc_password: "afro112358"
 ##
 ## If you want to specify the port:
 ## odbc_port: 1234
