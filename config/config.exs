@@ -21,6 +21,8 @@ config :ginga, Ginga.Endpoint,
 
 config :joken, config_module: Guardian.JWT
 
+config :ginga, ecto_repos: [Ginga.Repo]
+
 
 config :guardian, Guardian,
   issuer: "Sparkplug",

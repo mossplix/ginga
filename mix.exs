@@ -4,7 +4,7 @@ defmodule Ginga.Mixfile do
   def project do
     [app: :ginga,
      version: "0.0.1",
-     elixir: "~> 1.0",
+     elixir: "~> 1.3",
      elixirc_paths: ["lib", "web","utils"],
      compilers: [:phoenix,:gettext] ++ Mix.compilers,
      erlc_paths: ["erlang"],
@@ -22,12 +22,35 @@ defmodule Ginga.Mixfile do
     [mod: {Ginga, []},
      applications: [:phoenix,
                     :phoenix_html,
+                    :phoenix_pubsub,
+                    :phoenix_ecto,
                     :cowboy,
                     :logger,
+                    :httpotion,
                     :amqp,
-                    :phoenix_ecto,
                     :postgrex,
-                    :mnesia, :gettext, :comeonin,:ueberauth_identity, :tzdata,  :ex_machina,:dbg,:bcrypt,:ecto,:ejabberd,:hedwig]]
+                    :edeliver,
+                    :mnesia,
+                    :gettext, 
+                    :comeonin,
+                    :ueberauth_identity,
+                    :tzdata, 
+                    :ex_machina,
+                    :dbg,
+                    :bcrypt,
+                    :ecto,
+                    :hedwig,
+                    :joken,
+                    :email,
+                    :timex,
+                    :meck,
+                    :guardian,
+                    :gen_smtp,
+                    :guardian,
+                    :exactor,
+                    :libsodium,
+                    :linguist,
+                    :ejabberd]]
   end
 
   # Specifies which paths to compile per environment.
@@ -45,11 +68,12 @@ defmodule Ginga.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.1.4"},
-     {:phoenix_ecto, "~> 2.0"},
+    [{:phoenix, "~> 1.2.0"},
+     {:phoenix_ecto, "~> 3.0"},
      {:guardian, "~> 0.10.0",override: true},
      {:guardian_db, "0.4.0"},
      {:gettext, "~> 0.9"},
+     {:phoenix_pubsub, "~> 1.0"},
 
 
      {:ueberauth,  path: "src/ueberauth", override: true},
@@ -57,7 +81,7 @@ defmodule Ginga.Mixfile do
 
      {:ueberauth_identity, path: "src/ueberauth_identity", override: true},
 
-     #{:ecto, ">= 0.0.0"},
+     #{:ecto, "~> 2.0"},
      {:postgrex, ">= 0.0.0"},
      {:phoenix_html, "~> 2.3"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
@@ -112,7 +136,7 @@ defmodule Ginga.Mixfile do
               {:jsx,  [github: "talentdeficit/jsx", tag: "v2.1.1",override: true]},
               {:p1_utils,  [github: "processone/p1_utils",compile: "rebar get-deps compile",override: true]},
               {:joken, "~> 1.1", override: true},
-              {:libsodium, "~> 0.0.2"},
+              {:libsodium, "~> 0.0.8"},
                 #{:p1_yaml,  [github: "processone/p1_yaml",compile: "./configure && make",override: true]},
               #{:p1_tls,  [github: "processone/tls",override: true]},
               #{:p1_stun,  [github: "processone/stun",override: true]},
@@ -121,6 +145,10 @@ defmodule Ginga.Mixfile do
                  {:ex_machina, "~> 0.6.1"},
                   {:hound, "~> 0.8"},
                   {:mix_test_watch, "~> 0.2", only: :dev},
+                  #{:exrm, "~> 0.18.1"},
+                   {:exrm, "~> 1.0"},
+                  #{:edeliver, "~> 1.2.9"},
+
 
 
 
@@ -135,6 +163,8 @@ defmodule Ginga.Mixfile do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-     "ecto.reset": ["ecto.drop", "ecto.setup"]]
+     "ecto.reset": ["ecto.drop", "ecto.setup"],
+    "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+     ]
   end
 end

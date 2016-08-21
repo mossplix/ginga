@@ -1,7 +1,8 @@
 defmodule Ginga.ModPresence do
   #import Ejabberd.Logger # this allow using info, error, etc for logging
+  Code.ensure_loaded(Ejabberd)
   require Logger
-  require Ejabberd
+  #require Ejabberd
   @behaviour :gen_mod
 
 

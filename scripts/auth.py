@@ -21,7 +21,10 @@ def _generate_response(success=False):
     if success:
         result = 1
     sys.stdout.write(struct.pack('>hh', 2, result))
-    sys.stdout.flush()
+    try:
+        sys.stdout.flush()
+    except IOError:
+        pass
 
 def _handle_isuser(username):
     """

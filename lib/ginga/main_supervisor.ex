@@ -19,7 +19,8 @@ It is itself supervised by the Phoenix supervisor.
 	def init(_) do
 		children = [
 								 worker(Ginga.EventManager, []),
-								 worker(Ginga.Endpoint, []),
+								 #worker(Ginga.Endpoint, []),
+								
 								 worker(Ginga.AtomPool, [100]),
 								# worker(Ginga.Repo, []),
 								 #worker(Ginga.RConnect, []),

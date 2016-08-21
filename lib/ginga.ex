@@ -12,16 +12,17 @@ The Ginga EBS application. It starts Mnesia, initializing it if needed, and star
 def start(_type, _args) do
     import Supervisor.Spec, warn: false
 		Application.start :logger
-		:ok = Amnesia.start
-		{:ok, _} = HTTPotion.start
+		#:ok = Amnesia.start
+		#{:ok, _} = HTTPotion.start
 
-    :ok =  :application.start(:email)
+    #:ok =  :application.start(:email)
 
 
 
 		IO.puts "Mnesia started"
     children = [
       # Define workers and child supervisors to be supervised
+      supervisor(Ginga.Endpoint, []),
        supervisor(Ginga.MainSupervisor, []),
        worker(Ginga.Repo, []),
     ]
