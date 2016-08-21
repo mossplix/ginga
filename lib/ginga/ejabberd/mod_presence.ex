@@ -1,5 +1,6 @@
 defmodule Ginga.ModPresence do
   import Ejabberd.Logger # this allow using info, error, etc for logging
+  alias Ejabberd.Logger
   Code.ensure_loaded(Ejabberd)
   require Logger
   #require Ejabberd

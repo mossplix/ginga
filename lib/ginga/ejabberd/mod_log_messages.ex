@@ -1,6 +1,7 @@
 defmodule Ginga.LogMessages do
   #require Logger # this allow using Logger.info, error, etc for logging
   import Ejabberd.Logger
+  alias Ejabberd.Logger
   @behaviour :gen_mod
 
   def start(host, _opts) do

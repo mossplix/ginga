@@ -1,5 +1,6 @@
 defmodule Ginga.FilterPacket do
   import Ejabberd.Logger # this allow using Logger.info, error, etc for logging
+  alias Ejabberd.Logger
   @behaviour :gen_mod
 
   def start(host, _opts) do
