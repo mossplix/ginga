@@ -1,0 +1,275 @@
+@import "vendor/bootstrap/variables.less";
+@import "vendor/bootstrap/mixins.less";
+@import 'vendor/animate/animate.less';
+@import 'vendor/flexbox.less';
+@import 'vendor/hat.less';
+@import 'vendor/bootstrap/bootstrap.less';
+@import 'vendor/font-awesome/font-awesome.less';
+@import 'vendor/onoffswitch.less';
+
+@import (inline) '../../js/vendor/JVFloat/jvfloat.css';
+@import (inline) '../../js/vendor/sweetalert/sweet-alert.css';
+@import (inline) '../../js/vendor/at/jquery.atwho.css';
+@import (inline) '../../js/vendor/selectize/selectize.css';
+@import (inline) '../../js/vendor/selectize/selectize.bootstrap3.css';
+
+
+
+header,
+main,
+summary {
+  display: block;
+}
+
+
+html,
+body {
+    height: 100%;
+}
+html {
+  font-family: sans-serif;
+  /* 1 */
+  -ms-text-size-adjust: 100%;
+  /* 2 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */ }
+  
+  
+  
+  .group:after {
+    content: "";
+    display: table;
+    clear: both; }
+
+  .wrapper {
+    width: 90%;
+    max-width: 900px;
+    margin-right: auto;
+    margin-left: auto;
+    position: relative; }
+    .wrapper:after {
+      content: "";
+      display: table;
+      clear: both; }
+    .wrapper:before {
+      content: '';
+      display: table; }
+	  
+
+	  .header {
+	    background-color: #fff;
+	    border-bottom: 1px solid #DDE0E2;
+	    box-sizing: border-box;
+	    padding: 30px 0px;
+	     }
+	    .header a {
+	      color: #1F8DD6; }
+	      .header a:hover {
+	        color: #1F8DD7; }
+	    .header .brand {
+	      float: left;
+	    }
+
+	    .header .menu {
+	      float: right;
+	      font-size: 12px;
+	      font-size: 1.6rem; }
+	      .header .menu a {
+	        margin-left: 20px; }
+	        .header .menu a.signin {
+	          font-weight: bold; }
+			  
+			  
+	  
+
+[contenteditable]:empty::before {
+    content: attr(placeholder);
+    color: inherit;
+    .opacity(.4);
+}
+
+.modal {
+    overflow-y: scroll;
+}
+
+.modal-content {
+    border: none;
+}
+
+.form-control {
+    height: auto;
+    font-size: 14px;
+    padding: 10px;
+}
+
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.jvFloat {
+    display: block;
+    margin: 0;
+    .placeHolder {
+        background-color: #eee;
+        height: 16px;
+        line-height: 16px;
+        color: #555;
+        font-weight: 300;
+        font-size: 11px;
+        padding: 0 8px;
+        top: -5px;
+        right: 0;
+        left: auto;
+        .text-overflow;
+    }
+}
+
+
+/*********************
+ * Login
+ *********************/
+
+.lcb-login {
+    background-color: #222;
+    background-image: url('../img/photos/reflection.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    padding-top: 40px;
+    .flex-display;
+    .align-items(center);
+    .justify-content(center);
+    &:before {
+        background-image: url('../img/photo-overlay.png');
+        .size(100%);
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        .opacity(.4);
+    }
+
+    @media (max-width: @screen-xs-max) {
+        display: block;
+    }
+}
+
+.lcb-login-main {
+    max-width: 420px;
+    text-align: center;
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 60px;
+    position: relative;
+}
+
+.lcb-login-logo {
+    font-family: Pacifico;
+    font-size: 85px;
+    text-shadow: 0 0 10px rgba(0,0,0,.2);
+    color: #fff;
+    margin: 0;
+    margin-bottom: 30px;
+    .flavour {
+        color: #f22472;
+    }
+    @media (max-width: @screen-xs-max) {
+        font-size: 56px;
+    }
+}
+
+.lcb-login-box {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #e3e3e3;
+    position: relative;
+    z-index: 1;
+    border-radius: 3px;
+    .box-shadow(0 0 20px 3px rgba(0,0,0,.1));
+    .response:empty {
+        display: none;
+    }
+}
+
+.lcb-login-box-heading {
+    line-height: 100%;
+    color: #555;
+    font-family: Pacifico;
+    font-size: 24px;
+    padding: 0;
+    padding-bottom: 20px;
+    margin: 0;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.lcb-login-avatar {
+    .size(0);
+    margin: 0 auto;
+    margin-bottom: 25px;
+    border-radius: 100%;
+    border: 1px #eee solid;
+    &.show {
+        .size(100px);
+        .animated;
+        .fadeInUp;
+    }
+}
+
+.lcb-login-box-bottom {
+    overflow: hidden;
+    .links {
+        margin-top: 12px;
+        margin-right: 12px;
+    }
+}
+
+.lcb-login-footer-heart {
+    float: left;
+}
+
+.lcb-login-footer-github {
+    float: right;
+}
+
+.lcb-login-footer {
+    background-color: rgba(0,0,0,.4);
+    width: 100%;
+    color: #f2f2f2;
+    font-family: Tahoma;
+    font-size: 11px;
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    padding: 5px 0;
+    p {
+        margin: 0 10px;
+    }
+    a {
+        color: #fff;
+    }
+    .fa {
+        margin-right: 3px;
+    }
+    .fa-heart {
+        color: #f22472;
+    }
+    @media (max-width: @screen-xs-max) {
+        position: relative;
+        font-size: 14px;
+        margin-top: -5px;
+        border-radius: 0 0 3px 3px;
+        .lcb-login-footer-heart,
+        .lcb-login-footer-github {
+            margin: 10px 0;
+            float: none;
+        }
+        .dash {
+            line-height: 0;
+            visibility: hidden;
+            display: block;
+        }
+    }
+}
